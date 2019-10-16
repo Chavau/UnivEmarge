@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">UnivEmarge</string>
+    <string name="app_name">Liste des cours</string>
+    <string name="menu_calendrier">menu_calendrier</string>
 </resources>
