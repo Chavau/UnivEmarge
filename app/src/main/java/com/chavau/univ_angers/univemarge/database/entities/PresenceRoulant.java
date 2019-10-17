@@ -4,33 +4,42 @@ import java.util.Date;
 
 public class PresenceRoulant {
     private int idRoulant;
-    private int idInscription;
+    private int idEvenement;
+    private int numeroEtudiant;
     private Date temps;
-    private String entrees_sorties;
-//  TODO:
-//    private Date dateEntree;
-//    private Date dateSortie;
+    private Date dateEntree;
+    private Date dateSortie;
 
-    public PresenceRoulant(int idRoulant, int idInscription, Date temps, String entrees_sorties) {
+    public PresenceRoulant(int idRoulant, int idEvenement, int numeroEtudiant, Date temps, Date dateEntree, Date dateSortie) {
         this.idRoulant = idRoulant;
-        this.idInscription = idInscription;
+        this.idEvenement = idEvenement;
+        this.numeroEtudiant = numeroEtudiant;
         this.temps = temps;
-        this.entrees_sorties = entrees_sorties;
+        this.dateEntree = dateEntree;
+        this.dateSortie = dateSortie;
     }
 
     public int getIdRoulant() {
         return idRoulant;
     }
 
-    public int getIdInscription() {
-        return idInscription;
+    public int getIdEvenement() {
+        return idEvenement;
+    }
+
+    public int getNumeroEtudiant() {
+        return numeroEtudiant;
     }
 
     public Date getTemps() {
         return temps;
     }
 
-    public String getEntrees_sorties() {
-        return entrees_sorties;
+    public Date getDateEntree() {
+        return dateEntree;
+    }
+
+    public Date getDateSortie() {
+        return dateSortie;
     }
 }

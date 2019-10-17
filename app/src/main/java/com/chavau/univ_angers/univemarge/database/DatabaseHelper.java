@@ -16,7 +16,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(DBTables.Personnel.SQL_CREATE_ENTRIES);
         db.execSQL(DBTables.Etudiant.SQL_CREATE_ENTRIES);
-        db.execSQL(DBTables.Cours.SQL_CREATE_ENTRIES);
+//        db.execSQL(DBTables.Cours.SQL_CREATE_ENTRIES);
         db.execSQL(DBTables.RoulantParametre.SQL_CREATE_ENTRIES);
         db.execSQL(DBTables.Evenement.SQL_CREATE_ENTRIES);
         db.execSQL(DBTables.Responsable.SQL_CREATE_ENTRIES);
@@ -29,7 +29,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL(DBTables.Personnel.SQL_DELETE_ENTRIES);
         db.execSQL(DBTables.Etudiant.SQL_DELETE_ENTRIES);
-        db.execSQL(DBTables.Cours.SQL_DELETE_ENTRIES);
+//        db.execSQL(DBTables.Cours.SQL_DELETE_ENTRIES);
         db.execSQL(DBTables.RoulantParametre.SQL_DELETE_ENTRIES);
         db.execSQL(DBTables.Evenement.SQL_DELETE_ENTRIES);
         db.execSQL(DBTables.Responsable.SQL_DELETE_ENTRIES);

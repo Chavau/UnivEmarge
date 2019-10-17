@@ -9,18 +9,16 @@ public class Evenement {
     private String lieu;
     private int temoinRoulant;
     private String libelleEvenement;
-    private int idCours;
     private Date dateMaj;
     private boolean deleted;
 
-    public Evenement(int idEvenement, Date dateDebut, Date dateFin, String lieu, int temoinRoulant, String libelleEvenement, int idCours, Date dateMaj, boolean deleted) {
+    public Evenement(int idEvenement, Date dateDebut, Date dateFin, String lieu, int temoinRoulant, String libelleEvenement, Date dateMaj, boolean deleted) {
         this.idEvenement = idEvenement;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
         this.lieu = lieu;
         this.temoinRoulant = temoinRoulant;
         this.libelleEvenement = libelleEvenement;
-        this.idCours = idCours;
         this.dateMaj = dateMaj;
         this.deleted = deleted;
     }
@@ -49,15 +47,15 @@ public class Evenement {
         return libelleEvenement;
     }
 
-    public int getIdCours() {
-        return idCours;
-    }
-
     public Date getDateMaj() {
         return dateMaj;
     }
 
     public boolean isDeleted() {
         return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }
