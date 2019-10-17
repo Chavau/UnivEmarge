@@ -1,6 +1,99 @@
 package com.chavau.univ_angers.univemarge.database.dao;
 
-import java.util.Date;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import com.chavau.univ_angers.univemarge.database.DBTables;
+import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
+import com.chavau.univ_angers.univemarge.database.Identifiant;
+import com.chavau.univ_angers.univemarge.database.entities.Evenement;
+import com.chavau.univ_angers.univemarge.utils.Utils;
 
-public class EvenementDAO {
+public class EvenementDAO extends DAO<Evenement> {
+
+    private static final String[] PROJECTION = {
+            DBTables.Evenement.COLONNE_ID_EVENEMENT,
+            DBTables.Evenement.COLONNE_DATE_DEBUT,
+            DBTables.Evenement.COLONNE_DATE_FIN,
+            DBTables.Evenement.COLONNE_LIEU,
+            DBTables.Evenement.COLONNE_TEMOIN_ROULANT,
+            DBTables.Evenement.COLONNE_LIBELLE_EVENEMENT,
+            DBTables.Evenement.COLONNE_DATE_MAJ,
+            DBTables.Evenement.COLONNE_DELETED
+    };
+
+    public EvenementDAO(DatabaseHelper helper) {
+        super(helper);
+    }
+
+    @Override
+    public ContentValues getContentValues(Evenement item) {
+        ContentValues values = new ContentValues();
+        values.put(DBTables.Evenement.COLONNE_ID_EVENEMENT, item.getIdEvenement());
+        values.put(DBTables.Evenement.COLONNE_DATE_DEBUT, Utils.convertDateToString(item.getDateDebut()));
+        values.put(DBTables.Evenement.COLONNE_DATE_FIN, Utils.convertDateToString(item.getDateFin()));
+        values.put(DBTables.Evenement.COLONNE_LIEU, item.getLieu());
+        values.put(DBTables.Evenement.COLONNE_TEMOIN_ROULANT, item.getTemoinRoulant());
+        values.put(DBTables.Evenement.COLONNE_LIBELLE_EVENEMENT, item.getLibelleEvenement());
+        values.put(DBTables.Evenement.COLONNE_DATE_MAJ, Utils.convertDateToString(item.getDateMaj()));
+        values.put(DBTables.Evenement.COLONNE_DELETED, item.isDeleted());
+        return values;
+    }
+
+    @Override
+    public long insertItem(Evenement item) {
+        SQLiteDatabase db = super.helper.getWritableDatabase();
+        return db.insert(DBTables.Evenement.TABLE_NAME, null, this.getContentValues(item));
+    }
+
+    @Override
+    public int updateItem(Identifiant id, Evenement item) {
+        SQLiteDatabase db = super.helper.getWritableDatabase();
+        return db.update(DBTables.Evenement.TABLE_NAME, this.getContentValues(item),
+                DBTables.Evenement.COLONNE_ID_EVENEMENT + " = ?",
+                new String[]{String.valueOf(id.getId(DBTables.Evenement.COLONNE_ID_EVENEMENT))});
+    }
+
+    @Override
+    public int removeItem(Identifiant id, Evenement item) {
+        item.setDeleted(true);
+        return this.updateItem(id, item);
+    }
+
+    @Override
+    public Evenement getItemById(Identifiant id) {
+        SQLiteDatabase db = super.helper.getWritableDatabase();
+        Cursor cursor = db.query(
+                DBTables.Evenement.TABLE_NAME,
+                PROJECTION,
+                DBTables.Evenement.COLONNE_ID_EVENEMENT + " = ?",
+                new String[]{String.valueOf(id.getId(DBTables.Evenement.COLONNE_ID_EVENEMENT))},
+                null,
+                null,
+                DBTables.Evenement.COLONNE_DATE_DEBUT
+        );
+        return this.cursorToType(cursor);
+    }
+
+    @Override
+    public Evenement cursorToType(Cursor cursor) {
+        int idEvenement = cursor.getColumnIndex(DBTables.Evenement.COLONNE_ID_EVENEMENT);
+        int dateDebut = cursor.getColumnIndex(DBTables.Evenement.COLONNE_DATE_DEBUT);
+        int dateFin = cursor.getColumnIndex(DBTables.Evenement.COLONNE_DATE_FIN);
+        int lieu = cursor.getColumnIndex(DBTables.Evenement.COLONNE_LIEU);
+        int temoinRoulant = cursor.getColumnIndex(DBTables.Evenement.COLONNE_TEMOIN_ROULANT);
+        int libelleEvenement = cursor.getColumnIndex(DBTables.Evenement.COLONNE_LIBELLE_EVENEMENT);
+        int dateMaj = cursor.getColumnIndex(DBTables.Evenement.COLONNE_DATE_MAJ);
+        int deleted = cursor.getColumnIndex(DBTables.Evenement.COLONNE_DELETED);
+        return new Evenement(
+                cursor.getInt(idEvenement),
+                Utils.convertStringToDate(cursor.getString(dateDebut)),
+                Utils.convertStringToDate(cursor.getString(dateFin)),
+                cursor.getString(lieu),
+                cursor.getInt(temoinRoulant),
+                cursor.getString(libelleEvenement),
+                Utils.convertStringToDate(cursor.getString(dateMaj)),
+                (cursor.getInt(deleted) == 1)
+        );
+    }
 }
