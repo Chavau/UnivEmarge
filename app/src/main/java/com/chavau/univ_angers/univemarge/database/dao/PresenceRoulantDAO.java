@@ -33,7 +33,6 @@ public class PresenceRoulantDAO extends DAO<PresenceRoulant> {
         values.put(DBTables.PresenceRoulant.COLONNE_DATE_ENTREE, Utils.convertDateToString(item.getDateEntree()));
         values.put(DBTables.PresenceRoulant.COLONNE_DATE_SORTIE, Utils.convertDateToString(item.getDateSortie()));
         return values;
-
     }
 
     @Override

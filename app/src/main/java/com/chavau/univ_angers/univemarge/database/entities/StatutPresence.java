@@ -5,10 +5,11 @@ import java.util.Map;
 
 public enum StatutPresence {
     INCONNU(-1),
-    PRESENT(0),
+    ABSENT(0),
     EXCUSE(1),
-    ABSENT(2),
-    RETARD(3);
+    PRESENT(2),
+    HORS_CRENEAU(4),
+    RETARD(42); // TODO: Feature
 
     private final int value;
 

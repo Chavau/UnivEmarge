@@ -54,7 +54,6 @@ public class PresenceDAO extends DAO<Presence> {
     public int removeItem(Identifiant id, Presence item) {
         item.setDeleted(true);
         return this.updateItem(id, item);
-
     }
 
     @Override

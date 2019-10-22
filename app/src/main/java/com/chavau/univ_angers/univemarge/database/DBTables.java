@@ -93,6 +93,7 @@ public final class DBTables {
     // Table Roulant Parametre
     public static class RoulantParametre implements BaseColumns {
         public static final String TABLE_NAME = "roulant_parametre";
+        public static final String COLONNE_ID_EVENEMENT = "idEvenement";
         public static final String COLONNE_TEMPS_SEANCE = "tempsSeance";
         public static final String COLONNE_MAX_PERSONNES = "maxPersonnes";
         public static final String COLONNE_DATE_MAJ = "dateMaj";
@@ -100,7 +101,7 @@ public final class DBTables {
 
         public static final String SQL_CREATE_ENTRIES =
                 "CREATE TABLE " + RoulantParametre.TABLE_NAME + " (" +
-                        RoulantParametre._ID + " INTEGER PRIMARY KEY, " +
+                        RoulantParametre.COLONNE_ID_EVENEMENT + " INTEGER PRIMARY KEY, " +
                         RoulantParametre.COLONNE_TEMPS_SEANCE + " varchar(255), " +
                         RoulantParametre.COLONNE_MAX_PERSONNES + " integer, " +
                         RoulantParametre.COLONNE_DATE_MAJ + " varchar(255))";
