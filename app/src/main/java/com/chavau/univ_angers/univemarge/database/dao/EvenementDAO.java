@@ -27,6 +27,9 @@ public class EvenementDAO extends DAO<Evenement> implements IMergeable {
         super(helper);
     }
 
+    // needed to merge entities
+    public EvenementDAO() {}
+
     @Override
     public void merge(Entity[] entities) {
 

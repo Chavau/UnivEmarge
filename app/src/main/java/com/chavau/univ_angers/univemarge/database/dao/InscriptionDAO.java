@@ -93,6 +93,9 @@ public class InscriptionDAO extends DAO<Inscription> implements IMergeable {
         );
     }
 
+    // needed to merge entities
+    public InscriptionDAO() {}
+
     @Override
     public void merge(Entity[] entities) {
 

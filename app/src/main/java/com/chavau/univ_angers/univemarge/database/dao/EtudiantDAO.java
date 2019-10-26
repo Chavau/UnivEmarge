@@ -115,6 +115,9 @@ public class EtudiantDAO extends DAO<Etudiant> implements IMergeable {
         return list;
     }
 
+    // needed to merge entities
+    public EtudiantDAO() {}
+
     @Override
     public void merge(Entity[] entities) {
 

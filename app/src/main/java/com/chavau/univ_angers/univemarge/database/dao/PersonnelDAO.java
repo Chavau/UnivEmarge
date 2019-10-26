@@ -121,6 +121,9 @@ public class PersonnelDAO extends DAO<Personnel> implements IMergeable {
         return list;
     }
 
+    // needed to merge entities
+    public PersonnelDAO() {}
+
     @Override
     public void merge(Entity[] entities) {
 

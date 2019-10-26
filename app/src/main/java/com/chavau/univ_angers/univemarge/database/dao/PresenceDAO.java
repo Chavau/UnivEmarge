@@ -94,6 +94,9 @@ public class PresenceDAO extends DAO<Presence> implements IMergeable {
         );
     }
 
+    // needed to merge entities
+    public PresenceDAO() {}
+
     @Override
     public void merge(Entity[] entities) {
 

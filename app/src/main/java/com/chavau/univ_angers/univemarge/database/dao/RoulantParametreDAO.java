@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.chavau.univ_angers.univemarge.database.DBTables;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
+import com.chavau.univ_angers.univemarge.database.entities.Entity;
 import com.chavau.univ_angers.univemarge.database.entities.RoulantParametre;
 import com.chavau.univ_angers.univemarge.utils.Utils;
 
@@ -16,6 +17,9 @@ public class RoulantParametreDAO extends DAO<RoulantParametre> implements IMerge
             DBTables.RoulantParametre.COLONNE_TEMPS_SEANCE,
             DBTables.RoulantParametre.COLONNE_MAX_PERSONNES
     };
+
+    // needed to merge entities
+    public RoulantParametreDAO() {}
 
     public RoulantParametreDAO(DatabaseHelper helper) {
         super(helper);

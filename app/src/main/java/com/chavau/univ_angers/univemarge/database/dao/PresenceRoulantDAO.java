@@ -100,6 +100,9 @@ public class PresenceRoulantDAO extends DAO<PresenceRoulant> implements IMergeab
         );
     }
 
+    // needed to merge entities
+    public PresenceRoulantDAO() {}
+
     @Override
     public void merge(Entity[] entities) {
 
