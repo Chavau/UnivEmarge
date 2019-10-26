@@ -1,17 +1,38 @@
 package com.chavau.univ_angers.univemarge.database.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.sql.Blob;
 import java.util.Date;
 
 public class Etudiant extends Entity {
+
+    @JsonProperty("numero")
     private int numeroEtudiant;
+
+    @JsonProperty("nom")
     private String nom;
+
+    @JsonProperty("prenom")
     private String prenom;
+
+    @JsonProperty("no_mifare")
     private String no_mifare;
+
+    @JsonProperty("email")
     private String email;
+
+    @JsonProperty("")
     private Blob photo;
+
+    @JsonProperty("dateMaj")
     private Date dateMaj;
+
+    @JsonProperty("")
     private boolean deleted;
+
+    // needed for jackson parser
+    public Etudiant() {}
 
     public Etudiant(int numeroEtudiant, String nom, String prenom, String no_mifare, String email, Blob photo, Date dateMaj, boolean deleted) {
         this.numeroEtudiant = numeroEtudiant;

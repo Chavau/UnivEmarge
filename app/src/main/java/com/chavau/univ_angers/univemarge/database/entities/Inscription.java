@@ -1,17 +1,35 @@
 package com.chavau.univ_angers.univemarge.database.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
 
 public class Inscription extends Entity {
+
+    @JsonProperty("numero_personnel")
     private int idPersonnel;
+
+    @JsonProperty("id")
     private int idInscription;
+
+    @JsonProperty("id_evenement")
     private int idEvenement;
+
+    @JsonProperty("numero_etudiant")
     private int numeroEtudiant;
+
+    @JsonProperty("typeInscription")
+    private boolean typeInscription;
+
+    @JsonProperty("")
     private boolean deleted;
     private String typeInscription;
     private int idAutre;
 
-    public Inscription(int idPersonnel, int idInscription, int idEvenement, int numeroEtudiant, boolean deleted, String typeInscription, int idAutre) {
+    // needed for jackson parser
+    public Inscription() {}
+
+    public Inscription(int idPersonnel, int idInscription, int idEvenement, int numeroEtudiant, Date dateMaj, boolean deleted) {
         this.idPersonnel = idPersonnel;
         this.idInscription = idInscription;
         this.idEvenement = idEvenement;

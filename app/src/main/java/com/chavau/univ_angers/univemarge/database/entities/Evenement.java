@@ -1,18 +1,46 @@
 package com.chavau.univ_angers.univemarge.database.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
 
 public class Evenement extends Entity {
+
+    @JsonProperty("id")
     private int idEvenement;
+
+    @JsonProperty("dateDebut")
     private Date dateDebut;
+
+    @JsonProperty("dateFin")
     private Date dateFin;
+
+    @JsonProperty("lieu")
     private String lieu;
     private int typeEmargement;
+
+    @JsonProperty("")
+    private int temoinRoulant;
+
+    @JsonProperty("libelleEvenement")
     private String libelleEvenement;
+
+    @JsonProperty("idCours")
     private int idCours;
+
+    @JsonProperty("dateMaj")
+    private Date dateMaj;
+
+    @JsonProperty("typeEmargement")
+    private boolean typeEmargement;
+
+    @JsonProperty("")
     private boolean deleted;
 
-    public Evenement(int idEvenement, Date dateDebut, Date dateFin, String lieu, int typeEmargement, String libelleEvenement, int idCours, boolean deleted) {
+    // needed for jackson parser
+    public Evenement() {}
+
+    public Evenement(int idEvenement, Date dateDebut, Date dateFin, String lieu, int temoinRoulant, String libelleEvenement, int idCours, Date dateMaj, boolean deleted) {
         this.idEvenement = idEvenement;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
@@ -59,4 +87,3 @@ public class Evenement extends Entity {
         this.deleted = deleted;
     }
 }
-
