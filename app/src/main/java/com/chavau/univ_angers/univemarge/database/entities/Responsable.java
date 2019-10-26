@@ -1,6 +1,8 @@
 package com.chavau.univ_angers.univemarge.database.entities;
 
-public class Responsable {
+import java.util.Date;
+
+public class Responsable extends Entity {
     private int idEvenement;
     private int idPersonnelResponsable;
     private boolean deleted;

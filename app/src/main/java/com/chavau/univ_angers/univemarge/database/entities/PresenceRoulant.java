@@ -2,7 +2,7 @@ package com.chavau.univ_angers.univemarge.database.entities;
 
 import java.util.Date;
 
-public class PresenceRoulant {
+public class PresenceRoulant extends Entity {
     private int idRoulant;
     private int idEvenement;
     private int numeroEtudiant;

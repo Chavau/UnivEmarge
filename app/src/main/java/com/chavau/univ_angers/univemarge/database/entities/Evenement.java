@@ -2,7 +2,7 @@ package com.chavau.univ_angers.univemarge.database.entities;
 
 import java.util.Date;
 
-public class Evenement {
+public class Evenement extends Entity {
     private int idEvenement;
     private Date dateDebut;
     private Date dateFin;

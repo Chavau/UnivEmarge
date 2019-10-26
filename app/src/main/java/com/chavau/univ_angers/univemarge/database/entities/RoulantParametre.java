@@ -2,7 +2,7 @@ package com.chavau.univ_angers.univemarge.database.entities;
 
 import java.util.Date;
 
-public class RoulantParametre {
+public class RoulantParametre extends Entity {
     private int idCours;
     private Date tempsSeance;
     private int maxPersonnes;

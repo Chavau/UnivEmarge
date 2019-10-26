@@ -1,6 +1,8 @@
 package com.chavau.univ_angers.univemarge.database.entities;
 
-public class Inscription {
+import java.util.Date;
+
+public class Inscription extends Entity {
     private int idPersonnel;
     private int idInscription;
     private int idEvenement;

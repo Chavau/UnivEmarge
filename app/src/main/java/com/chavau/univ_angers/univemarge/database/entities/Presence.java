@@ -1,6 +1,8 @@
 package com.chavau.univ_angers.univemarge.database.entities;
 
-public class Presence {
+import java.util.Date;
+
+public class Presence extends Entity {
     private int idPresence;
     private int idEvenement;
     private int numeroEtudiant;
