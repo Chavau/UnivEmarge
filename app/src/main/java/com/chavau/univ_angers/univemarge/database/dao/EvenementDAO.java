@@ -8,10 +8,9 @@ import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
 import com.chavau.univ_angers.univemarge.database.entities.Evenement;
 import com.chavau.univ_angers.univemarge.utils.Utils;
+import com.chavau.univ_angers.univemarge.database.entities.Entity;
 
-import java.util.ArrayList;
-
-public class EvenementDAO extends DAO<Evenement> {
+public class EvenementDAO extends DAO<Evenement> implements IMergeable {
 
     private static final String[] PROJECTION = {
             DBTables.Evenement.COLONNE_ID_EVENEMENT,
@@ -26,6 +25,11 @@ public class EvenementDAO extends DAO<Evenement> {
 
     public EvenementDAO(DatabaseHelper helper) {
         super(helper);
+    }
+
+    @Override
+    public void merge(Entity[] entities) {
+
     }
 
     @Override
@@ -104,8 +108,8 @@ public class EvenementDAO extends DAO<Evenement> {
         SQLiteDatabase db = super.helper.getWritableDatabase();
         Cursor cursor = db.rawQuery(
                 "SELECT * FROM " + DBTables.Evenement.TABLE_NAME +
-                " INNER JOIN " + DBTables.Responsable.TABLE_NAME +
-                " WHERE " + DBTables.Responsable.COLONNE_ID_PERSONNEL_RESPONSABLE + " = ? ",
+                        " INNER JOIN " + DBTables.Responsable.TABLE_NAME +
+                        " WHERE " + DBTables.Responsable.COLONNE_ID_PERSONNEL_RESPONSABLE + " = ? ",
                 new String[]{String.valueOf(id.getId(DBTables.Responsable.COLONNE_ID_PERSONNEL_RESPONSABLE))});
 
         ArrayList<Evenement> list = new ArrayList<>();

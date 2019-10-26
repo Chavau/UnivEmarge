@@ -6,11 +6,12 @@ import android.database.sqlite.SQLiteDatabase;
 import com.chavau.univ_angers.univemarge.database.DBTables;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
+import com.chavau.univ_angers.univemarge.database.entities.Entity;
 import com.chavau.univ_angers.univemarge.database.entities.Personnel;
 
 import java.util.ArrayList;
 
-public class PersonnelDAO extends DAO<Personnel> {
+public class PersonnelDAO extends DAO<Personnel> implements IMergeable {
     private static final String[] PROJECTION = {
             DBTables.Personnel.COLONNE_ID_PERSONNEL,
             DBTables.Personnel.COLONNE_NOM,
@@ -118,5 +119,10 @@ public class PersonnelDAO extends DAO<Personnel> {
             list.add(this.cursorToType(cursor));
         }
         return list;
+    }
+
+    @Override
+    public void merge(Entity[] entities) {
+
     }
 }

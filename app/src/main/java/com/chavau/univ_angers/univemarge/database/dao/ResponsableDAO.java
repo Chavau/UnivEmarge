@@ -6,9 +6,10 @@ import android.database.sqlite.SQLiteDatabase;
 import com.chavau.univ_angers.univemarge.database.DBTables;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
+import com.chavau.univ_angers.univemarge.database.entities.Entity;
 import com.chavau.univ_angers.univemarge.database.entities.Responsable;
 
-public class ResponsableDAO extends DAO<Responsable> {
+public class ResponsableDAO extends DAO<Responsable> implements IMergeable {
     private static final String[] PROJECTION = {
             DBTables.Responsable.COLONNE_ID_EVENEMENT,
             DBTables.Responsable.COLONNE_ID_PERSONNEL_RESPONSABLE,
@@ -78,5 +79,10 @@ public class ResponsableDAO extends DAO<Responsable> {
                 cursor.getInt(idPersonnelResponsable),
                 (cursor.getInt(deleted) == 1)
         );
+    }
+
+    @Override
+    public void merge(Entity[] entities) {
+
     }
 }
