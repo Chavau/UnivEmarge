@@ -16,8 +16,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".view.activities.Authentification"></activity>
+
     </application>
 
     <!--TODO : demander les permissions-->
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

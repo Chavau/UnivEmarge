@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:text="@string/message_connexion"
         android:textAlignment="center"
-        android:textSize="14sp"/>
+        android:textSize="18sp"/>
 
     <EditText
         android:id="@+id/ed_connexion_login"
@@ -32,5 +32,6 @@
         android:id="@+id/b_connexion_valider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/b_valider" />
+        android:text="@string/b_valider"
+        android:onClick="onClickValider"/>
 </LinearLayout>
