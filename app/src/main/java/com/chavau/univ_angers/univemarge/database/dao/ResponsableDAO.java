@@ -6,8 +6,12 @@ import android.database.sqlite.SQLiteDatabase;
 import com.chavau.univ_angers.univemarge.database.DBTables;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
+import com.chavau.univ_angers.univemarge.database.entities.Etudiant;
+import com.chavau.univ_angers.univemarge.database.entities.Evenement;
 import com.chavau.univ_angers.univemarge.database.entities.Responsable;
 import com.chavau.univ_angers.univemarge.utils.Utils;
+
+import java.util.ArrayList;
 
 public class ResponsableDAO extends DAO<Responsable> {
     private static final String[] PROJECTION = {

@@ -9,6 +9,8 @@ import com.chavau.univ_angers.univemarge.database.Identifiant;
 import com.chavau.univ_angers.univemarge.database.entities.Evenement;
 import com.chavau.univ_angers.univemarge.utils.Utils;
 
+import java.util.ArrayList;
+
 public class EvenementDAO extends DAO<Evenement> {
 
     private static final String[] PROJECTION = {
@@ -95,5 +97,21 @@ public class EvenementDAO extends DAO<Evenement> {
                 Utils.convertStringToDate(cursor.getString(dateMaj)),
                 (cursor.getInt(deleted) == 1)
         );
+    }
+
+    // TODO: tester listeEvenementsPourPersonnel
+    public ArrayList<Evenement> listeEvenementsPourPersonnel(Identifiant id) {
+        SQLiteDatabase db = super.helper.getWritableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM " + DBTables.Evenement.TABLE_NAME +
+                " INNER JOIN " + DBTables.Responsable.TABLE_NAME +
+                " WHERE " + DBTables.Responsable.COLONNE_ID_PERSONNEL_RESPONSABLE + " = ? ",
+                new String[]{String.valueOf(id.getId(DBTables.Responsable.COLONNE_ID_PERSONNEL_RESPONSABLE))});
+
+        ArrayList<Evenement> list = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            list.add(this.cursorToType(cursor));
+        }
+        return list;
     }
 }
