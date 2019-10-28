@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Liste des cours</string>
     <string name="menu_calendrier">menu_calendrier</string>
+    <string name="photo_de_l_etudiant">Photo de l\'étudiant(e)</string>
+    <string name="etat_etudiant">Etat de l\'étudiant(e)</string>
+    <string name="modifier_une_s_ance">Modifier une séance</string>
+    <string name="cr_er_une_s_ance">Créer une séance</string>
+    <string name="code_pin">Code Pin</string>
 </resources>

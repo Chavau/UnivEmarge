@@ -10,6 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
         <activity android:name=".view.activities.ListePersonnesInscrites"></activity>
+        <activity android:name=".view.activities.BadgeageEtudiant"></activity>
+        <activity android:name=".view.activities.BadgeageEnseignant"></activity>
         <activity android:name=".view.activities.ListeEvenementsCours">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

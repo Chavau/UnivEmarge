@@ -3,12 +3,52 @@ package com.chavau.univ_angers.univemarge.intermediaire;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.chavau.univ_angers.univemarge.R;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+
 public class Etudiant implements Parcelable {
     private String _nom;
     private String _prenom;
     private String _numEtud;
     private String _typeActivite;
     private int _imageId;
+
+    public static enum STATUE_ETUDIANT {PRESENT, ABSENT, RETARD, EXCUSE};
+    private STATUE_ETUDIANT _etat;
+
+    public static final ArrayList<Etudiant> creerEtudiants () {
+
+        ArrayList<Etudiant> etu = new ArrayList<>();
+
+        etu.add(new Etudiant("André", "Bertrand", "0", "Loisirs", R.drawable.man));
+        etu.add(new Etudiant("Blanc", "Bertrand", "1", "Loisirs", R.drawable.man));
+        etu.add(new Etudiant("Bonnet", "Chevaliere", "2", "Loisirs", R.drawable.woman));
+        etu.add(new Etudiant("Paul", "Durand", "3", "Loisirs", R.drawable.man));
+        etu.add(new Etudiant("Faure", "Blanche", "4", "Loisirs", R.drawable.woman));
+        etu.add(new Etudiant("Fontaine", "Dumont", "5", "Loisirs", R.drawable.man));
+        etu.add(new Etudiant("Fournier", "Dupont", "6", "Loisirs", R.drawable.man));
+        etu.add(new Etudiant("Francois", "Durand", "7", "Loisirs", R.drawable.man));
+        etu.add(new Etudiant("François", "Blanc", "8", "Loisirs", R.drawable.man));
+        etu.add(new Etudiant("Garnier", "Fontaine", "9", "Loisirs", R.drawable.woman));
+        etu.add(new Etudiant("Girard", "Fournier", "10", "Loisirs", R.drawable.man));
+        etu.add(new Etudiant("Henry", "Francois", "11", "Loisirs", R.drawable.man));
+        etu.add(new Etudiant("Jean", "Garnier", "12", "Loisirs", R.drawable.man));
+        etu.add(new Etudiant("Lambert", "Gauthier", "13", "Loisirs", R.drawable.man));
+        etu.add(new Etudiant("Pierre", "Bernard", "14", "Loisirs", R.drawable.man));
+
+        // trier les étudiant(e)s de la liste
+       /* etu.sort(new Comparator<Etudiant>() {
+            @Override
+            public int compare(Etudiant e1, Etudiant e2) {
+                return (e1.get_nom().compareTo(e2.get_nom()));
+            }
+        });*/
+
+        return etu;
+    }
+
 
     public static final  Creator<Etudiant> CREATOR = new Creator<Etudiant>() {
 
@@ -31,6 +71,7 @@ public class Etudiant implements Parcelable {
         this._numEtud = _numEtud;
         this._typeActivite = _typeActivite;
         this._imageId = _imageId;
+        _etat = STATUE_ETUDIANT.ABSENT;
     }
 
     // Constructeur pour le Parcelable
@@ -75,5 +116,9 @@ public class Etudiant implements Parcelable {
         parcel.writeString(get_numEtud());
         parcel.writeString(get_typeActivite());
         parcel.writeInt(get_imageId());
+    }
+
+    public void set_etat(STATUE_ETUDIANT etat) {
+        this._etat = etat;
     }
 }
