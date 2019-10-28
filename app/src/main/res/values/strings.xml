@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">UnivEmarge</string>
+
+    <!-- Connexion -->
+    <string name="message_connexion">Bienvenue sur UnivEmarge, pour vous authentifier il faut utiliser les identifiant de l\'Université d\'Angers</string>
+    <string name="ed_connexion_login">Login</string>
+    <string name="ed_connexion_mdp">Mot de passe</string>
+    <string name="b_valider">Valider</string>
+    <string name="connexion_erreur_mdp">Login ou mot de passe incorrect</string>
+    <string name="connexion_erreur_champ">Il faut remplir les deux champs</string>
+
+
+
 </resources>
