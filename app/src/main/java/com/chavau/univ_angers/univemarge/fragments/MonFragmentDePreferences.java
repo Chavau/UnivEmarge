@@ -1,7 +1,7 @@
 package com.chavau.univ_angers.univemarge.fragments;
 
 import android.os.Bundle;
-import android.support.v7.preference.CheckBoxPreference;
+import android.support.v14.preference.SwitchPreference;
 import android.support.v7.preference.EditTextPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
@@ -16,7 +16,7 @@ import com.chavau.univ_angers.univemarge.R;
 
 public class MonFragmentDePreferences extends PreferenceFragmentCompat {
     EditTextPreference etp;
-    CheckBoxPreference cbp;
+    SwitchPreference cbp;
     EditText oldPass;
     EditText newPass;
     Button validerBtn;
@@ -28,15 +28,15 @@ public class MonFragmentDePreferences extends PreferenceFragmentCompat {
         etp = (EditTextPreference) findPreference("pref_sync3");
         etp.setVisible(false);
         // Faire l'appel du CheckBox et puis faire le Test
-        cbp = (CheckBoxPreference) findPreference("pref_sync2");
+        cbp = (SwitchPreference) findPreference("pref_sync2");
         cbp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
                 initChangePasswordsComponents();
                 if (((Boolean) o).booleanValue()) {
-                    setVisibilityComponents(true, oldPass, newPass, validerBtn);
+                    setVisibilityComponents(true, newPass, validerBtn);
                 } else {
-                    setVisibilityComponents(false, oldPass, newPass, validerBtn);
+                    setVisibilityComponents(false, newPass, validerBtn);
                 }
                 return true;
             }
@@ -53,25 +53,15 @@ public class MonFragmentDePreferences extends PreferenceFragmentCompat {
         validerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String oldPassPref = etp.getText();
-                String oldPassSaisi = oldPass.getText().toString();
                 String newPassSaisi = newPass.getText().toString();
-                if (oldPassSaisi.isEmpty() || newPassSaisi.isEmpty()) {
-                    Toast.makeText(getActivity(), "Veuillez remplir les champs !", Toast.LENGTH_LONG).show();
+                if (newPassSaisi.isEmpty()) {
+                    Toast.makeText(getActivity(), "Veuillez remplir le nouveau code pin !", Toast.LENGTH_LONG).show();
                 } else {
                     if (newPassSaisi.length() != 4) {
                         Toast.makeText(getActivity(), "Votre nouveau code pin doit avoir 4 numéros !", Toast.LENGTH_LONG).show();
                     } else {
-                        if (newPassSaisi.equals(oldPassSaisi)) {
-                            Toast.makeText(getActivity(), "Votre nouveau code pin doit étre different du courant !", Toast.LENGTH_LONG).show();
-                        } else {
-                            if (!oldPassSaisi.equals(oldPassPref)) {
-                                Toast.makeText(getActivity(), "Ancien code pin incorrect , veuillez réssayer !", Toast.LENGTH_LONG).show();
-                            } else {
-                                etp.setText(newPass.getText().toString());
-                                Toast.makeText(getActivity(), "Code pin modifié avec succès !", Toast.LENGTH_LONG).show();
-                            }
-                        }
+                        etp.setText(newPass.getText().toString());
+                        Toast.makeText(getActivity(), "Code pin modifié avec succès !", Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -85,9 +75,9 @@ public class MonFragmentDePreferences extends PreferenceFragmentCompat {
         //Affichage des EditText par apport au CheckBox
         initChangePasswordsComponents();
         if (cbp.isChecked()) {
-            setVisibilityComponents(true, oldPass, newPass, validerBtn);
+            setVisibilityComponents(true, newPass, validerBtn);
         } else {
-            setVisibilityComponents(false, oldPass, newPass, validerBtn);
+            setVisibilityComponents(false, newPass, validerBtn);
         }
 
 
@@ -103,11 +93,11 @@ public class MonFragmentDePreferences extends PreferenceFragmentCompat {
         if (isVisible) {
             tvComponents[0].setVisibility(View.VISIBLE);
             tvComponents[1].setVisibility(View.VISIBLE);
-            tvComponents[2].setVisibility(View.VISIBLE);
+            //tvComponents[2].setVisibility(View.VISIBLE);
         } else {
             tvComponents[0].setVisibility(View.GONE);
             tvComponents[1].setVisibility(View.GONE);
-            tvComponents[2].setVisibility(View.GONE);
+            //tvComponents[2].setVisibility(View.GONE);
         }
     }
 
@@ -115,7 +105,7 @@ public class MonFragmentDePreferences extends PreferenceFragmentCompat {
      * Methode permet d'initialiser les composantes de traitements du code pin
      */
     private void initChangePasswordsComponents() {
-        oldPass = getActivity().findViewById(R.id.edtoldpin);
+        //oldPass = getActivity().findViewById(R.id.edtoldpin);
         newPass = getActivity().findViewById(R.id.edtnewpin);
         validerBtn = getActivity().findViewById(R.id.btnchange);
     }
