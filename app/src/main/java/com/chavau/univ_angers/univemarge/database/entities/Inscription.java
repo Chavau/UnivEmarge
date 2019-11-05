@@ -9,14 +9,18 @@ public class Inscription {
     private int numeroEtudiant;
     private Date dateMaj;
     private boolean deleted;
+    private String typeInscription;
+    private int idAutre;
 
-    public Inscription(int idPersonnel, int idInscription, int idEvenement, int numeroEtudiant, Date dateMaj, boolean deleted) {
+    public Inscription(int idPersonnel, int idInscription, int idEvenement, int numeroEtudiant, Date dateMaj, boolean deleted, String typeInscription, int idAutre) {
         this.idPersonnel = idPersonnel;
         this.idInscription = idInscription;
         this.idEvenement = idEvenement;
         this.numeroEtudiant = numeroEtudiant;
         this.dateMaj = dateMaj;
         this.deleted = deleted;
+        this.typeInscription = typeInscription;
+        this.idAutre = idAutre;
     }
 
     public int getIdPersonnel() {
@@ -35,8 +39,16 @@ public class Inscription {
         return numeroEtudiant;
     }
 
+    public String getTypeInscription() {
+        return typeInscription;
+    }
+
     public Date getDateMaj() {
         return dateMaj;
+    }
+
+    public void setDateMaj(Date dateMaj) {
+        this.dateMaj = dateMaj;
     }
 
     public boolean isDeleted() {

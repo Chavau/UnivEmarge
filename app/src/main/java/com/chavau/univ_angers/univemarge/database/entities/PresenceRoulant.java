@@ -9,14 +9,18 @@ public class PresenceRoulant {
     private Date temps;
     private Date dateEntree;
     private Date dateSortie;
+    private int idPersonnel;
+    private int idAutre;
 
-    public PresenceRoulant(int idRoulant, int idEvenement, int numeroEtudiant, Date temps, Date dateEntree, Date dateSortie) {
+    public PresenceRoulant(int idRoulant, int idEvenement, int numeroEtudiant, Date temps, Date dateEntree, Date dateSortie, int idPersonnel, int idAutre) {
         this.idRoulant = idRoulant;
         this.idEvenement = idEvenement;
         this.numeroEtudiant = numeroEtudiant;
         this.temps = temps;
         this.dateEntree = dateEntree;
         this.dateSortie = dateSortie;
+        this.idPersonnel = idPersonnel;
+        this.idAutre = idAutre;
     }
 
     public int getIdRoulant() {
@@ -41,5 +45,13 @@ public class PresenceRoulant {
 
     public Date getDateSortie() {
         return dateSortie;
+    }
+
+    public int getIdPersonnel() {
+        return idPersonnel;
+    }
+
+    public int getIdAutre() {
+        return idAutre;
     }
 }

@@ -27,6 +27,10 @@ public class Responsable {
         return dateMaj;
     }
 
+    public void setDateMaj(Date dateMaj) {
+        this.dateMaj = dateMaj;
+    }
+
     public boolean isDeleted() {
         return deleted;
     }
