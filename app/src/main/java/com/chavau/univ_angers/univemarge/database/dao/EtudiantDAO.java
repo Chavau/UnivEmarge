@@ -88,16 +88,16 @@ public class EtudiantDAO extends DAO<Etudiant> {
         int deleted = cursor.getColumnIndex(DBTables.Etudiant.COLONNE_DELETED);
 
         // TODO: convert sql.blob to java.Blob
-//        return new Etudiant(
-//                cursor.getInt(numeroEtudiant),
-//                cursor.getString(nom),
-//                cursor.getString(prenom),
-//                cursor.getString(no_mifare),
-//                cursor.getString(email),
 //                cursor.getBlob(photo),
-//                Utils.convertStringToDate(cursor.getString(dateMaj)),
-//                (cursor.getInt(deleted) == 1)
-//        );
-        return null;
+        return new Etudiant(
+                cursor.getInt(numeroEtudiant),
+                cursor.getString(nom),
+                cursor.getString(prenom),
+                cursor.getString(no_mifare),
+                cursor.getString(email),
+                null,
+                Utils.convertStringToDate(cursor.getString(dateMaj)),
+                (cursor.getInt(deleted) == 1)
+        );
     }
 }

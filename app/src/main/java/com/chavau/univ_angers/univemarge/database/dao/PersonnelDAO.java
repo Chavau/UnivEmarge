@@ -39,7 +39,7 @@ public class PersonnelDAO extends DAO<Personnel> {
 //        values.put(DBTables.Personnel.COLONNE_PHOTO, item.getPhoto());
         values.put(DBTables.Personnel.COLONNE_NO_MIFARE, item.getNo_mifare());
         values.put(DBTables.Personnel.COLONNE_PIN, item.getPin());
-        values.put(DBTables.Personnel.COLONNE_DATE_MAJ, item.getDateMaj());
+        values.put(DBTables.Personnel.COLONNE_DATE_MAJ, Utils.convertDateToString(item.getDateMaj()));
         values.put(DBTables.Personnel.COLONNE_DELETED, item.isDeleted());
         return values;
 
@@ -93,19 +93,18 @@ public class PersonnelDAO extends DAO<Personnel> {
         int dateMaj = cursor.getColumnIndex(DBTables.Personnel.COLONNE_DATE_MAJ);
         int deleted = cursor.getColumnIndex(DBTables.Personnel.COLONNE_DELETED);
 
-//        return new Personnel(
-//                cursor.getInt(idPersonnel),
-//                cursor.getString(nom),
-//                cursor.getString(prenom),
-//                cursor.getString(login),
-//                cursor.getString(email),
+        return new Personnel(
+                cursor.getInt(idPersonnel),
+                cursor.getString(nom),
+                cursor.getString(prenom),
+                cursor.getString(login),
+                cursor.getString(email),
 //                cursor.getBlob(photo),
-//                cursor.getString(no_mifare),
-//                cursor.getString(pin),
-//                Utils.convertStringToDate(cursor.getString(dateMaj)),
-//                (cursor.getInt(deleted) == 1)
-//
-//        );
-        return null;
+                null,
+                cursor.getString(no_mifare),
+                cursor.getString(pin),
+                Utils.convertStringToDate(cursor.getString(dateMaj)),
+                (cursor.getInt(deleted) == 1)
+        );
     }
 }

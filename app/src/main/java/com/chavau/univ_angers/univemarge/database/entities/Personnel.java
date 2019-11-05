@@ -1,6 +1,7 @@
 package com.chavau.univ_angers.univemarge.database.entities;
 
 import java.sql.Blob;
+import java.util.Date;
 
 public class Personnel extends Personne{
     private int idPersonnel;
@@ -8,10 +9,10 @@ public class Personnel extends Personne{
     private Blob photo;
     private String no_mifare;
     private String pin;
-    private String dateMaj;
+    private Date dateMaj;
     private boolean deleted;
 
-    public Personnel(int idPersonnel, String nom, String prenom, String login, String email, Blob photo, String no_mifare, String pin, String dateMaj, boolean deleted) {
+    public Personnel(int idPersonnel, String nom, String prenom, String login, String email, Blob photo, String no_mifare, String pin, Date dateMaj, boolean deleted) {
         super(nom, prenom, email);
         this.idPersonnel = idPersonnel;
         this.login = login;
@@ -42,11 +43,11 @@ public class Personnel extends Personne{
         return pin;
     }
 
-    public String getDateMaj() {
+    public Date getDateMaj() {
         return dateMaj;
     }
 
-    public void setDateMaj(String dateMaj) {
+    public void setDateMaj(Date dateMaj) {
         this.dateMaj = dateMaj;
     }
 
