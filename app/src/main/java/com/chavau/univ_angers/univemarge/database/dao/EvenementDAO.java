@@ -18,8 +18,9 @@ public class EvenementDAO extends DAO<Evenement> {
             DBTables.Evenement.COLONNE_DATE_DEBUT,
             DBTables.Evenement.COLONNE_DATE_FIN,
             DBTables.Evenement.COLONNE_LIEU,
-            DBTables.Evenement.COLONNE_TEMOIN_ROULANT,
+            DBTables.Evenement.COLONNE_TYPE_EMARGEMENT,
             DBTables.Evenement.COLONNE_LIBELLE_EVENEMENT,
+            DBTables.Evenement.COLONNE_ID_COURS,
             DBTables.Evenement.COLONNE_DATE_MAJ,
             DBTables.Evenement.COLONNE_DELETED
     };
@@ -35,8 +36,9 @@ public class EvenementDAO extends DAO<Evenement> {
         values.put(DBTables.Evenement.COLONNE_DATE_DEBUT, Utils.convertDateToString(item.getDateDebut()));
         values.put(DBTables.Evenement.COLONNE_DATE_FIN, Utils.convertDateToString(item.getDateFin()));
         values.put(DBTables.Evenement.COLONNE_LIEU, item.getLieu());
-        values.put(DBTables.Evenement.COLONNE_TEMOIN_ROULANT, item.getTemoinRoulant());
+        values.put(DBTables.Evenement.COLONNE_TYPE_EMARGEMENT, item.getTypeEmargement());
         values.put(DBTables.Evenement.COLONNE_LIBELLE_EVENEMENT, item.getLibelleEvenement());
+        values.put(DBTables.Evenement.COLONNE_ID_COURS, item.getIdCours());
         values.put(DBTables.Evenement.COLONNE_DATE_MAJ, Utils.convertDateToString(item.getDateMaj()));
         values.put(DBTables.Evenement.COLONNE_DELETED, item.isDeleted());
         return values;
@@ -83,8 +85,9 @@ public class EvenementDAO extends DAO<Evenement> {
         int dateDebut = cursor.getColumnIndex(DBTables.Evenement.COLONNE_DATE_DEBUT);
         int dateFin = cursor.getColumnIndex(DBTables.Evenement.COLONNE_DATE_FIN);
         int lieu = cursor.getColumnIndex(DBTables.Evenement.COLONNE_LIEU);
-        int temoinRoulant = cursor.getColumnIndex(DBTables.Evenement.COLONNE_TEMOIN_ROULANT);
+        int typeEmargement = cursor.getColumnIndex(DBTables.Evenement.COLONNE_TYPE_EMARGEMENT);
         int libelleEvenement = cursor.getColumnIndex(DBTables.Evenement.COLONNE_LIBELLE_EVENEMENT);
+        int idCours = cursor.getColumnIndex(DBTables.Evenement.COLONNE_ID_COURS);
         int dateMaj = cursor.getColumnIndex(DBTables.Evenement.COLONNE_DATE_MAJ);
         int deleted = cursor.getColumnIndex(DBTables.Evenement.COLONNE_DELETED);
         return new Evenement(
@@ -92,8 +95,9 @@ public class EvenementDAO extends DAO<Evenement> {
                 Utils.convertStringToDate(cursor.getString(dateDebut)),
                 Utils.convertStringToDate(cursor.getString(dateFin)),
                 cursor.getString(lieu),
-                cursor.getInt(temoinRoulant),
+                cursor.getInt(typeEmargement),
                 cursor.getString(libelleEvenement),
+                cursor.getInt(idCours),
                 Utils.convertStringToDate(cursor.getString(dateMaj)),
                 (cursor.getInt(deleted) == 1)
         );

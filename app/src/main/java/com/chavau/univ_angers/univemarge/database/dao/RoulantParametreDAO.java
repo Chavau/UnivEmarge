@@ -12,7 +12,7 @@ import com.chavau.univ_angers.univemarge.utils.Utils;
 
 public class RoulantParametreDAO extends DAO<RoulantParametre> {
     private static final String[] PROJECTION = {
-            DBTables.RoulantParametre.COLONNE_ID_EVENEMENT,
+            DBTables.RoulantParametre.COLONNE_ID_COUR,
             DBTables.RoulantParametre.COLONNE_TEMPS_SEANCE,
             DBTables.RoulantParametre.COLONNE_MAX_PERSONNES,
             DBTables.RoulantParametre.COLONNE_DATE_MAJ
@@ -25,7 +25,7 @@ public class RoulantParametreDAO extends DAO<RoulantParametre> {
     @Override
     public ContentValues getContentValues(RoulantParametre item) {
         ContentValues values = new ContentValues();
-        values.put(DBTables.RoulantParametre.COLONNE_ID_EVENEMENT, item.getIdEvenement());
+        values.put(DBTables.RoulantParametre.COLONNE_ID_COUR, item.getIdCours());
         values.put(DBTables.RoulantParametre.COLONNE_TEMPS_SEANCE, Utils.convertDateToString(item.getTempsSeance()));
         values.put(DBTables.RoulantParametre.COLONNE_MAX_PERSONNES, item.getMaxPersonnes());
         values.put(DBTables.RoulantParametre.COLONNE_DATE_MAJ, Utils.convertDateToString(item.getDateMaj()));
@@ -42,16 +42,16 @@ public class RoulantParametreDAO extends DAO<RoulantParametre> {
     public int updateItem(Identifiant id, RoulantParametre item) {
         SQLiteDatabase db = super.helper.getWritableDatabase();
         return db.update(DBTables.RoulantParametre.TABLE_NAME, this.getContentValues(item),
-                DBTables.RoulantParametre.COLONNE_ID_EVENEMENT + " = ?",
-                new String[]{String.valueOf(id.getId(DBTables.RoulantParametre.COLONNE_ID_EVENEMENT))});
+                DBTables.RoulantParametre.COLONNE_ID_COUR + " = ?",
+                new String[]{String.valueOf(id.getId(DBTables.RoulantParametre.COLONNE_ID_COUR))});
     }
 
     @Override
     public int removeItem(Identifiant id, RoulantParametre item) {
         SQLiteDatabase db = super.helper.getWritableDatabase();
         return db.delete(DBTables.RoulantParametre.TABLE_NAME,
-                DBTables.RoulantParametre.COLONNE_ID_EVENEMENT + " = ?",
-                new String[]{String.valueOf(id.getId(DBTables.RoulantParametre.COLONNE_ID_EVENEMENT))});
+                DBTables.RoulantParametre.COLONNE_ID_COUR + " = ?",
+                new String[]{String.valueOf(id.getId(DBTables.RoulantParametre.COLONNE_ID_COUR))});
     }
 
     @Override
@@ -60,24 +60,24 @@ public class RoulantParametreDAO extends DAO<RoulantParametre> {
         Cursor cursor = db.query(
                 DBTables.RoulantParametre.TABLE_NAME,
                 PROJECTION,
-                DBTables.RoulantParametre.COLONNE_ID_EVENEMENT + " = ?",
-                new String[]{String.valueOf(id.getId(DBTables.RoulantParametre.COLONNE_ID_EVENEMENT))},
+                DBTables.RoulantParametre.COLONNE_ID_COUR + " = ?",
+                new String[]{String.valueOf(id.getId(DBTables.RoulantParametre.COLONNE_ID_COUR))},
                 null,
                 null,
-                DBTables.RoulantParametre.COLONNE_ID_EVENEMENT
+                DBTables.RoulantParametre.COLONNE_ID_COUR
         );
         return this.cursorToType(cursor);
     }
 
     @Override
     public RoulantParametre cursorToType(Cursor cursor) {
-        int idEvenement = cursor.getColumnIndex(DBTables.RoulantParametre.COLONNE_ID_EVENEMENT);
+        int idCours = cursor.getColumnIndex(DBTables.RoulantParametre.COLONNE_ID_COUR);
         int tempsSeance = cursor.getColumnIndex(DBTables.RoulantParametre.COLONNE_TEMPS_SEANCE);
         int maxPersonnes = cursor.getColumnIndex(DBTables.RoulantParametre.COLONNE_MAX_PERSONNES);
         int dateMaj = cursor.getColumnIndex(DBTables.RoulantParametre.COLONNE_DATE_MAJ);
 
         return new RoulantParametre(
-                cursor.getInt(idEvenement),
+                cursor.getInt(idCours),
                 Utils.convertStringToDate(cursor.getString(tempsSeance)),
                 cursor.getInt(maxPersonnes),
                 Utils.convertStringToDate(cursor.getString(dateMaj))
