@@ -16,7 +16,9 @@ public class PresenceRoulantDAO extends DAO<PresenceRoulant> {
             DBTables.PresenceRoulant.COLONNE_NUMERO_ETUDIANT,
             DBTables.PresenceRoulant.COLONNE_TEMPS,
             DBTables.PresenceRoulant.COLONNE_DATE_ENTREE,
-            DBTables.PresenceRoulant.COLONNE_DATE_SORTIE
+            DBTables.PresenceRoulant.COLONNE_DATE_SORTIE,
+            DBTables.PresenceRoulant.COLONNE_ID_PERSONNEL,
+            DBTables.PresenceRoulant.COLONNE_ID_AUTRE
     };
 
     public PresenceRoulantDAO(DatabaseHelper helper) {
@@ -32,6 +34,8 @@ public class PresenceRoulantDAO extends DAO<PresenceRoulant> {
         values.put(DBTables.PresenceRoulant.COLONNE_TEMPS, Utils.convertDateToString(item.getTemps()));
         values.put(DBTables.PresenceRoulant.COLONNE_DATE_ENTREE, Utils.convertDateToString(item.getDateEntree()));
         values.put(DBTables.PresenceRoulant.COLONNE_DATE_SORTIE, Utils.convertDateToString(item.getDateSortie()));
+        values.put(DBTables.PresenceRoulant.COLONNE_ID_PERSONNEL, item.getIdPersonnel());
+        values.put(DBTables.PresenceRoulant.COLONNE_ID_AUTRE, item.getIdAutre());
         return values;
     }
 
@@ -80,6 +84,8 @@ public class PresenceRoulantDAO extends DAO<PresenceRoulant> {
         int temps = cursor.getColumnIndex(DBTables.PresenceRoulant.COLONNE_TEMPS);
         int dateEntree = cursor.getColumnIndex(DBTables.PresenceRoulant.COLONNE_DATE_ENTREE);
         int dateSortie = cursor.getColumnIndex(DBTables.PresenceRoulant.COLONNE_DATE_SORTIE);
+        int idPersonnel = cursor.getColumnIndex(DBTables.PresenceRoulant.COLONNE_ID_PERSONNEL);
+        int idAutre = cursor.getColumnIndex(DBTables.PresenceRoulant.COLONNE_ID_AUTRE);
 
         return new PresenceRoulant(
                 cursor.getInt(idRoulant),
@@ -87,7 +93,9 @@ public class PresenceRoulantDAO extends DAO<PresenceRoulant> {
                 cursor.getInt(numeroEtudiant),
                 Utils.convertStringToDate(cursor.getString(temps)),
                 Utils.convertStringToDate(cursor.getString(dateEntree)),
-                Utils.convertStringToDate(cursor.getString(dateSortie))
+                Utils.convertStringToDate(cursor.getString(dateSortie)),
+                cursor.getInt(idPersonnel),
+                cursor.getInt(idAutre)
         );
     }
 }
