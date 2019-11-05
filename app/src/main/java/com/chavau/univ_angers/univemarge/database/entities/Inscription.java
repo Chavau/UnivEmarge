@@ -58,4 +58,8 @@ public class Inscription {
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
+
+    public int getIdAutre() {
+        return idAutre;
+    }
 }

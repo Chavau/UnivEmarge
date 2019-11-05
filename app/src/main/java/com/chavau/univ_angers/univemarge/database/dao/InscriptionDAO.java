@@ -16,7 +16,9 @@ public class InscriptionDAO extends DAO<Inscription> {
             DBTables.Inscription.COLONNE_ID_EVENEMENT,
             DBTables.Inscription.COLONNE_NUMERO_ETUDIANT,
             DBTables.Inscription.COLONNE_DATE_MAJ,
-            DBTables.Inscription.COLONNE_DELETED
+            DBTables.Inscription.COLONNE_DELETED,
+            DBTables.Inscription.COLONNE_TYPE_INSCRIPTION,
+            DBTables.Inscription.COLONNE_ID_AUTRE
     };
 
     public InscriptionDAO(DatabaseHelper helper) {
@@ -32,6 +34,8 @@ public class InscriptionDAO extends DAO<Inscription> {
         values.put(DBTables.Inscription.COLONNE_NUMERO_ETUDIANT, item.getNumeroEtudiant());
         values.put(DBTables.Inscription.COLONNE_DATE_MAJ, Utils.convertDateToString(item.getDateMaj()));
         values.put(DBTables.Inscription.COLONNE_DELETED, item.isDeleted());
+        values.put(DBTables.Inscription.COLONNE_TYPE_INSCRIPTION, item.getTypeInscription());
+        values.put(DBTables.Inscription.COLONNE_ID_AUTRE, item.getIdAutre());
         return values;
     }
 
@@ -45,7 +49,7 @@ public class InscriptionDAO extends DAO<Inscription> {
     public int updateItem(Identifiant id, Inscription item) {
         SQLiteDatabase db = super.helper.getWritableDatabase();
         return db.update(DBTables.Inscription.TABLE_NAME, this.getContentValues(item),
-                DBTables.Inscription.COLONNE_ID_EVENEMENT + " = ?",
+                DBTables.Inscription.COLONNE_ID_INSCRIPTION + " = ?",
                 new String[]{String.valueOf(id.getId(DBTables.Inscription.COLONNE_ID_INSCRIPTION))});
     }
 
@@ -61,7 +65,7 @@ public class InscriptionDAO extends DAO<Inscription> {
         Cursor cursor = db.query(
                 DBTables.Inscription.TABLE_NAME,
                 PROJECTION,
-                DBTables.Inscription.COLONNE_ID_EVENEMENT + " = ?",
+                DBTables.Inscription.COLONNE_ID_INSCRIPTION + " = ?",
                 new String[]{String.valueOf(id.getId(DBTables.Inscription.COLONNE_ID_INSCRIPTION))},
                 null,
                 null,
@@ -78,6 +82,8 @@ public class InscriptionDAO extends DAO<Inscription> {
         int numeroEtudiant = cursor.getColumnIndex(DBTables.Inscription.COLONNE_NUMERO_ETUDIANT);
         int dateMaj = cursor.getColumnIndex(DBTables.Inscription.COLONNE_DATE_MAJ);
         int deleted = cursor.getColumnIndex(DBTables.Inscription.COLONNE_DELETED);
+        int typeInscription = cursor.getColumnIndex(DBTables.Inscription.COLONNE_TYPE_INSCRIPTION);
+        int idAutre = cursor.getColumnIndex(DBTables.Inscription.COLONNE_ID_AUTRE);
 
         return new Inscription(
                 cursor.getInt(idPersonnel),
@@ -85,7 +91,9 @@ public class InscriptionDAO extends DAO<Inscription> {
                 cursor.getInt(idEvenement),
                 cursor.getInt(numeroEtudiant),
                 Utils.convertStringToDate(cursor.getString(dateMaj)),
-                (cursor.getInt(deleted) == 1)
+                (cursor.getInt(deleted) == 1),
+                cursor.getString(typeInscription),
+                cursor.getInt(idAutre)
         );
     }
 }
