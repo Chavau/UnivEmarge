@@ -2,6 +2,7 @@ package com.chavau.univ_angers.univemarge.view.activities;
 
 
 import android.app.DatePickerDialog;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import com.chavau.univ_angers.univemarge.R;
 import com.chavau.univ_angers.univemarge.adapters.AdapterCours;
@@ -80,6 +82,12 @@ public class ListeEvenementsCours extends AppCompatActivity {
 
                 return true;
             case R.id.menu_option_synchronisation:
+                //TODO : à enlever, temporaire pour les tests
+                SharedPreferences preferences = getSharedPreferences(getResources().getString(R.string.PREFERENCE),0);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString(getResources().getString(R.string.PREF_LOGIN),"");
+                editor.commit();
+                Toast.makeText(this, "login effacé de l'appli", Toast.LENGTH_LONG).show();
                 return true;
             case R.id.menu_option_setting:
                 return true;

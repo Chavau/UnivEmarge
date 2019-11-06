@@ -15,10 +15,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_liste_evenements_cours);
-
+        setContentView(R.layout.activity_authentification);
 
         SharedPreferences preferences = getSharedPreferences(getResources().getString(R.string.PREFERENCE),0);
+
         if(preferences.getString(getResources().getString(R.string.PREF_LOGIN),"").equals("")) {
             Intent intent = new Intent(MainActivity.this, Authentification.class);
             startActivity(intent);
