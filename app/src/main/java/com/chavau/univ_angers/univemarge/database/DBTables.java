@@ -18,7 +18,6 @@ public final class DBTables {
         public static final String COLONNE_PHOTO = "photo";
         public static final String COLONNE_NO_MIFARE = "no_mifare";
         public static final String COLONNE_PIN = "pin";
-        public static final String COLONNE_DATE_MAJ = "dateMaj";
         public static final String COLONNE_DELETED = "deleted";
 
         public static final String SQL_CREATE_ENTRIES =
@@ -31,7 +30,6 @@ public final class DBTables {
                         Personnel.COLONNE_PHOTO + " blob, " +
                         Personnel.COLONNE_NO_MIFARE + " varchar(20), " +
                         Personnel.COLONNE_PIN + " varchar(20), " +
-                        Personnel.COLONNE_DATE_MAJ + " varchar(255), " +
                         Personnel.COLONNE_DELETED + " integer)";
 
         public static final String SQL_DELETE_ENTRIES =
@@ -48,7 +46,6 @@ public final class DBTables {
         public static final String COLONNE_NO_MIFARE = "no_mifare";
         public static final String COLONNE_EMAIL = "email";
         public static final String COLONNE_PHOTO = "photo";
-        public static final String COLONNE_DATE_MAJ = "dateMaj";
         public static final String COLONNE_DELETED = "deleted";
 
         public static final String SQL_CREATE_ENTRIES =
@@ -59,7 +56,6 @@ public final class DBTables {
                         Etudiant.COLONNE_NO_MIFARE + " varchar(20), " +
                         Etudiant.COLONNE_EMAIL + " varchar(200), " +
                         Etudiant.COLONNE_PHOTO + " blob, " +
-                        Etudiant.COLONNE_DATE_MAJ + " varchar(255), " +
                         Etudiant.COLONNE_DELETED + " integer)";
 
         public static final String SQL_DELETE_ENTRIES =
@@ -94,16 +90,13 @@ public final class DBTables {
         public static final String COLONNE_ID_COUR = "idCour";
         public static final String COLONNE_TEMPS_SEANCE = "tempsSeance";
         public static final String COLONNE_MAX_PERSONNES = "maxPersonnes";
-        public static final String COLONNE_DATE_MAJ = "dateMaj";
 
 
         public static final String SQL_CREATE_ENTRIES =
                 "CREATE TABLE " + RoulantParametre.TABLE_NAME + " (" +
                         RoulantParametre.COLONNE_ID_COUR + " INTEGER PRIMARY KEY, " +
                         RoulantParametre.COLONNE_TEMPS_SEANCE + " varchar(255), " +
-                        RoulantParametre.COLONNE_MAX_PERSONNES + " integer, " +
-                        RoulantParametre.COLONNE_DATE_MAJ + " varchar(255))";
-
+                        RoulantParametre.COLONNE_MAX_PERSONNES + " integer )";
 
         public static final String SQL_DELETE_ENTRIES =
                 "DROP TABLE IF EXISTS " + RoulantParametre.TABLE_NAME;
@@ -120,7 +113,6 @@ public final class DBTables {
         public static final String COLONNE_TYPE_EMARGEMENT = "typeEmargement";
         public static final String COLONNE_LIBELLE_EVENEMENT = "libelleEvenement";
         public static final String COLONNE_ID_COURS = "idCours";
-        public static final String COLONNE_DATE_MAJ = "dateMaj";
         public static final String COLONNE_DELETED = "deleted";
 
         public static final String SQL_CREATE_ENTRIES =
@@ -132,7 +124,6 @@ public final class DBTables {
                         Evenement.COLONNE_TYPE_EMARGEMENT + " integer, " +
                         Evenement.COLONNE_LIBELLE_EVENEMENT + " varchar(200), " +
                         Evenement.COLONNE_ID_COURS + " integer, " +
-                        Evenement.COLONNE_DATE_MAJ + " varchar(255), " +
                         Evenement.COLONNE_DELETED + " integer)";
 
         public static final String SQL_DELETE_ENTRIES =
@@ -146,14 +137,12 @@ public final class DBTables {
         public static final String TABLE_NAME = "responsable";
         public static final String COLONNE_ID_EVENEMENT = "idEvenement";
         public static final String COLONNE_ID_PERSONNEL_RESPONSABLE = "idPersonnelResponsable";
-        public static final String COLONNE_DATE_MAJ = "dateMaj";
         public static final String COLONNE_DELETED = "deleted";
 
         public static final String SQL_CREATE_ENTRIES =
                 "CREATE TABLE " + Responsable.TABLE_NAME + " (" +
                         Responsable.COLONNE_ID_EVENEMENT + " integer, " +
                         Responsable.COLONNE_ID_PERSONNEL_RESPONSABLE + " integer, " +
-                        Responsable.COLONNE_DATE_MAJ + " varchar(255), " +
                         Responsable.COLONNE_DELETED + " integer, " +
                         "CONSTRAINT pk_responsable PRIMARY KEY (" + Responsable.COLONNE_ID_EVENEMENT + ", " + Responsable.COLONNE_ID_PERSONNEL_RESPONSABLE + "), " +
                         "CONSTRAINT fk_evenement FOREIGN KEY (" + Responsable.COLONNE_ID_EVENEMENT + ") REFERENCES " + Evenement.TABLE_NAME + "(" + Evenement.COLONNE_ID_EVENEMENT + "), " +
@@ -171,7 +160,6 @@ public final class DBTables {
         public static final String COLONNE_ID_INSCRIPTION = "idInscription";
         public static final String COLONNE_ID_EVENEMENT = "idEvenement";
         public static final String COLONNE_NUMERO_ETUDIANT = "numeroEtudiant";
-        public static final String COLONNE_DATE_MAJ = "dateMaj";
         public static final String COLONNE_DELETED = "deleted";
         public static final String COLONNE_TYPE_INSCRIPTION = "typeInscription";
         public static final String COLONNE_ID_AUTRE = "idAutre";
@@ -182,7 +170,6 @@ public final class DBTables {
                         Inscription.COLONNE_ID_INSCRIPTION + " INTEGER PRIMARY KEY, " +
                         Inscription.COLONNE_ID_EVENEMENT + " integer, " +
                         Inscription.COLONNE_NUMERO_ETUDIANT + " integer, " +
-                        Inscription.COLONNE_DATE_MAJ + " varchar(255), " +
                         Inscription.COLONNE_DELETED + " integer, " +
                         Inscription.COLONNE_TYPE_INSCRIPTION + " varchar(20), " +
                         Inscription.COLONNE_ID_AUTRE + " integer, " +
@@ -203,7 +190,6 @@ public final class DBTables {
         public static final String COLONNE_ID_EVENEMENT = "idEvenement";
         public static final String COLONNE_NUMERO_ETUDIANT = "numeroEtudiant";
         public static final String COLONNE_STATUT_PRESENCE = "statutPresence";
-        public static final String COLONNE_DATE_MAJ = "dateMaj";
         public static final String COLONNE_DELETED = "deleted";
         public static final String COLONNE_ID_PERSONNEL = "idPersonnel";
         public static final String COLONNE_ID_AUTRE = "idAutre";
@@ -214,7 +200,6 @@ public final class DBTables {
                         Presence.COLONNE_ID_EVENEMENT + " integer, " +
                         Presence.COLONNE_NUMERO_ETUDIANT + " integer, " +
                         Presence.COLONNE_STATUT_PRESENCE + " integer, " +
-                        Presence.COLONNE_DATE_MAJ + " varchar(255), " +
                         Presence.COLONNE_DELETED + " integer, " +
                         Presence.COLONNE_ID_PERSONNEL + " integer, " +
                         Presence.COLONNE_ID_AUTRE + " integer, " +

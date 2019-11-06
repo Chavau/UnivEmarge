@@ -8,14 +8,12 @@ import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
 import com.chavau.univ_angers.univemarge.database.entities.Presence;
 import com.chavau.univ_angers.univemarge.database.entities.StatutPresence;
-import com.chavau.univ_angers.univemarge.utils.Utils;
 
 public class PresenceDAO extends DAO<Presence> {
     private static final String[] PROJECTION = {
             DBTables.Presence.COLONNE_ID_PRESENCE,
             DBTables.Presence.COLONNE_ID_EVENEMENT,
             DBTables.Presence.COLONNE_STATUT_PRESENCE,
-            DBTables.Presence.COLONNE_DATE_MAJ,
             DBTables.Presence.COLONNE_DELETED,
             DBTables.Presence.COLONNE_NUMERO_ETUDIANT,
             DBTables.Presence.COLONNE_ID_PERSONNEL,
@@ -32,7 +30,6 @@ public class PresenceDAO extends DAO<Presence> {
         values.put(DBTables.Presence.COLONNE_ID_PRESENCE, item.getIdPresence());
         values.put(DBTables.Presence.COLONNE_ID_EVENEMENT, item.getIdEvenement());
         values.put(DBTables.Presence.COLONNE_STATUT_PRESENCE, item.getStatutPresence().getValue());
-        values.put(DBTables.Presence.COLONNE_DATE_MAJ, Utils.convertDateToString(item.getDateMaj()));
         values.put(DBTables.Presence.COLONNE_DELETED, item.isDeleted());
         values.put(DBTables.Presence.COLONNE_NUMERO_ETUDIANT, item.getNumeroEtudiant());
         values.put(DBTables.Presence.COLONNE_ID_PERSONNEL, item.getIdPersonnel());
@@ -81,7 +78,6 @@ public class PresenceDAO extends DAO<Presence> {
         int idEvenement = cursor.getColumnIndex(DBTables.Presence.COLONNE_ID_EVENEMENT);
         int numeroEtudiant = cursor.getColumnIndex(DBTables.Presence.COLONNE_NUMERO_ETUDIANT);
         int statutPresence = cursor.getColumnIndex(DBTables.Presence.COLONNE_STATUT_PRESENCE);
-        int dateMaj = cursor.getColumnIndex(DBTables.Presence.COLONNE_DATE_MAJ);
         int deleted = cursor.getColumnIndex(DBTables.Presence.COLONNE_DELETED);
         int idPersonnel = cursor.getColumnIndex(DBTables.Presence.COLONNE_ID_PERSONNEL);
         int idAutre = cursor.getColumnIndex(DBTables.Presence.COLONNE_ID_AUTRE);
@@ -91,7 +87,6 @@ public class PresenceDAO extends DAO<Presence> {
                 cursor.getInt(idEvenement),
                 cursor.getInt(numeroEtudiant),
                 StatutPresence.fromInt(cursor.getInt(statutPresence)),
-                Utils.convertStringToDate(cursor.getString(dateMaj)),
                 (cursor.getInt(deleted) == 1),
                 cursor.getInt(idPersonnel),
                 cursor.getInt(idAutre)

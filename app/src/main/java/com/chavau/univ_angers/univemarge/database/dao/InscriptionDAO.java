@@ -7,7 +7,6 @@ import com.chavau.univ_angers.univemarge.database.DBTables;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
 import com.chavau.univ_angers.univemarge.database.entities.Inscription;
-import com.chavau.univ_angers.univemarge.utils.Utils;
 
 public class InscriptionDAO extends DAO<Inscription> {
     private static final String[] PROJECTION = {
@@ -15,7 +14,6 @@ public class InscriptionDAO extends DAO<Inscription> {
             DBTables.Inscription.COLONNE_ID_INSCRIPTION,
             DBTables.Inscription.COLONNE_ID_EVENEMENT,
             DBTables.Inscription.COLONNE_NUMERO_ETUDIANT,
-            DBTables.Inscription.COLONNE_DATE_MAJ,
             DBTables.Inscription.COLONNE_DELETED,
             DBTables.Inscription.COLONNE_TYPE_INSCRIPTION,
             DBTables.Inscription.COLONNE_ID_AUTRE
@@ -32,7 +30,6 @@ public class InscriptionDAO extends DAO<Inscription> {
         values.put(DBTables.Inscription.COLONNE_ID_INSCRIPTION, item.getIdInscription());
         values.put(DBTables.Inscription.COLONNE_ID_EVENEMENT, item.getIdEvenement());
         values.put(DBTables.Inscription.COLONNE_NUMERO_ETUDIANT, item.getNumeroEtudiant());
-        values.put(DBTables.Inscription.COLONNE_DATE_MAJ, Utils.convertDateToString(item.getDateMaj()));
         values.put(DBTables.Inscription.COLONNE_DELETED, item.isDeleted());
         values.put(DBTables.Inscription.COLONNE_TYPE_INSCRIPTION, item.getTypeInscription());
         values.put(DBTables.Inscription.COLONNE_ID_AUTRE, item.getIdAutre());
@@ -80,7 +77,6 @@ public class InscriptionDAO extends DAO<Inscription> {
         int idInscription = cursor.getColumnIndex(DBTables.Inscription.COLONNE_ID_INSCRIPTION);
         int idEvenement = cursor.getColumnIndex(DBTables.Inscription.COLONNE_ID_EVENEMENT);
         int numeroEtudiant = cursor.getColumnIndex(DBTables.Inscription.COLONNE_NUMERO_ETUDIANT);
-        int dateMaj = cursor.getColumnIndex(DBTables.Inscription.COLONNE_DATE_MAJ);
         int deleted = cursor.getColumnIndex(DBTables.Inscription.COLONNE_DELETED);
         int typeInscription = cursor.getColumnIndex(DBTables.Inscription.COLONNE_TYPE_INSCRIPTION);
         int idAutre = cursor.getColumnIndex(DBTables.Inscription.COLONNE_ID_AUTRE);
@@ -90,7 +86,6 @@ public class InscriptionDAO extends DAO<Inscription> {
                 cursor.getInt(idInscription),
                 cursor.getInt(idEvenement),
                 cursor.getInt(numeroEtudiant),
-                Utils.convertStringToDate(cursor.getString(dateMaj)),
                 (cursor.getInt(deleted) == 1),
                 cursor.getString(typeInscription),
                 cursor.getInt(idAutre)

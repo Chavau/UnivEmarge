@@ -7,13 +7,11 @@ import com.chavau.univ_angers.univemarge.database.DBTables;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
 import com.chavau.univ_angers.univemarge.database.entities.Responsable;
-import com.chavau.univ_angers.univemarge.utils.Utils;
 
 public class ResponsableDAO extends DAO<Responsable> {
     private static final String[] PROJECTION = {
             DBTables.Responsable.COLONNE_ID_EVENEMENT,
             DBTables.Responsable.COLONNE_ID_PERSONNEL_RESPONSABLE,
-            DBTables.Responsable.COLONNE_DATE_MAJ,
             DBTables.Responsable.COLONNE_DELETED
     };
 
@@ -26,7 +24,6 @@ public class ResponsableDAO extends DAO<Responsable> {
         ContentValues values = new ContentValues();
         values.put(DBTables.Responsable.COLONNE_ID_EVENEMENT, item.getIdEvenement());
         values.put(DBTables.Responsable.COLONNE_ID_PERSONNEL_RESPONSABLE, item.getIdPersonnelResponsable());
-        values.put(DBTables.Responsable.COLONNE_DATE_MAJ, Utils.convertDateToString(item.getDateMaj()));
         values.put(DBTables.Responsable.COLONNE_DELETED, item.isDeleted());
         return values;
     }
@@ -74,13 +71,11 @@ public class ResponsableDAO extends DAO<Responsable> {
     public Responsable cursorToType(Cursor cursor) {
         int idEvenement = cursor.getColumnIndex(DBTables.Responsable.COLONNE_ID_EVENEMENT);
         int idPersonnelResponsable = cursor.getColumnIndex(DBTables.Responsable.COLONNE_ID_PERSONNEL_RESPONSABLE);
-        int dateMaj = cursor.getColumnIndex(DBTables.Responsable.COLONNE_DATE_MAJ);
         int deleted = cursor.getColumnIndex(DBTables.Responsable.COLONNE_DELETED);
 
         return new Responsable(
                 cursor.getInt(idEvenement),
                 cursor.getInt(idPersonnelResponsable),
-                Utils.convertStringToDate(cursor.getString(dateMaj)),
                 (cursor.getInt(deleted) == 1)
         );
     }

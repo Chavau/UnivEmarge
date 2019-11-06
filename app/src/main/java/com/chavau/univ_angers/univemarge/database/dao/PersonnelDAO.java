@@ -7,7 +7,6 @@ import com.chavau.univ_angers.univemarge.database.DBTables;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
 import com.chavau.univ_angers.univemarge.database.entities.Personnel;
-import com.chavau.univ_angers.univemarge.utils.Utils;
 
 public class PersonnelDAO extends DAO<Personnel> {
     private static final String[] PROJECTION = {
@@ -19,7 +18,6 @@ public class PersonnelDAO extends DAO<Personnel> {
             DBTables.Personnel.COLONNE_PHOTO,
             DBTables.Personnel.COLONNE_NO_MIFARE,
             DBTables.Personnel.COLONNE_PIN,
-            DBTables.Personnel.COLONNE_DATE_MAJ,
             DBTables.Personnel.COLONNE_DELETED
     };
 
@@ -39,7 +37,6 @@ public class PersonnelDAO extends DAO<Personnel> {
 //        values.put(DBTables.Personnel.COLONNE_PHOTO, item.getPhoto());
         values.put(DBTables.Personnel.COLONNE_NO_MIFARE, item.getNo_mifare());
         values.put(DBTables.Personnel.COLONNE_PIN, item.getPin());
-        values.put(DBTables.Personnel.COLONNE_DATE_MAJ, Utils.convertDateToString(item.getDateMaj()));
         values.put(DBTables.Personnel.COLONNE_DELETED, item.isDeleted());
         return values;
 
@@ -90,20 +87,18 @@ public class PersonnelDAO extends DAO<Personnel> {
         int photo = cursor.getColumnIndex(DBTables.Personnel.COLONNE_PHOTO);
         int no_mifare = cursor.getColumnIndex(DBTables.Personnel.COLONNE_NO_MIFARE);
         int pin = cursor.getColumnIndex(DBTables.Personnel.COLONNE_PIN);
-        int dateMaj = cursor.getColumnIndex(DBTables.Personnel.COLONNE_DATE_MAJ);
         int deleted = cursor.getColumnIndex(DBTables.Personnel.COLONNE_DELETED);
 
         return new Personnel(
-                cursor.getInt(idPersonnel),
                 cursor.getString(nom),
                 cursor.getString(prenom),
-                cursor.getString(login),
                 cursor.getString(email),
+                cursor.getInt(idPersonnel),
+                cursor.getString(login),
 //                cursor.getBlob(photo),
                 null,
                 cursor.getString(no_mifare),
                 cursor.getString(pin),
-                Utils.convertStringToDate(cursor.getString(dateMaj)),
                 (cursor.getInt(deleted) == 1)
         );
     }

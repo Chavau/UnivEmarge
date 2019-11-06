@@ -7,7 +7,6 @@ import com.chavau.univ_angers.univemarge.database.DBTables;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
 import com.chavau.univ_angers.univemarge.database.entities.Etudiant;
-import com.chavau.univ_angers.univemarge.utils.Utils;
 
 public class EtudiantDAO extends DAO<Etudiant> {
 
@@ -18,7 +17,6 @@ public class EtudiantDAO extends DAO<Etudiant> {
             DBTables.Etudiant.COLONNE_NO_MIFARE,
             DBTables.Etudiant.COLONNE_EMAIL,
             DBTables.Etudiant.COLONNE_PHOTO,
-            DBTables.Etudiant.COLONNE_DATE_MAJ,
             DBTables.Etudiant.COLONNE_DELETED
     };
 
@@ -36,7 +34,6 @@ public class EtudiantDAO extends DAO<Etudiant> {
         values.put(DBTables.Etudiant.COLONNE_EMAIL, item.getEmail());
         // TODO: convert java.Blob to sql.blob
 //        values.put(DBTables.Etudiant.COLONNE_PHOTO, item.getPhoto());
-        values.put(DBTables.Etudiant.COLONNE_DATE_MAJ, Utils.convertDateToString(item.getDateMaj()));
         values.put(DBTables.Etudiant.COLONNE_DELETED, item.isDeleted());
         return values;
     }
@@ -84,19 +81,17 @@ public class EtudiantDAO extends DAO<Etudiant> {
         int no_mifare = cursor.getColumnIndex(DBTables.Etudiant.COLONNE_NO_MIFARE);
         int email = cursor.getColumnIndex(DBTables.Etudiant.COLONNE_EMAIL);
         int photo = cursor.getColumnIndex(DBTables.Etudiant.COLONNE_EMAIL);
-        int dateMaj = cursor.getColumnIndex(DBTables.Etudiant.COLONNE_DATE_MAJ);
         int deleted = cursor.getColumnIndex(DBTables.Etudiant.COLONNE_DELETED);
 
         // TODO: convert sql.blob to java.Blob
 //                cursor.getBlob(photo),
         return new Etudiant(
-                cursor.getInt(numeroEtudiant),
                 cursor.getString(nom),
                 cursor.getString(prenom),
-                cursor.getString(no_mifare),
                 cursor.getString(email),
+                cursor.getInt(numeroEtudiant),
+                cursor.getString(no_mifare),
                 null,
-                Utils.convertStringToDate(cursor.getString(dateMaj)),
                 (cursor.getInt(deleted) == 1)
         );
     }

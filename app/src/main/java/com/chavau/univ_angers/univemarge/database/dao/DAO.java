@@ -25,7 +25,4 @@ public abstract class DAO<Type> {
 
     //  TODO:
     //  Query listePersonneInscrit (Personne = Etudiant + Personnel + autre)
-    //  Creation d'une class Personne que doit hériter Etudiant, Personnel & autre
-    //  et ce PUTIN DE MCD ARRETE DE CHANGER !!!
-
 }

@@ -14,8 +14,7 @@ public class RoulantParametreDAO extends DAO<RoulantParametre> {
     private static final String[] PROJECTION = {
             DBTables.RoulantParametre.COLONNE_ID_COUR,
             DBTables.RoulantParametre.COLONNE_TEMPS_SEANCE,
-            DBTables.RoulantParametre.COLONNE_MAX_PERSONNES,
-            DBTables.RoulantParametre.COLONNE_DATE_MAJ
+            DBTables.RoulantParametre.COLONNE_MAX_PERSONNES
     };
 
     public RoulantParametreDAO(DatabaseHelper helper) {
@@ -28,7 +27,6 @@ public class RoulantParametreDAO extends DAO<RoulantParametre> {
         values.put(DBTables.RoulantParametre.COLONNE_ID_COUR, item.getIdCours());
         values.put(DBTables.RoulantParametre.COLONNE_TEMPS_SEANCE, Utils.convertDateToString(item.getTempsSeance()));
         values.put(DBTables.RoulantParametre.COLONNE_MAX_PERSONNES, item.getMaxPersonnes());
-        values.put(DBTables.RoulantParametre.COLONNE_DATE_MAJ, Utils.convertDateToString(item.getDateMaj()));
         return values;
     }
 
@@ -74,13 +72,11 @@ public class RoulantParametreDAO extends DAO<RoulantParametre> {
         int idCours = cursor.getColumnIndex(DBTables.RoulantParametre.COLONNE_ID_COUR);
         int tempsSeance = cursor.getColumnIndex(DBTables.RoulantParametre.COLONNE_TEMPS_SEANCE);
         int maxPersonnes = cursor.getColumnIndex(DBTables.RoulantParametre.COLONNE_MAX_PERSONNES);
-        int dateMaj = cursor.getColumnIndex(DBTables.RoulantParametre.COLONNE_DATE_MAJ);
 
         return new RoulantParametre(
                 cursor.getInt(idCours),
                 Utils.convertStringToDate(cursor.getString(tempsSeance)),
-                cursor.getInt(maxPersonnes),
-                Utils.convertStringToDate(cursor.getString(dateMaj))
+                cursor.getInt(maxPersonnes)
         );
     }
 }

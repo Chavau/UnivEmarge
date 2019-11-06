@@ -7,7 +7,6 @@ import com.chavau.univ_angers.univemarge.database.DBTables;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
 import com.chavau.univ_angers.univemarge.database.entities.Autre;
-import com.chavau.univ_angers.univemarge.utils.Utils;
 
 public class AutreDAO extends DAO<Autre> {
     private static final String[] PROJECTION = {
