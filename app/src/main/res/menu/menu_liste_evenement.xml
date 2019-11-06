@@ -3,22 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/calendar"
+        android:id="@+id/menu_option_calendrier"
         android:icon="@drawable/ic_iconcalendar"
-        android:title="item1"
+        android:title="@string/menu_calendrier"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/synchron"
+        android:id="@+id/menu_option_synchronisation"
         android:icon="@drawable/ic_iconsynchron"
-        android:title="item2"
+        android:title="@string/menu_synchronisation"
         app:showAsAction="ifRoom" />
 
 
     <item
-        android:id="@+id/setting"
+        android:id="@+id/menu_option_setting"
         android:icon="@drawable/ic_iconsetting"
-        android:title="item3"
+        android:title="@string/menu_option"
         app:showAsAction="ifRoom" />
 
 </menu>

@@ -6,21 +6,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.DatePicker;
-import android.widget.Toast;
 
 import com.chavau.univ_angers.univemarge.R;
 import com.chavau.univ_angers.univemarge.adapters.AdapterCours;
 import com.chavau.univ_angers.univemarge.intermediaire.Cours;
-import com.chavau.univ_angers.univemarge.intermediaire.Etudiant;
 
 
 import java.util.Calendar;
-import java.util.Comparator;
-import java.util.Random;
 import java.util.ArrayList;
 
 public class ListeEvenementsCours extends AppCompatActivity {
@@ -50,7 +45,7 @@ public class ListeEvenementsCours extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_calendrier, menu);
+        getMenuInflater().inflate(R.menu.menu_liste_evenement, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -84,7 +79,12 @@ public class ListeEvenementsCours extends AppCompatActivity {
                 _datepickerdialog.show();
 
                 return true;
+            case R.id.menu_option_synchronisation:
+                return true;
+            case R.id.menu_option_setting:
+                return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 

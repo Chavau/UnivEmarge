@@ -3,14 +3,19 @@
     <string name="app_name">UnivEmarge</string>
   
     <!-- INTERFACE-->
-    <string name="menu_calendrier">menu_calendrier</string>
     <string name="photo_de_l_etudiant">Photo de l\'étudiant(e)</string>
     <string name="etat_etudiant">Etat de l\'étudiant(e)</string>
     <string name="modifier_une_s_ance">Modifier une séance</string>
     <string name="cr_er_une_s_ance">Créer une séance</string>
     <string name="code_pin">Code Pin</string>
 
- 
+    <!-- MENU -->
+    <string name="menu_calendrier">menu_calendrier</string>
+    <string name="menu_synchronisation">synchronisation</string>
+    <string name="menu_option">option</string>
+
+
+
 
     <!-- PREFERENCES-->
     <string name="PREFERENCE">app_preferences</string>
