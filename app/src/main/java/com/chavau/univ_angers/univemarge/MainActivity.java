@@ -13,7 +13,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_liste_evenements_cours);
+
 
         SharedPreferences preferences = getSharedPreferences(getResources().getString(R.string.PREFERENCE),0);
         if(preferences.getString(getResources().getString(R.string.PREF_LOGIN),"").equals("")) {
@@ -21,4 +22,5 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
+
 }
