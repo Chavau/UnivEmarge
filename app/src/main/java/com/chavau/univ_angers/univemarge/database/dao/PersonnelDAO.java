@@ -8,6 +8,8 @@ import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
 import com.chavau.univ_angers.univemarge.database.entities.Personnel;
 
+import java.util.ArrayList;
+
 public class PersonnelDAO extends DAO<Personnel> {
     private static final String[] PROJECTION = {
             DBTables.Personnel.COLONNE_ID_PERSONNEL,
@@ -101,5 +103,20 @@ public class PersonnelDAO extends DAO<Personnel> {
                 cursor.getString(pin),
                 (cursor.getInt(deleted) == 1)
         );
+    }
+
+    public ArrayList<Personnel> listePersonnelInscrit(Identifiant id) {
+        SQLiteDatabase db = super.helper.getWritableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM " + DBTables.Personnel.TABLE_NAME +
+                " INNER JOIN " + DBTables.Inscription.TABLE_NAME +
+                " WHERE " + DBTables.Personnel.COLONNE_ID_PERSONNEL + " = ? ",
+                new String[]{String.valueOf(id.getId(DBTables.Inscription.COLONNE_ID_PERSONNEL))});
+
+        ArrayList<Personnel> list = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            list.add(this.cursorToType(cursor));
+        }
+        return list;
     }
 }

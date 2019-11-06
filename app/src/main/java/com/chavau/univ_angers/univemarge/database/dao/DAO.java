@@ -4,6 +4,12 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
+import com.chavau.univ_angers.univemarge.database.entities.Autre;
+import com.chavau.univ_angers.univemarge.database.entities.Etudiant;
+import com.chavau.univ_angers.univemarge.database.entities.Personne;
+import com.chavau.univ_angers.univemarge.database.entities.Personnel;
+
+import java.util.ArrayList;
 
 public abstract class DAO<Type> {
 
@@ -23,6 +29,13 @@ public abstract class DAO<Type> {
 
     public abstract Type cursorToType(Cursor cursor);
 
-    //  TODO:
-    //  Query listePersonneInscrit (Personne = Etudiant + Personnel + autre)
+    public final ArrayList<Personne> listePersonneInscrit(ArrayList<Etudiant> etudiants,
+                                                    ArrayList<Personnel> personnels,
+                                                    ArrayList<Autre> autres) {
+        ArrayList<Personne> list = new ArrayList<>();
+        list.addAll(etudiants);
+        list.addAll(personnels);
+        list.addAll(autres);
+        return list;
+    }
 }
