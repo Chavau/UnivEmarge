@@ -6,6 +6,6 @@
         android:title="@string/menu_calendrier"
         android:icon="@drawable/menu_cal"
         android:elevation="10dp"
-        app:showAsAction="always"/>
+        app:showAsAction="never"/>
 
 </menu>

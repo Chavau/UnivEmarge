@@ -3,18 +3,27 @@ package com.chavau.univ_angers.univemarge.adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.support.v7.view.menu.MenuBuilder;
+import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
 import com.chavau.univ_angers.univemarge.R;
 import com.chavau.univ_angers.univemarge.intermediaire.Etudiant;
+import com.chavau.univ_angers.univemarge.view.activities.BadgeageEnseignant;
 
 import java.util.ArrayList;
 
@@ -27,14 +36,10 @@ public class AdapterPersonneInscrite extends RecyclerView.Adapter<AdapterPersonn
 
     private final static String nomListePresence = "Liste Presence";
 
-    public static int cpt = 1;
-
-    public enum VueChoix {PI, NS, MS};// pour le choix de vue qui va être gonflée,
-                                     // PI correspond à la vue des personnes inscrites
+    public enum VueChoix {NS, MS};// pour le choix de vue qui va être gonflée,
                                     // NS correspond à la vue d'une nouvelle séance
                                     // MS correspond à la vue d'une modification de séance
     private static VueChoix _vueChoix;
-    private ArrayList<String> _listePresence = new ArrayList<>();
 
     // Lors d'un clic sur un cardview dans l'activité "Nouvelle Séance"
 
@@ -66,9 +71,6 @@ public class AdapterPersonneInscrite extends RecyclerView.Adapter<AdapterPersonn
     public ViewHolderPI onCreateViewHolder(ViewGroup parent, int i) {
         CardView cv = new CardView(_context);
         switch (_vueChoix) {
-            case PI:
-                cv = (CardView) LayoutInflater.from(_context).inflate(R.layout.vue_personneinscrite,parent,false);
-                break;
             case NS:
                 cv = (CardView) LayoutInflater.from(_context).inflate(R.layout.vue_creer_seance,parent,false);
                 break;
@@ -90,16 +92,8 @@ public class AdapterPersonneInscrite extends RecyclerView.Adapter<AdapterPersonn
         return _etudIns;
     }
 
-    public ArrayList<String> get_listePresence() {
-        return _listePresence;
-    }
-
-    public void set_listePresence(ArrayList<String> listePresence) {
-        this._listePresence = listePresence;
-    }
-
     @Override
-    public void onBindViewHolder(ViewHolderPI viewHolder, final int i) {
+    public void onBindViewHolder(final ViewHolderPI viewHolder, final int i) {
 
         ImageView iv_light = (ImageView)viewHolder._cardview.findViewById(R.id.iv_lighning);
         ImageView iv_pict = (ImageView)viewHolder._cardview.findViewById(R.id.imageview_man_woman);
@@ -107,6 +101,7 @@ public class AdapterPersonneInscrite extends RecyclerView.Adapter<AdapterPersonn
         TextView tv_prenom = (TextView)viewHolder._cardview.findViewById(R.id.textview_prenom_persInscr);
         TextView tv_numetu = (TextView)viewHolder._cardview.findViewById(R.id.textview_num_etudiant);
         TextView tv_typeact = (TextView)viewHolder._cardview.findViewById(R.id.textview_activite_type);
+
 
         // Affectation de l'Id image de l'étudiant(e) inscrit(e) à l'activité
         iv_pict.setImageResource(_etudIns.get(i).get_imageId());
@@ -123,28 +118,35 @@ public class AdapterPersonneInscrite extends RecyclerView.Adapter<AdapterPersonn
         // Affectation du type d'activité de l'étudiant(e) inscrit(e) à l'activité
         tv_typeact.setText(_etudIns.get(i).get_typeActivite());
 
+        //Coloration de l'ampoule en fonction de la présence d'un(e) étudiant(e)
+
+        if (_etudIns.get(i).get_etat() == Etudiant.STATUE_ETUDIANT.ABSENT) {
+
+            iv_light.setColorFilter(Color.RED,PorterDuff.Mode.SRC_ATOP);
+        }
+
+        else if (_etudIns.get(i).get_etat() == Etudiant.STATUE_ETUDIANT.PRESENT) {
+
+            iv_light.setColorFilter(Color.GREEN,PorterDuff.Mode.SRC_ATOP);
+        }
+
+        else if (_etudIns.get(i).get_etat() == Etudiant.STATUE_ETUDIANT.RETARD) {
+
+            iv_light.setColorFilter(Color.BLUE,PorterDuff.Mode.SRC_ATOP);
+        }
+
+        else {
+            iv_light.setColorFilter(Color.rgb(252, 186, 3), PorterDuff.Mode.SRC_ATOP);
+        }
+
         switch (_vueChoix) {
 
-            case PI:
-
-                iv_light.setColorFilter(Color.BLACK, PorterDuff.Mode.DST_IN);
-
-                break;
-
             case NS:
-
-                if (_listePresence.size() > 0 && _listePresence.contains(_etudIns.get(i).get_numEtud())) {
-                  //  Log.i("Position",String.valueOf(_listePresence.size()));
-                    iv_light.setColorFilter(Color.GREEN,PorterDuff.Mode.DST_IN);
-                }
-                else {
-                   iv_light.setColorFilter(Color.RED, PorterDuff.Mode.DST_IN);
-                }
 
                 viewHolder._cardview.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(!_listePresence.contains(_etudIns.get(i).get_numEtud())) {
+                        if(_etudIns.get(i).get_etat() == Etudiant.STATUE_ETUDIANT.ABSENT) {
                             if (_listener != null) {
                                 _listener.onClick(i);
                             }
@@ -156,9 +158,64 @@ public class AdapterPersonneInscrite extends RecyclerView.Adapter<AdapterPersonn
 
             case MS:
 
-                if (_listePresence.size() > 0 && _listePresence.contains(_etudIns.get(i).get_numEtud())) {
-                    iv_light.setColorFilter(Color.GREEN,PorterDuff.Mode.DST_IN);
-                }
+                TextView tv_menu_presence = (TextView)viewHolder._cardview.findViewById(R.id.tv_menu_presence);
+                tv_menu_presence.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        // Creation de PopMenu dans chaque CardView
+                        final PopupMenu _popupmenu = new PopupMenu(_context,viewHolder._cardview);
+                        _popupmenu.setGravity(Gravity.RIGHT);
+
+                        // Affichage des icones
+                        try {
+                            Field[] fields = _popupmenu.getClass().getDeclaredFields();
+                            for (Field field : fields) {
+                                if ("mPopup".equals(field.getName())) {
+                                    field.setAccessible(true);
+                                    Object menuPopupHelper = field.get(_popupmenu);
+                                    Class<?> classPopupHelper = Class.forName(menuPopupHelper.getClass().getName());
+                                    Method setForceIcons = classPopupHelper.getMethod("setForceShowIcon", boolean.class);
+                                    setForceIcons.invoke(menuPopupHelper, true);
+                                    break;
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        _popupmenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                            @Override
+                            public boolean onMenuItemClick(MenuItem menuItem) {
+                                switch (menuItem.getItemId()) {
+                                    case R.id.id_present:
+                                        setPresence(i, Etudiant.STATUE_ETUDIANT.PRESENT);
+                                        notifyDataSetChanged();
+                                        break;
+                                    case R.id.id_absent:
+                                        setPresence(i, Etudiant.STATUE_ETUDIANT.ABSENT);
+                                        notifyDataSetChanged();
+                                        break;
+                                    case R.id.id_retard:
+                                        setPresence(i, Etudiant.STATUE_ETUDIANT.RETARD);
+                                        notifyDataSetChanged();
+                                        break;
+                                    case R.id.id_excuse:
+                                        setPresence(i, Etudiant.STATUE_ETUDIANT.EXCUSE);
+                                        notifyDataSetChanged();
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                return false;
+                            }
+                        });
+
+                        _popupmenu.getMenuInflater().inflate(R.menu.menu_statue_presence, _popupmenu.getMenu());
+
+                        _popupmenu.show();
+                    }
+                });
 
                 break;
         }
@@ -169,16 +226,8 @@ public class AdapterPersonneInscrite extends RecyclerView.Adapter<AdapterPersonn
         return _etudIns.size();
     }
 
-    public void setPresence(int i) {
-        _etudIns.get(i).set_etat(Etudiant.STATUE_ETUDIANT.PRESENT);
+    public void setPresence(int i, Etudiant.STATUE_ETUDIANT se) {
+        _etudIns.get(i).set_etat(se);
     }
-
-    public void ajoutPosition(int position) {
-        _listePresence.add(_etudIns.get(position).get_numEtud());
-
-        notifyDataSetChanged();
-    }
-
-
 
 }
