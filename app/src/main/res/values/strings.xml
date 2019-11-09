@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">UnivEmarge</string>
 
-    <string name="preference">Paramètres</string>
+    <string name="preference">...</string>
     <string name="notification">Notifications</string>
     <string name="code_pin">Code Pin</string>
     <string name="old_pass">Ancien code pin</string>

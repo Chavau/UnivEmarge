@@ -15,34 +15,65 @@ import com.chavau.univ_angers.univemarge.R;
 
 
 public class MonFragmentDePreferences extends PreferenceFragmentCompat {
-    EditTextPreference etp;
-    SwitchPreference cbp;
-    EditText oldPass;
-    EditText newPass;
-    Button validerBtn;
+    EditTextPreference etp_old_pin;
+    SwitchPreference sp_pin;
+    SwitchPreference sp_notif;
+    SwitchPreference sp_Synchro;
+
+
+    EditText et_new_pin;
+    Button btn_change_pin;
+
+
+
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preference);
         // Faire l'appel de l'EditText et puis le cacher
-        etp = (EditTextPreference) findPreference("pref_sync3");
-        etp.setVisible(false);
-        // Faire l'appel du CheckBox et puis faire le Test
-        cbp = (SwitchPreference) findPreference("pref_sync2");
-        cbp.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        etp_old_pin = (EditTextPreference) findPreference("key_old_pin");
+        etp_old_pin.setVisible(false);
+        //
+        sp_notif = (SwitchPreference) findPreference("key_notif");
+        sp_notif.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
-                initChangePasswordsComponents();
                 if (((Boolean) o).booleanValue()) {
-                    setVisibilityComponents(true, newPass, validerBtn);
+                    Toast.makeText(getActivity(), "Activé !", Toast.LENGTH_SHORT).show();
                 } else {
-                    setVisibilityComponents(false, newPass, validerBtn);
+                    Toast.makeText(getActivity(), "Desactivé !", Toast.LENGTH_SHORT).show();
                 }
                 return true;
             }
         });
 
+        // Activer swith button notification quand la synchronisation automatique est sur off
 
+        sp_Synchro = (SwitchPreference) findPreference("key_sync_auto");
+        sp_Synchro.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                if (!((Boolean) o).booleanValue()) {
+                    sp_notif.setChecked(true);
+                }
+                return true;
+            }
+        });
+
+        // Faire l'appel du SwitchPref du code Pin et puis faire apparaitre EditText du nouveau pin et le bouton changer
+        sp_pin = (SwitchPreference) findPreference("key_pin");
+        sp_pin.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object o) {
+                initChangePasswordsComponents();
+                if (((Boolean) o).booleanValue()) {
+                    setVisibilityComponents(true, et_new_pin, btn_change_pin);
+                } else {
+                    setVisibilityComponents(false, et_new_pin, btn_change_pin);
+                }
+                return true;
+            }
+        });
     }
 
     @Override
@@ -50,17 +81,17 @@ public class MonFragmentDePreferences extends PreferenceFragmentCompat {
         super.onResume();
 
         // Traitement conçernant le code Pin
-        validerBtn.setOnClickListener(new View.OnClickListener() {
+        btn_change_pin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String newPassSaisi = newPass.getText().toString();
+                String newPassSaisi = et_new_pin.getText().toString();
                 if (newPassSaisi.isEmpty()) {
                     Toast.makeText(getActivity(), "Veuillez remplir le nouveau code pin !", Toast.LENGTH_LONG).show();
                 } else {
                     if (newPassSaisi.length() != 4) {
                         Toast.makeText(getActivity(), "Votre nouveau code pin doit avoir 4 numéros !", Toast.LENGTH_LONG).show();
                     } else {
-                        etp.setText(newPass.getText().toString());
+                        etp_old_pin.setText(et_new_pin.getText().toString());
                         Toast.makeText(getActivity(), "Code pin modifié avec succès !", Toast.LENGTH_LONG).show();
                     }
                 }
@@ -72,15 +103,13 @@ public class MonFragmentDePreferences extends PreferenceFragmentCompat {
     public void onStart() {
         super.onStart();
 
-        //Affichage des EditText par apport au CheckBox
+        //Affichage des EditText par apport à l'état du  CheckBox
         initChangePasswordsComponents();
-        if (cbp.isChecked()) {
-            setVisibilityComponents(true, newPass, validerBtn);
+        if (sp_pin.isChecked()) {
+            setVisibilityComponents(true, et_new_pin, btn_change_pin);
         } else {
-            setVisibilityComponents(false, newPass, validerBtn);
+            setVisibilityComponents(false, et_new_pin, btn_change_pin);
         }
-
-
     }
 
     /**
@@ -93,11 +122,9 @@ public class MonFragmentDePreferences extends PreferenceFragmentCompat {
         if (isVisible) {
             tvComponents[0].setVisibility(View.VISIBLE);
             tvComponents[1].setVisibility(View.VISIBLE);
-            //tvComponents[2].setVisibility(View.VISIBLE);
         } else {
             tvComponents[0].setVisibility(View.GONE);
             tvComponents[1].setVisibility(View.GONE);
-            //tvComponents[2].setVisibility(View.GONE);
         }
     }
 
@@ -105,10 +132,8 @@ public class MonFragmentDePreferences extends PreferenceFragmentCompat {
      * Methode permet d'initialiser les composantes de traitements du code pin
      */
     private void initChangePasswordsComponents() {
-        //oldPass = getActivity().findViewById(R.id.edtoldpin);
-        newPass = getActivity().findViewById(R.id.edtnewpin);
-        validerBtn = getActivity().findViewById(R.id.btnchange);
+        et_new_pin = getActivity().findViewById(R.id.edtnewpin);
+        btn_change_pin = getActivity().findViewById(R.id.btnchange);
     }
-
 
 }
