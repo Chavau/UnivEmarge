@@ -54,7 +54,7 @@ public class ListeEvenementsCours extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_option_calendrier:
+            case R.id.calendar:
                 final Calendar cldr = Calendar.getInstance();
                 int day = cldr.get(Calendar.DAY_OF_MONTH);
                 int month = cldr.get(Calendar.MONTH);
@@ -81,7 +81,7 @@ public class ListeEvenementsCours extends AppCompatActivity {
                 _datepickerdialog.show();
 
                 return true;
-            case R.id.menu_option_synchronisation:
+            case R.id.synchron:
                 //TODO : à enlever, temporaire pour les tests
                 SharedPreferences preferences = getSharedPreferences(getResources().getString(R.string.PREFERENCE),0);
                 SharedPreferences.Editor editor = preferences.edit();
@@ -89,7 +89,7 @@ public class ListeEvenementsCours extends AppCompatActivity {
                 editor.commit();
                 Toast.makeText(this, "login effacé de l'appli", Toast.LENGTH_LONG).show();
                 return true;
-            case R.id.menu_option_setting:
+            case R.id.setting:
                 return true;
         }
 

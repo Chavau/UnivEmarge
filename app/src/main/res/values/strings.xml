@@ -10,9 +10,12 @@
     <string name="code_pin">Code Pin</string>
 
     <!-- MENU -->
-    <string name="menu_calendrier">menu_calendrier</string>
-    <string name="menu_synchronisation">synchronisation</string>
-    <string name="menu_option">option</string>
+    <string name="menu">Menu</string>
+    <string name="menu_calendrier">Calendrier</string>
+    <string name="menu_synchronisation">Synchronisation</string>
+    <string name="menu_option">Option</string>
+    <string name="menu_deconnexion">Déconnexion</string>
+
 
 
 
