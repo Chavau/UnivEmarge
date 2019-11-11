@@ -1,36 +1,64 @@
 package com.chavau.univ_angers.univemarge.database.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
 
-public class PresenceRoulant {
-    private int idRoulant;
-    private int idInscription;
-    private Date temps;
-    private String entrees_sorties;
-//  TODO:
-//    private Date dateEntree;
-//    private Date dateSortie;
+public class PresenceRoulant extends Entity {
 
-    public PresenceRoulant(int idRoulant, int idInscription, Date temps, String entrees_sorties) {
+    @JsonProperty("")
+    private int idRoulant;
+    private int idEvenement;
+    private int numeroEtudiant;
+    private Date temps;
+    private Date dateEntree;
+    private Date dateSortie;
+    private int idPersonnel;
+    private int idAutre;
+
+    // needed for jackson parser
+    public PresenceRoulant() {}
+
+    public PresenceRoulant(int idRoulant, int idEvenement, int numeroEtudiant, Date temps, Date dateEntree, Date dateSortie, int idPersonnel, int idAutre) {
         this.idRoulant = idRoulant;
-        this.idInscription = idInscription;
+        this.idEvenement = idEvenement;
+        this.numeroEtudiant = numeroEtudiant;
         this.temps = temps;
-        this.entrees_sorties = entrees_sorties;
+        this.dateEntree = dateEntree;
+        this.dateSortie = dateSortie;
+        this.idPersonnel = idPersonnel;
+        this.idAutre = idAutre;
     }
 
     public int getIdRoulant() {
         return idRoulant;
     }
 
-    public int getIdInscription() {
-        return idInscription;
+    public int getIdEvenement() {
+        return idEvenement;
+    }
+
+    public int getNumeroEtudiant() {
+        return numeroEtudiant;
     }
 
     public Date getTemps() {
         return temps;
     }
 
-    public String getEntrees_sorties() {
-        return entrees_sorties;
+    public Date getDateEntree() {
+        return dateEntree;
+    }
+
+    public Date getDateSortie() {
+        return dateSortie;
+    }
+
+    public int getIdPersonnel() {
+        return idPersonnel;
+    }
+
+    public int getIdAutre() {
+        return idAutre;
     }
 }

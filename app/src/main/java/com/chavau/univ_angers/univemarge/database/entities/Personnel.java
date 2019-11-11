@@ -1,20 +1,47 @@
 package com.chavau.univ_angers.univemarge.database.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import java.sql.Blob;
 
-public class Personnel {
+@JsonIgnoreProperties(value = { "dateMaj" })
+public class Personnel extends Entity {
+
+    @JsonProperty("numero")
     private int idPersonnel;
+
+    @JsonProperty("nom")
     private String nom;
+
+    @JsonProperty("prenom")
     private String prenom;
+
+    @JsonProperty("login")
     private String login;
+
+    @JsonProperty("email")
     private String email;
+
+    @JsonIgnore
     private Blob photo;
+
+    @JsonProperty("no_mifare")
     private String no_mifare;
+
+    @JsonIgnore
     private String pin;
-    private String dateMaj;
+
+    @JsonDeserialize(using = NumericBooleanDeserializer.class)
+    @JsonProperty("deleted")
     private boolean deleted;
 
-    public Personnel(int idPersonnel, String nom, String prenom, String login, String email, Blob photo, String no_mifare, String pin, String dateMaj, boolean deleted) {
+    // needed for jackson parser
+    public Personnel() {}
+
+    public Personnel(String nom, String prenom, String email, int idPersonnel, String login, Blob photo, String no_mifare, String pin, boolean deleted) {
         this.idPersonnel = idPersonnel;
         this.nom = nom;
         this.prenom = prenom;
@@ -23,7 +50,6 @@ public class Personnel {
         this.photo = photo;
         this.no_mifare = no_mifare;
         this.pin = pin;
-        this.dateMaj = dateMaj;
         this.deleted = deleted;
     }
 
@@ -59,11 +85,11 @@ public class Personnel {
         return pin;
     }
 
-    public String getDateMaj() {
-        return dateMaj;
-    }
-
     public boolean isDeleted() {
         return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }
