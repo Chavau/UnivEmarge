@@ -19,7 +19,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authentification);
 
-        new APICall().onCreate(savedInstanceState);
+        APICall apiCall = new APICall();
+        apiCall.setContext(this);
+        apiCall.onCreate(savedInstanceState);
 
         SharedPreferences preferences = getSharedPreferences(getResources().getString(R.string.PREFERENCE),0);
 

@@ -2,14 +2,9 @@ package com.chavau.univ_angers.univemarge.database.dao;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
-import com.chavau.univ_angers.univemarge.database.entities.Autre;
-import com.chavau.univ_angers.univemarge.database.entities.Etudiant;
-import com.chavau.univ_angers.univemarge.database.entities.Personne;
-import com.chavau.univ_angers.univemarge.database.entities.Personnel;
-
-import java.util.ArrayList;
 
 public abstract class DAO<Type> {
 

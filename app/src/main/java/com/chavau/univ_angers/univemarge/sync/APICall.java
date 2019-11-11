@@ -1,11 +1,27 @@
 package com.chavau.univ_angers.univemarge.sync;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
+import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
+import com.chavau.univ_angers.univemarge.database.dao.EtudiantDAO;
+import com.chavau.univ_angers.univemarge.database.dao.EvenementDAO;
+import com.chavau.univ_angers.univemarge.database.dao.InscriptionDAO;
+import com.chavau.univ_angers.univemarge.database.dao.PersonnelDAO;
+import com.chavau.univ_angers.univemarge.database.dao.PresenceDAO;
+import com.chavau.univ_angers.univemarge.database.dao.RoulantParametreDAO;
+import com.chavau.univ_angers.univemarge.database.entities.Etudiant;
+import com.chavau.univ_angers.univemarge.database.entities.Evenement;
+import com.chavau.univ_angers.univemarge.database.entities.Inscription;
+import com.chavau.univ_angers.univemarge.database.entities.Personnel;
+import com.chavau.univ_angers.univemarge.database.entities.Presence;
+import com.chavau.univ_angers.univemarge.database.entities.RoulantParametre;
+
 import java.io.IOException;
-import java.util.EnumSet;
+import java.util.ArrayList;
+import java.util.Objects;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -21,43 +37,11 @@ public class APICall extends Fragment {
     private static final String LOGIN_INPUT_NAME = "login=";
     private static final String DATE_INPUT_NAME = "datemaj=";
     private static final int WAIT_TIME_SEC = 7200000;
+    private Thread mThread;
+    private Context context;
 
-    /**
-     * This is the thread that will do our work.  It sits in a loop running
-     * the progress up until it has reached the top, then stops and waits.
-     */
-    final Thread mThread = new Thread() {
-        @Override
-        public void run() {
-
-            // This thread runs almost forever.
-            while (true) {
-
-                // update only if connected to internet
-                if(testInternetConnection()) {
-                    ///*
-                    EnumSet.allOf(ElementToSync.class)
-                            .parallelStream()
-                            .forEach(APICall::sendRequest);
-                    //*/
-                    //sendRequest(ElementToSync.ETUDIANT);
-
-                    // TODO : re-assign the new DateMaj
-                }
-
-                // we wait 2h to do another sync
-                synchronized (this) {
-                    try {
-                        wait(WAIT_TIME_SEC);
-                    } catch (InterruptedException e) {
-                    }
-                }
-            }
-        }
-    };
-
-    private static void sendRequest(final ElementToSync element) {
-        System.out.println("element = " + element.toString());
+    private void sendRequest(SyncElement element) {
+        System.out.println("synchronising " + element.getLink());
 
         // TODO : remplacer par l'appel qui permet de récupérer ces 2 valeurs
         final String login = "t.delestang";
@@ -70,7 +54,7 @@ public class APICall extends Fragment {
         if(dateMaj != null && !"".equals(dateMaj)) {
             parameters += "&" + DATE_INPUT_NAME + dateMaj;
         }
-        final String url = API_URL + element.getUrlLink() + "?" + parameters;
+        final String url = API_URL + element.getLink() + "?" + parameters;
 
 
         // set up the http request
@@ -92,10 +76,15 @@ public class APICall extends Fragment {
                 if(response.isSuccessful()) {
                     // send the response to merge to out data
                     if (response.body() != null) {
-                        final String reponse = response.body().string();
-                        System.out.println("Response for " + element.getUrlLink());
-                        System.out.println(reponse);
-                        element.merge(reponse);
+                        final String reponse = Objects.requireNonNull(response.body()).string();
+                        System.out.println("Response received for " + element.getLink());
+
+                        if("[]".equals(reponse)) {
+                            System.out.println("WARNING : empty data for " + element.getLink());
+                        } else {
+                            element.merge(reponse);
+                            System.out.println(element.getLink() + " has successfully been merged");
+                        }
                     }
                 }
             }
@@ -109,8 +98,7 @@ public class APICall extends Fragment {
             int     exitValue = ipProcess.waitFor();
             return (exitValue == 0);
         }
-        catch (IOException e)          { e.printStackTrace(); }
-        catch (InterruptedException e) { e.printStackTrace(); }
+        catch (IOException | InterruptedException e)          { e.printStackTrace(); }
 
         return false;
     }
@@ -127,6 +115,39 @@ public class APICall extends Fragment {
         // during a configuration change.
         setRetainInstance(true);
 
+        // create the thread
+        this.mThread = new Thread() {
+            @Override
+            public void run() {
+
+                // This thread runs almost forever.
+                while (true) {
+
+                    // update only if connected to internet
+                    if(testInternetConnection()) {
+                        ArrayList<SyncElement> elementsToSync = new ArrayList<>();
+                        elementsToSync.add(new SyncElement("/etudiants", Etudiant[].class, new EtudiantDAO(new DatabaseHelper(context))));
+                        elementsToSync.add(new SyncElement("/evenements", Evenement[].class, new EvenementDAO(new DatabaseHelper(context))));
+                        elementsToSync.add(new SyncElement("/inscriptions", Inscription[].class, new InscriptionDAO(new DatabaseHelper(context))));
+                        elementsToSync.add(new SyncElement("/personnels", Personnel[].class, new PersonnelDAO(new DatabaseHelper(context))));
+                        elementsToSync.add(new SyncElement("/presences", Presence[].class, new PresenceDAO(new DatabaseHelper(context))));
+                        elementsToSync.add(new SyncElement("/roulant_parametre", RoulantParametre[].class, new RoulantParametreDAO(new DatabaseHelper(context))));
+
+                        elementsToSync.parallelStream()
+                                .forEach(APICall.this::sendRequest);
+                        // TODO : re-assign the new DateMaj
+                    }
+
+                    // we wait 2h to do another sync
+                    synchronized (this) {
+                        try {
+                            wait(WAIT_TIME_SEC);
+                        } catch (InterruptedException ignored) {
+                        }
+                    }
+                }
+            }
+        };
         // Start up the worker thread.
         mThread.start();
     }
@@ -188,5 +209,9 @@ public class APICall extends Fragment {
         synchronized (mThread) {
             mThread.notify();
         }
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
     }
 }

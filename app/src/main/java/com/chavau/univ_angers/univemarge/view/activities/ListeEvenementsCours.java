@@ -61,22 +61,19 @@ public class ListeEvenementsCours extends AppCompatActivity {
                 int month = cldr.get(Calendar.MONTH);
                 int year = cldr.get(Calendar.YEAR);
 
-                _datepickerdialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int annee, int mois, int jour) {
-                        mois++; // le mois selectionné correspond à mois+1
+                _datepickerdialog = new DatePickerDialog(this, (datePicker, annee, mois, jour) -> {
+                    mois++; // le mois selectionné correspond à mois+1
 
-                        String date = (jour) + "/" + ((mois < 10) ? "0" + (mois) : String.valueOf(mois)) + "/" + (annee);
-                        ArrayList<Cours> cours = new ArrayList<>();
+                    String date = (jour) + "/" + ((mois < 10) ? "0" + (mois) : String.valueOf(mois)) + "/" + (annee);
+                    ArrayList<Cours> cours = new ArrayList<>();
 
-                        for (Cours c : _cours) {
-                            if (c.get_date() != null && c.get_date().equals(date)) {
-                                cours.add(c);
-                            }
+                    for (Cours c : _cours) {
+                        if (c.get_date() != null && c.get_date().equals(date)) {
+                            cours.add(c);
                         }
-                        // Afficher la liste des évenements correspondants à la date selectionné
-                        _adapterEvenements.setListeCours(cours);
                     }
+                    // Afficher la liste des évenements correspondants à la date selectionné
+                    _adapterEvenements.setListeCours(cours);
                 }, year, month, day);
 
                 _datepickerdialog.show();

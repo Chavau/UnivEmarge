@@ -3,12 +3,12 @@ package com.chavau.univ_angers.univemarge.database.dao;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
 import com.chavau.univ_angers.univemarge.database.DBTables;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
 import com.chavau.univ_angers.univemarge.database.entities.Entity;
 import com.chavau.univ_angers.univemarge.database.entities.Etudiant;
-import com.chavau.univ_angers.univemarge.database.entities.Personnel;
 
 import java.util.ArrayList;
 
