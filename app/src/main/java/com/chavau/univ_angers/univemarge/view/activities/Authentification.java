@@ -75,4 +75,12 @@ public class Authentification extends AppCompatActivity implements Authentificat
         }
 
     }
+
+    /**
+     * suppression du retour pour après une déconnexion
+     */
+    @Override
+    public void onBackPressed() {
+
+    }
 }
