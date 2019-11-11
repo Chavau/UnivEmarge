@@ -6,17 +6,23 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
+import com.chavau.univ_angers.univemarge.database.dao.AutreDAO;
 import com.chavau.univ_angers.univemarge.database.dao.EtudiantDAO;
 import com.chavau.univ_angers.univemarge.database.dao.EvenementDAO;
 import com.chavau.univ_angers.univemarge.database.dao.InscriptionDAO;
 import com.chavau.univ_angers.univemarge.database.dao.PersonnelDAO;
 import com.chavau.univ_angers.univemarge.database.dao.PresenceDAO;
+import com.chavau.univ_angers.univemarge.database.dao.PresenceRoulantDAO;
+import com.chavau.univ_angers.univemarge.database.dao.ResponsableDAO;
 import com.chavau.univ_angers.univemarge.database.dao.RoulantParametreDAO;
+import com.chavau.univ_angers.univemarge.database.entities.Autre;
 import com.chavau.univ_angers.univemarge.database.entities.Etudiant;
 import com.chavau.univ_angers.univemarge.database.entities.Evenement;
 import com.chavau.univ_angers.univemarge.database.entities.Inscription;
 import com.chavau.univ_angers.univemarge.database.entities.Personnel;
 import com.chavau.univ_angers.univemarge.database.entities.Presence;
+import com.chavau.univ_angers.univemarge.database.entities.PresenceRoulant;
+import com.chavau.univ_angers.univemarge.database.entities.Responsable;
 import com.chavau.univ_angers.univemarge.database.entities.RoulantParametre;
 
 import java.io.IOException;
@@ -68,7 +74,7 @@ public class APICall extends Fragment {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                e.printStackTrace();
+                System.out.println("ERROR : cannot merge " + element.getLink());
             }
 
             @Override
@@ -125,16 +131,17 @@ public class APICall extends Fragment {
 
                     // update only if connected to internet
                     if(testInternetConnection()) {
-                        ArrayList<SyncElement> elementsToSync = new ArrayList<>();
-                        elementsToSync.add(new SyncElement("/etudiants", Etudiant[].class, new EtudiantDAO(new DatabaseHelper(context))));
-                        elementsToSync.add(new SyncElement("/evenements", Evenement[].class, new EvenementDAO(new DatabaseHelper(context))));
-                        elementsToSync.add(new SyncElement("/inscriptions", Inscription[].class, new InscriptionDAO(new DatabaseHelper(context))));
-                        elementsToSync.add(new SyncElement("/personnels", Personnel[].class, new PersonnelDAO(new DatabaseHelper(context))));
-                        elementsToSync.add(new SyncElement("/presences", Presence[].class, new PresenceDAO(new DatabaseHelper(context))));
-                        elementsToSync.add(new SyncElement("/roulant_parametre", RoulantParametre[].class, new RoulantParametreDAO(new DatabaseHelper(context))));
 
-                        elementsToSync.parallelStream()
-                                .forEach(APICall.this::sendRequest);
+                        sendRequest(new SyncElement("/autres", Autre[].class, new AutreDAO(new DatabaseHelper(context))));
+                        sendRequest(new SyncElement("/etudiants", Etudiant[].class, new EtudiantDAO(new DatabaseHelper(context))));
+                        sendRequest(new SyncElement("/evenements", Evenement[].class, new EvenementDAO(new DatabaseHelper(context))));
+                        sendRequest(new SyncElement("/inscriptions", Inscription[].class, new InscriptionDAO(new DatabaseHelper(context))));
+                        sendRequest(new SyncElement("/personnels", Personnel[].class, new PersonnelDAO(new DatabaseHelper(context))));
+                        sendRequest(new SyncElement("/presences", Presence[].class, new PresenceDAO(new DatabaseHelper(context))));
+                        sendRequest(new SyncElement("/presence_roulants", PresenceRoulant[].class, new PresenceRoulantDAO(new DatabaseHelper(context))));
+                        sendRequest(new SyncElement("/responsables", Responsable[].class, new ResponsableDAO(new DatabaseHelper(context))));
+                        sendRequest(new SyncElement("/roulant_parametre", RoulantParametre[].class, new RoulantParametreDAO(new DatabaseHelper(context))));
+
                         // TODO : re-assign the new DateMaj
                     }
 
