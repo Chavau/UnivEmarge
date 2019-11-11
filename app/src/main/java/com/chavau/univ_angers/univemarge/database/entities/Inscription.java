@@ -1,9 +1,12 @@
 package com.chavau.univ_angers.univemarge.database.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Inscription extends Entity {
 
     @JsonProperty("numero_personnel")
@@ -19,17 +22,18 @@ public class Inscription extends Entity {
     private int numeroEtudiant;
 
     @JsonProperty("typeInscription")
-    private boolean typeInscription;
+    private String typeInscription;
 
-    @JsonProperty("")
-    private boolean deleted;
+    @JsonProperty("deleted")
+    private String deleted;
+
     private String typeInscription;
     private int idAutre;
 
     // needed for jackson parser
     public Inscription() {}
 
-    public Inscription(int idPersonnel, int idInscription, int idEvenement, int numeroEtudiant, Date dateMaj, boolean deleted) {
+    public Inscription(int idPersonnel, int idInscription, int idEvenement, int numeroEtudiant, Date dateMaj, String deleted) {
         this.idPersonnel = idPersonnel;
         this.idInscription = idInscription;
         this.idEvenement = idEvenement;
@@ -59,7 +63,7 @@ public class Inscription extends Entity {
         return typeInscription;
     }
 
-    public boolean isDeleted() {
+    public String isDeleted() {
         return deleted;
     }
 

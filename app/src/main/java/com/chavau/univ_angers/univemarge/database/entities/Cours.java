@@ -9,22 +9,23 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Cours extends Entity {
 
-    @JsonProperty("id")
+    @JsonProperty("idCours")
     private int idCours;
 
     @JsonProperty("libelle")
     private String libelle_cours;
 
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss.S", timezone="Europe/Paris")
     @JsonProperty("dateMaj")
     private Date dateMaj;
 
-    private boolean deleted;
+    @JsonProperty("deleted")
+    private String deleted;
 
     // needed for jackson parser
     public Cours() {}
 
-    public Cours(int idCours, String libelle_cours, Date dateMaj, boolean deleted) {
+    public Cours(int idCours, String libelle_cours, Date dateMaj, String deleted) {
         this.idCours = idCours;
         this.libelle_cours = libelle_cours;
         this.dateMaj = dateMaj;
@@ -43,7 +44,17 @@ public class Cours extends Entity {
         return dateMaj;
     }
 
-    public boolean isDeleted() {
+    public String isDeleted() {
         return deleted;
+    }
+
+    @Override
+    public String toString() {
+        return "Cours{" +
+                "idCours=" + idCours +
+                ", libelle_cours='" + libelle_cours + '\'' +
+                ", dateMaj=" + dateMaj +
+                ", deleted=" + deleted +
+                '}';
     }
 }

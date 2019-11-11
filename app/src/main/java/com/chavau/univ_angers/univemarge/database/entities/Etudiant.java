@@ -1,10 +1,14 @@
 package com.chavau.univ_angers.univemarge.database.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.sql.Blob;
 import java.util.Date;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Etudiant extends Entity {
 
     @JsonProperty("numero")
@@ -22,19 +26,20 @@ public class Etudiant extends Entity {
     @JsonProperty("email")
     private String email;
 
-    @JsonProperty("")
+    @JsonIgnore
     private Blob photo;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss.S", timezone="Europe/Paris")
     @JsonProperty("dateMaj")
     private Date dateMaj;
 
-    @JsonProperty("")
-    private boolean deleted;
+    @JsonProperty("deleted")
+    private String deleted;
 
     // needed for jackson parser
     public Etudiant() {}
 
-    public Etudiant(int numeroEtudiant, String nom, String prenom, String no_mifare, String email, Blob photo, Date dateMaj, boolean deleted) {
+    public Etudiant(int numeroEtudiant, String nom, String prenom, String no_mifare, String email, Blob photo, Date dateMaj, String deleted) {
         this.numeroEtudiant = numeroEtudiant;
         this.nom = nom;
         this.prenom = prenom;
@@ -73,7 +78,7 @@ public class Etudiant extends Entity {
         return dateMaj;
     }
 
-    public boolean isDeleted() {
+    public String isDeleted() {
         return deleted;
     }
 

@@ -19,6 +19,7 @@ import com.chavau.univ_angers.univemarge.database.entities.RoulantParametre;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings("unused")
@@ -29,15 +30,15 @@ public enum ElementToSync {
     INSCRIPTIONS("/inscriptions", Inscription[].class, new InscriptionDAO()),
     PERSONNELS("/personnels", Personnel[].class, new PersonnelDAO()),
     PRESENCES("/presences", Presence[].class, new PresenceDAO()),
-    ROULANT_PARAMETRE("/cours", RoulantParametre[].class, new RoulantParametreDAO());
+    ROULANT_PARAMETRE("/roulant_parametre", RoulantParametre[].class, new RoulantParametreDAO());
 
     private String urlLink;
     private Class<Entity[]> entityClass;
     private IMergeable iMergeable;
 
-    ElementToSync(String urlLink, Class entityClass, IMergeable iMergeable) {
+    ElementToSync(String urlLink, Class<? extends Entity[]> entityClass, IMergeable iMergeable) {
         this.urlLink = urlLink;
-        this.entityClass = entityClass;
+        this.entityClass = (Class<Entity[]>) entityClass;
         this.iMergeable = iMergeable;
     }
 

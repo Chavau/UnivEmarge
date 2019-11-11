@@ -1,17 +1,23 @@
 package com.chavau.univ_angers.univemarge.database.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Evenement extends Entity {
 
     @JsonProperty("id")
     private int idEvenement;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss.S", timezone="Europe/Paris")
     @JsonProperty("dateDebut")
     private Date dateDebut;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss.S", timezone="Europe/Paris")
     @JsonProperty("dateFin")
     private Date dateFin;
 
@@ -19,7 +25,7 @@ public class Evenement extends Entity {
     private String lieu;
     private int typeEmargement;
 
-    @JsonProperty("")
+    @JsonIgnore
     private int temoinRoulant;
 
     @JsonProperty("libelleEvenement")
@@ -28,19 +34,20 @@ public class Evenement extends Entity {
     @JsonProperty("idCours")
     private int idCours;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss.S", timezone="Europe/Paris")
     @JsonProperty("dateMaj")
     private Date dateMaj;
 
     @JsonProperty("typeEmargement")
-    private boolean typeEmargement;
+    private String typeEmargement;
 
-    @JsonProperty("")
-    private boolean deleted;
+    @JsonProperty("deleted")
+    private String deleted;
 
     // needed for jackson parser
     public Evenement() {}
 
-    public Evenement(int idEvenement, Date dateDebut, Date dateFin, String lieu, int temoinRoulant, String libelleEvenement, int idCours, Date dateMaj, boolean deleted) {
+    public Evenement(int idEvenement, Date dateDebut, Date dateFin, String lieu, int temoinRoulant, String libelleEvenement, int idCours, Date dateMaj, String deleted) {
         this.idEvenement = idEvenement;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;

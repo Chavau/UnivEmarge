@@ -8,23 +8,24 @@ public class Presence extends Entity {
     private int idPresence;
     private int idEvenement;
 
-    @JsonProperty("")
+    @JsonProperty("idSeance")
     private int idSeance;
 
-    @JsonProperty("")
+    @JsonProperty("idInscription")
     private int idInscription;
 
-    @JsonProperty("")
+    @JsonProperty("numeroEtudiant")
     private int numeroEtudiant;
 
-    @JsonProperty("")
+    @JsonProperty("statutPresence")
     private StatutPresence statutPresence;
 
-    @JsonProperty("")
+    @JsonProperty("dateMaj")
     private Date dateMaj;
 
-    @JsonProperty("")
-    private boolean deleted;
+    @JsonProperty("deleted")
+    private String deleted;
+
     private int idPersonnel;
     private int idAutre;
 
@@ -65,7 +66,7 @@ public class Presence extends Entity {
         return idAutre;
     }
 
-    public boolean isDeleted() {
+    public String isDeleted() {
         return deleted;
     }
 

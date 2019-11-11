@@ -1,5 +1,6 @@
 package com.chavau.univ_angers.univemarge.database.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.sql.Blob;
@@ -21,20 +22,22 @@ public class Personnel extends Entity {
     @JsonProperty("email")
     private String email;
 
-    @JsonProperty("")
+    @JsonIgnore
     private Blob photo;
 
     @JsonProperty("no_mifare")
     private String no_mifare;
 
-    @JsonProperty("")
+    @JsonIgnore
     private String pin;
+
+    @JsonProperty("deleted")
     private boolean deleted;
 
     // needed for jackson parser
     public Personnel() {}
 
-    public Personnel(int idPersonnel, String nom, String prenom, String login, String email, Blob photo, String no_mifare, String pin, String dateMaj, boolean deleted) {
+    public Personnel(int idPersonnel, String nom, String prenom, String login, String email, Blob photo, String no_mifare, String pin, String dateMaj, String deleted) {
         this.idPersonnel = idPersonnel;
         this.nom = nom;
         this.prenom = prenom;

@@ -1,12 +1,15 @@
 package com.chavau.univ_angers.univemarge.database.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RoulantParametre extends Entity {
 
-    @JsonProperty("")
+    @JsonProperty("id")
     private int idCours;
 
     @JsonProperty("")
@@ -15,7 +18,8 @@ public class RoulantParametre extends Entity {
     @JsonProperty("")
     private int maxPersonnes;
 
-    @JsonProperty("")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss.S", timezone="Europe/Paris")
+    @JsonProperty("dateMaj")
     private Date dateMaj;
 
     // needed for jackson parser
