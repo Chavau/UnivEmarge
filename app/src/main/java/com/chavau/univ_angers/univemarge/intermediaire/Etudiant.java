@@ -7,7 +7,6 @@ import com.chavau.univ_angers.univemarge.R;
 import com.chavau.univ_angers.univemarge.database.entities.StatutPresence;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class Etudiant implements Parcelable {
     private String _nom;
@@ -19,7 +18,7 @@ public class Etudiant implements Parcelable {
     public static enum STATUE_ETUDIANT {PRESENT, ABSENT, RETARD, EXCUSE};
     private STATUE_ETUDIANT _etat;
 
-    public static final ArrayList<Etudiant> creerEtudiants () {
+    public static ArrayList<Etudiant> creerEtudiants () {
 
         ArrayList<Etudiant> etu = new ArrayList<>();
 

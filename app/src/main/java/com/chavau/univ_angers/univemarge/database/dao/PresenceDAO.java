@@ -6,10 +6,11 @@ import android.database.sqlite.SQLiteDatabase;
 import com.chavau.univ_angers.univemarge.database.DBTables;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
+import com.chavau.univ_angers.univemarge.database.entities.Entity;
 import com.chavau.univ_angers.univemarge.database.entities.Presence;
 import com.chavau.univ_angers.univemarge.database.entities.StatutPresence;
 
-public class PresenceDAO extends DAO<Presence> {
+public class PresenceDAO extends DAO<Presence> implements IMergeable {
     private static final String[] PROJECTION = {
             DBTables.Presence.COLONNE_ID_PRESENCE,
             DBTables.Presence.COLONNE_ID_EVENEMENT,
@@ -91,5 +92,10 @@ public class PresenceDAO extends DAO<Presence> {
                 cursor.getInt(idPersonnel),
                 cursor.getInt(idAutre)
         );
+    }
+
+    @Override
+    public void merge(Entity[] entities) {
+
     }
 }

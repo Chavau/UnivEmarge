@@ -6,11 +6,12 @@ import android.database.sqlite.SQLiteDatabase;
 import com.chavau.univ_angers.univemarge.database.DBTables;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
+import com.chavau.univ_angers.univemarge.database.entities.Entity;
 import com.chavau.univ_angers.univemarge.database.entities.Personnel;
 
 import java.util.ArrayList;
 
-public class PersonnelDAO extends DAO<Personnel> {
+public class PersonnelDAO extends DAO<Personnel> implements IMergeable {
     private static final String[] PROJECTION = {
             DBTables.Personnel.COLONNE_ID_PERSONNEL,
             DBTables.Personnel.COLONNE_NOM,
@@ -109,8 +110,8 @@ public class PersonnelDAO extends DAO<Personnel> {
         SQLiteDatabase db = super.helper.getWritableDatabase();
         Cursor cursor = db.rawQuery(
                 "SELECT * FROM " + DBTables.Personnel.TABLE_NAME +
-                " INNER JOIN " + DBTables.Inscription.TABLE_NAME +
-                " WHERE " + DBTables.Personnel.COLONNE_ID_PERSONNEL + " = ? ",
+                        " INNER JOIN " + DBTables.Inscription.TABLE_NAME +
+                        " WHERE " + DBTables.Personnel.COLONNE_ID_PERSONNEL + " = ? ",
                 new String[]{String.valueOf(id.getId(DBTables.Inscription.COLONNE_ID_PERSONNEL))});
 
         ArrayList<Personnel> list = new ArrayList<>();
@@ -118,5 +119,10 @@ public class PersonnelDAO extends DAO<Personnel> {
             list.add(this.cursorToType(cursor));
         }
         return list;
+    }
+
+    @Override
+    public void merge(Entity[] entities) {
+
     }
 }

@@ -66,19 +66,16 @@ public class AdapterEvenements extends RecyclerView.Adapter<AdapterEvenements.Vi
         tv = (TextView) cardview.findViewById(R.id.tx_details);
         tv.setText("De "+cours.get_heureDebut()+" à "+cours.get_heureFin());
 
-        cardview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Préparation des données à envoyer au deuxième activité
-                Intent intent = new Intent(_context, BadgeageEtudiant.class);
-                intent.putExtra(AdapterEvenements.getNomAct(),((TextView) cardview.findViewById(R.id.tv_intituleCours)).getText().toString());
+        cardview.setOnClickListener(view -> {
+            // Préparation des données à envoyer au deuxième activité
+            Intent intent = new Intent(_context, BadgeageEtudiant.class);
+            intent.putExtra(AdapterEvenements.getNomAct(),((TextView) cardview.findViewById(R.id.tv_intituleCours)).getText().toString());
 
-                // Envoie la liste des étudiant(e)s inscrit(e)s dans l'activité
-                intent.putParcelableArrayListExtra(AdapterEvenements.getListeEtud(),cours.get_listeEtudiantInscrit());
+            // Envoie la liste des étudiant(e)s inscrit(e)s dans l'activité
+            intent.putParcelableArrayListExtra(AdapterEvenements.getListeEtud(),cours.get_listeEtudiantInscrit());
 
-                //Commencer la deuxième activité
-                _context.startActivity(intent);
-            }
+            //Commencer la deuxième activité
+            _context.startActivity(intent);
         });
 
     }

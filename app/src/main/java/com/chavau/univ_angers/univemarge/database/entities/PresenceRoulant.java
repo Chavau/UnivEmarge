@@ -1,8 +1,12 @@
 package com.chavau.univ_angers.univemarge.database.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
 
-public class PresenceRoulant {
+public class PresenceRoulant extends Entity {
+
+    @JsonProperty("")
     private int idRoulant;
     private int idEvenement;
     private int numeroEtudiant;
@@ -11,6 +15,9 @@ public class PresenceRoulant {
     private Date dateSortie;
     private int idPersonnel;
     private int idAutre;
+
+    // needed for jackson parser
+    public PresenceRoulant() {}
 
     public PresenceRoulant(int idRoulant, int idEvenement, int numeroEtudiant, Date temps, Date dateEntree, Date dateSortie, int idPersonnel, int idAutre) {
         this.idRoulant = idRoulant;

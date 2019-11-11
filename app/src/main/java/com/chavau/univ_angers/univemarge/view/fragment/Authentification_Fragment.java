@@ -1,6 +1,5 @@
 package com.chavau.univ_angers.univemarge.view.fragment;
 
-import android.app.DownloadManager;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.AsyncTask;

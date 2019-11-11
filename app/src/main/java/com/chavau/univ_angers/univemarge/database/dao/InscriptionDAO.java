@@ -6,9 +6,10 @@ import android.database.sqlite.SQLiteDatabase;
 import com.chavau.univ_angers.univemarge.database.DBTables;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
+import com.chavau.univ_angers.univemarge.database.entities.Entity;
 import com.chavau.univ_angers.univemarge.database.entities.Inscription;
 
-public class InscriptionDAO extends DAO<Inscription> {
+public class InscriptionDAO extends DAO<Inscription> implements IMergeable {
     private static final String[] PROJECTION = {
             DBTables.Inscription.COLONNE_ID_PERSONNEL,
             DBTables.Inscription.COLONNE_ID_INSCRIPTION,
@@ -90,5 +91,10 @@ public class InscriptionDAO extends DAO<Inscription> {
                 cursor.getString(typeInscription),
                 cursor.getInt(idAutre)
         );
+    }
+
+    @Override
+    public void merge(Entity[] entities) {
+
     }
 }

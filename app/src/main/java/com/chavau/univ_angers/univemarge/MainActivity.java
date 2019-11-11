@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.chavau.univ_angers.univemarge.sync.APICall;
 import com.chavau.univ_angers.univemarge.view.activities.Authentification;
 import com.chavau.univ_angers.univemarge.view.activities.ListeEvenementsCours;
 
@@ -17,6 +18,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authentification);
+
+        APICall apiCall = new APICall();
+        apiCall.setContext(this);
+        apiCall.onCreate(savedInstanceState);
 
         SharedPreferences preferences = getSharedPreferences(getResources().getString(R.string.PREFERENCE),0);
 

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -85,12 +84,9 @@ public class BadgeageEtudiant extends AppCompatActivity {
         _recyclerview.setLayoutManager(new LinearLayoutManager(this));
         _recyclerview.setAdapter(_api);
 
-        _api.set_listener(new AdapterPersonneInscrite.Listener() {
-            @Override
-            public void onClick(int position) {
-                _api.setPresence(position, Etudiant.STATUE_ETUDIANT.PRESENT);
-                _api.notifyDataSetChanged();
-            }
+        _api.set_listener(position -> {
+            _api.setPresence(position, Etudiant.STATUE_ETUDIANT.PRESENT);
+            _api.notifyDataSetChanged();
         });
     }
 }

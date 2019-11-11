@@ -1,16 +1,48 @@
 package com.chavau.univ_angers.univemarge.database.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import java.util.Date;
 
-public class Evenement {
+@JsonIgnoreProperties(value = { "dateMaj" })
+public class Evenement extends Entity {
+
+    @JsonProperty("id")
     private int idEvenement;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss.S", timezone="Europe/Paris")
+    @JsonProperty("dateDebut")
     private Date dateDebut;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss.S", timezone="Europe/Paris")
+    @JsonProperty("dateFin")
     private Date dateFin;
+
+    @JsonProperty("lieu")
     private String lieu;
-    private int typeEmargement;
+
+    @JsonIgnore
+    private int temoinRoulant;
+
+    @JsonProperty("libelleEvenement")
     private String libelleEvenement;
+
+    @JsonProperty("idCours")
     private int idCours;
+
+    @JsonProperty("typeEmargement")
+    private int typeEmargement;
+
+    @JsonDeserialize(using = NumericBooleanDeserializer.class)
+    @JsonProperty("deleted")
     private boolean deleted;
+
+    // needed for jackson parser
+    public Evenement() {}
 
     public Evenement(int idEvenement, Date dateDebut, Date dateFin, String lieu, int typeEmargement, String libelleEvenement, int idCours, boolean deleted) {
         this.idEvenement = idEvenement;
@@ -59,4 +91,3 @@ public class Evenement {
         this.deleted = deleted;
     }
 }
-
