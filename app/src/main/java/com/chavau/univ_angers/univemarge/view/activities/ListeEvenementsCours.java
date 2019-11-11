@@ -2,6 +2,7 @@ package com.chavau.univ_angers.univemarge.view.activities;
 
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -84,6 +85,8 @@ public class ListeEvenementsCours extends AppCompatActivity {
             case R.id.synchron:
                 return true;
             case R.id.setting:
+                Intent start_settings_activity = new Intent(this, SettingsActivity.class);
+                startActivity(start_settings_activity);
                 return true;
             case R.id.deconnect:
                 SharedPreferences preferences = getSharedPreferences(getResources().getString(R.string.PREFERENCE),0);

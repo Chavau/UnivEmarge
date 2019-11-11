@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.chavau.univ_angers.univemarge" >
+    package="com.chavau.univ_angers.univemarge">
 
     <application
         android:allowBackup="true"
@@ -20,7 +20,10 @@
         <activity android:name=".view.activities.BadgeageEnseignant"></activity>
         <activity android:name=".view.activities.Authentification"></activity>
         <activity android:name=".view.activities.ListeEvenementsCours"></activity>
-
+        <activity android:name=".view.activities.SettingsActivity"
+            android:label="Paramètres"
+            android:parentActivityName=".MainActivity">
+        </activity>
     </application>
 
     <!--TODO : demander les permissions-->
