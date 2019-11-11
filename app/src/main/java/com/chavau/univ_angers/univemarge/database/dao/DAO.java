@@ -28,7 +28,7 @@ public abstract class DAO<Type> {
     public abstract Type getItemById(Identifiant id);
 
     public abstract Type cursorToType(Cursor cursor);
-
+/*
     public final ArrayList<Personne> listePersonneInscrit(ArrayList<Etudiant> etudiants,
                                                     ArrayList<Personnel> personnels,
                                                     ArrayList<Autre> autres) {
@@ -38,4 +38,5 @@ public abstract class DAO<Type> {
         list.addAll(autres);
         return list;
     }
+*/
 }

@@ -7,8 +7,6 @@ import com.chavau.univ_angers.univemarge.database.DBTables;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
 import com.chavau.univ_angers.univemarge.database.entities.Entity;
-
-import java.util.Date;
 import com.chavau.univ_angers.univemarge.database.entities.Responsable;
 
 public class ResponsableDAO extends DAO<Responsable> implements IMergeable {
@@ -17,9 +15,6 @@ public class ResponsableDAO extends DAO<Responsable> implements IMergeable {
             DBTables.Responsable.COLONNE_ID_PERSONNEL_RESPONSABLE,
             DBTables.Responsable.COLONNE_DELETED
     };
-
-    // needed to merge entities
-    public ResponsableDAO() {}
 
     public ResponsableDAO(DatabaseHelper helper) {
         super(helper);

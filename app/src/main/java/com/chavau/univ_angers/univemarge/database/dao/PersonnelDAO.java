@@ -110,8 +110,8 @@ public class PersonnelDAO extends DAO<Personnel> implements IMergeable {
         SQLiteDatabase db = super.helper.getWritableDatabase();
         Cursor cursor = db.rawQuery(
                 "SELECT * FROM " + DBTables.Personnel.TABLE_NAME +
-                " INNER JOIN " + DBTables.Inscription.TABLE_NAME +
-                " WHERE " + DBTables.Personnel.COLONNE_ID_PERSONNEL + " = ? ",
+                        " INNER JOIN " + DBTables.Inscription.TABLE_NAME +
+                        " WHERE " + DBTables.Personnel.COLONNE_ID_PERSONNEL + " = ? ",
                 new String[]{String.valueOf(id.getId(DBTables.Inscription.COLONNE_ID_PERSONNEL))});
 
         ArrayList<Personnel> list = new ArrayList<>();
@@ -120,9 +120,6 @@ public class PersonnelDAO extends DAO<Personnel> implements IMergeable {
         }
         return list;
     }
-
-    // needed to merge entities
-    public PersonnelDAO() {}
 
     @Override
     public void merge(Entity[] entities) {

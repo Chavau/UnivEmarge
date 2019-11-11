@@ -6,9 +6,11 @@ import android.database.sqlite.SQLiteDatabase;
 import com.chavau.univ_angers.univemarge.database.DBTables;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
+import com.chavau.univ_angers.univemarge.database.entities.Entity;
 import com.chavau.univ_angers.univemarge.database.entities.Evenement;
 import com.chavau.univ_angers.univemarge.utils.Utils;
-import com.chavau.univ_angers.univemarge.database.entities.Entity;
+
+import java.util.ArrayList;
 
 public class EvenementDAO extends DAO<Evenement> implements IMergeable {
 
@@ -25,14 +27,6 @@ public class EvenementDAO extends DAO<Evenement> implements IMergeable {
 
     public EvenementDAO(DatabaseHelper helper) {
         super(helper);
-    }
-
-    // needed to merge entities
-    public EvenementDAO() {}
-
-    @Override
-    public void merge(Entity[] entities) {
-
     }
 
     @Override
@@ -120,5 +114,10 @@ public class EvenementDAO extends DAO<Evenement> implements IMergeable {
             list.add(this.cursorToType(cursor));
         }
         return list;
+    }
+
+    @Override
+    public void merge(Entity[] entities) {
+
     }
 }

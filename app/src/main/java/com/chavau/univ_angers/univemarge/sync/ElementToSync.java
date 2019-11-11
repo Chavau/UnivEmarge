@@ -1,6 +1,5 @@
 package com.chavau.univ_angers.univemarge.sync;
 
-import com.chavau.univ_angers.univemarge.database.dao.CoursDAO;
 import com.chavau.univ_angers.univemarge.database.dao.EtudiantDAO;
 import com.chavau.univ_angers.univemarge.database.dao.EvenementDAO;
 import com.chavau.univ_angers.univemarge.database.dao.IMergeable;
@@ -8,7 +7,6 @@ import com.chavau.univ_angers.univemarge.database.dao.InscriptionDAO;
 import com.chavau.univ_angers.univemarge.database.dao.PersonnelDAO;
 import com.chavau.univ_angers.univemarge.database.dao.PresenceDAO;
 import com.chavau.univ_angers.univemarge.database.dao.RoulantParametreDAO;
-import com.chavau.univ_angers.univemarge.database.entities.Cours;
 import com.chavau.univ_angers.univemarge.database.entities.Entity;
 import com.chavau.univ_angers.univemarge.database.entities.Etudiant;
 import com.chavau.univ_angers.univemarge.database.entities.Evenement;
@@ -19,18 +17,15 @@ import com.chavau.univ_angers.univemarge.database.entities.RoulantParametre;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 @SuppressWarnings("unused")
 public enum ElementToSync {
-    COURS("/cours", Cours[].class, new CoursDAO()),
-    ETUDIANT("/etudiants",Etudiant[].class, new EtudiantDAO()),
-    EVENEMENTS("/evenements", Evenement[].class, new EvenementDAO()),
-    INSCRIPTIONS("/inscriptions", Inscription[].class, new InscriptionDAO()),
-    PERSONNELS("/personnels", Personnel[].class, new PersonnelDAO()),
-    PRESENCES("/presences", Presence[].class, new PresenceDAO()),
-    ROULANT_PARAMETRE("/roulant_parametre", RoulantParametre[].class, new RoulantParametreDAO());
+    ETUDIANT("/etudiants",Etudiant[].class, /*new EtudiantDAO()*/null),
+    EVENEMENTS("/evenements", Evenement[].class, new EvenementDAO(null)),
+    INSCRIPTIONS("/inscriptions", Inscription[].class, new InscriptionDAO(null)),
+    PERSONNELS("/personnels", Personnel[].class, new PersonnelDAO(null)),
+    PRESENCES("/presences", Presence[].class, new PresenceDAO(null)),
+    ROULANT_PARAMETRE("/roulant_parametre", RoulantParametre[].class, new RoulantParametreDAO(null));
 
     private String urlLink;
     private Class<Entity[]> entityClass;
@@ -56,6 +51,6 @@ public enum ElementToSync {
         Entity[] objects = mapper.readValue(jsonResponse, entityClass);
 
         System.out.println(objects.toString());
-        iMergeable.merge(objects);
+        //iMergeable.merge(objects);
     }
 }

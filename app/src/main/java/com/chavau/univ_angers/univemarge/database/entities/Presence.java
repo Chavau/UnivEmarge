@@ -1,6 +1,9 @@
 package com.chavau.univ_angers.univemarge.database.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.Date;
 
@@ -23,8 +26,9 @@ public class Presence extends Entity {
     @JsonProperty("dateMaj")
     private Date dateMaj;
 
+    @JsonDeserialize(using = NumericBooleanDeserializer.class)
     @JsonProperty("deleted")
-    private String deleted;
+    private boolean deleted;
 
     private int idPersonnel;
     private int idAutre;
@@ -66,7 +70,7 @@ public class Presence extends Entity {
         return idAutre;
     }
 
-    public String isDeleted() {
+    public boolean isDeleted() {
         return deleted;
     }
 

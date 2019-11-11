@@ -1,10 +1,15 @@
 package com.chavau.univ_angers.univemarge.database.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.sql.Blob;
 
+@JsonIgnoreProperties(value = { "dateMaj" })
 public class Personnel extends Entity {
 
     @JsonProperty("numero")
@@ -31,13 +36,14 @@ public class Personnel extends Entity {
     @JsonIgnore
     private String pin;
 
+    @JsonDeserialize(using = NumericBooleanDeserializer.class)
     @JsonProperty("deleted")
     private boolean deleted;
 
     // needed for jackson parser
     public Personnel() {}
 
-    public Personnel(int idPersonnel, String nom, String prenom, String login, String email, Blob photo, String no_mifare, String pin, String dateMaj, String deleted) {
+    public Personnel(String nom, String prenom, String email, int idPersonnel, String login, Blob photo, String no_mifare, String pin, boolean deleted) {
         this.idPersonnel = idPersonnel;
         this.nom = nom;
         this.prenom = prenom;

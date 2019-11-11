@@ -18,9 +18,6 @@ public class RoulantParametreDAO extends DAO<RoulantParametre> implements IMerge
             DBTables.RoulantParametre.COLONNE_MAX_PERSONNES
     };
 
-    // needed to merge entities
-    public RoulantParametreDAO() {}
-
     public RoulantParametreDAO(DatabaseHelper helper) {
         super(helper);
     }

@@ -1,14 +1,14 @@
 package com.chavau.univ_angers.univemarge.database.entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.sql.Blob;
-import java.util.Date;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(value = { "dateMaj" })
 public class Etudiant extends Entity {
 
     @JsonProperty("numero")
@@ -29,24 +29,20 @@ public class Etudiant extends Entity {
     @JsonIgnore
     private Blob photo;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss.S", timezone="Europe/Paris")
-    @JsonProperty("dateMaj")
-    private Date dateMaj;
-
+    @JsonDeserialize(using = NumericBooleanDeserializer.class)
     @JsonProperty("deleted")
-    private String deleted;
+    private boolean deleted;
 
     // needed for jackson parser
     public Etudiant() {}
 
-    public Etudiant(int numeroEtudiant, String nom, String prenom, String no_mifare, String email, Blob photo, Date dateMaj, String deleted) {
+    public Etudiant(String nom, String prenom, String email, int numeroEtudiant, String no_mifare, Blob photo, boolean deleted) {
         this.numeroEtudiant = numeroEtudiant;
         this.nom = nom;
         this.prenom = prenom;
         this.no_mifare = no_mifare;
         this.email = email;
         this.photo = photo;
-        this.dateMaj = dateMaj;
         this.deleted = deleted;
     }
 
@@ -74,11 +70,7 @@ public class Etudiant extends Entity {
         return photo;
     }
 
-    public Date getDateMaj() {
-        return dateMaj;
-    }
-
-    public String isDeleted() {
+    public boolean isDeleted() {
         return deleted;
     }
 

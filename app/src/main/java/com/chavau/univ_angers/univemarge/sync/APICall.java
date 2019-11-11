@@ -35,9 +35,12 @@ public class APICall extends Fragment {
 
                 // update only if connected to internet
                 if(testInternetConnection()) {
+                    ///*
                     EnumSet.allOf(ElementToSync.class)
                             .parallelStream()
                             .forEach(APICall::sendRequest);
+                    //*/
+                    //sendRequest(ElementToSync.ETUDIANT);
 
                     // TODO : re-assign the new DateMaj
                 }

@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(value = { "dateMaj" })
 public class RoulantParametre extends Entity {
 
     @JsonProperty("id")
@@ -17,10 +17,6 @@ public class RoulantParametre extends Entity {
 
     @JsonProperty("")
     private int maxPersonnes;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss.S", timezone="Europe/Paris")
-    @JsonProperty("dateMaj")
-    private Date dateMaj;
 
     // needed for jackson parser
     public RoulantParametre() {}
