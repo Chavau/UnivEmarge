@@ -82,15 +82,17 @@ public class ListeEvenementsCours extends AppCompatActivity {
 
                 return true;
             case R.id.synchron:
-                //TODO : à enlever, temporaire pour les tests
+                return true;
+            case R.id.setting:
+                return true;
+            case R.id.deconnect:
                 SharedPreferences preferences = getSharedPreferences(getResources().getString(R.string.PREFERENCE),0);
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString(getResources().getString(R.string.PREF_LOGIN),"");
                 editor.commit();
                 Toast.makeText(this, "login effacé de l'appli", Toast.LENGTH_LONG).show();
                 return true;
-            case R.id.setting:
-                return true;
+
         }
 
         return super.onOptionsItemSelected(item);
