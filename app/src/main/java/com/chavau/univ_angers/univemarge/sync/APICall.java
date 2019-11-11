@@ -32,11 +32,17 @@ public class APICall extends Fragment {
 
             // This thread runs almost forever.
             while (true) {
-                EnumSet.allOf(ElementToSync.class)
-                        .parallelStream()
-                        .forEach(APICall::sendRequest);
 
-                // we wait 2h to to another sync
+                // update only if connected to internet
+                if(testInternetConnection()) {
+                    EnumSet.allOf(ElementToSync.class)
+                            .parallelStream()
+                            .forEach(APICall::sendRequest);
+
+                    // TODO : re-assign the new DateMaj
+                }
+
+                // we wait 2h to do another sync
                 synchronized (this) {
                     try {
                         wait(WAIT_TIME_SEC);
@@ -91,6 +97,19 @@ public class APICall extends Fragment {
                 }
             }
         });
+    }
+
+    public boolean testInternetConnection() {
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int     exitValue = ipProcess.waitFor();
+            return (exitValue == 0);
+        }
+        catch (IOException e)          { e.printStackTrace(); }
+        catch (InterruptedException e) { e.printStackTrace(); }
+
+        return false;
     }
 
     /**
