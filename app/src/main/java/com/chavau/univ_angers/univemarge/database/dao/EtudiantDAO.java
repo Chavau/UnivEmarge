@@ -2,6 +2,7 @@ package com.chavau.univ_angers.univemarge.database.dao;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.chavau.univ_angers.univemarge.database.DBTables;
@@ -117,6 +118,18 @@ public class EtudiantDAO extends DAO<Etudiant> implements IMergeable {
 
     @Override
     public void merge(Entity[] entities) {
+        for(Entity e : entities) {
+            Etudiant etudiant = (Etudiant) e;
+            deleteItem(etudiant.getNumeroEtudiant());
+            long res = insertItem(etudiant);
+            if(res == -1) {
+                throw new SQLException("Unable to merge Etudiant Table");
+            }
+        }
+    }
 
+    public int deleteItem(int numeroEtudiant) {
+        SQLiteDatabase db = super.helper.getWritableDatabase();
+        return db.delete(DBTables.Etudiant.TABLE_NAME, DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT + " = ?", new String[]{String.valueOf(numeroEtudiant)});
     }
 }

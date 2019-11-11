@@ -2,11 +2,13 @@ package com.chavau.univ_angers.univemarge.database.dao;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import com.chavau.univ_angers.univemarge.database.DBTables;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
 import com.chavau.univ_angers.univemarge.database.entities.Entity;
+import com.chavau.univ_angers.univemarge.database.entities.Presence;
 import com.chavau.univ_angers.univemarge.database.entities.PresenceRoulant;
 import com.chavau.univ_angers.univemarge.utils.Utils;
 
@@ -102,6 +104,18 @@ public class PresenceRoulantDAO extends DAO<PresenceRoulant> implements IMergeab
 
     @Override
     public void merge(Entity[] entities) {
+        for(Entity e : entities) {
+            PresenceRoulant presenceRoulant = (PresenceRoulant) e;
+            deleteItem(presenceRoulant.getIdRoulant());
+            long res = insertItem(presenceRoulant);
+            if(res == -1) {
+                throw new SQLException("Unable to merge PresenceRoulant Table");
+            }
+        }
+    }
 
+    private int deleteItem(int idRoulant) {
+        SQLiteDatabase db = super.helper.getWritableDatabase();
+        return db.delete(DBTables.PresenceRoulant.TABLE_NAME, DBTables.PresenceRoulant.COLONNE_ID_ROULANT + " = ?", new String[]{String.valueOf(idRoulant)});
     }
 }
