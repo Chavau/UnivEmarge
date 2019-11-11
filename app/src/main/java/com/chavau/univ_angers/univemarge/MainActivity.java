@@ -50,8 +50,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.setting:
                 Toast msg3 = Toast.makeText(MainActivity.this,"Paramètre" ,Toast.LENGTH_SHORT);
                 msg3.show();
-                Intent start_settings_activity = new Intent(this, SettingsActivity.class);
-                startActivity(start_settings_activity);
                 return true;
             case R.id.deconnect:
                 Toast msg4 = Toast.makeText(MainActivity.this,"Déconnexion" ,Toast.LENGTH_SHORT);
