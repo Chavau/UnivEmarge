@@ -13,7 +13,7 @@ import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.chavau.univ_angers.univemarge.R;
-import com.chavau.univ_angers.univemarge.adapters.AdapterCours;
+import com.chavau.univ_angers.univemarge.adapters.AdapterEvenements;
 import com.chavau.univ_angers.univemarge.intermediaire.Cours;
 
 
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class ListeEvenementsCours extends AppCompatActivity {
 
     RecyclerView _recyclerview;
-    AdapterCours _adapterCours;
+    AdapterEvenements _adapterEvenements;
     ArrayList<Cours> _cours = new ArrayList<>();
 
     DatePickerDialog _datepickerdialog;
@@ -39,9 +39,9 @@ public class ListeEvenementsCours extends AppCompatActivity {
 
         _cours = Cours.creeCours();
 
-        _adapterCours = new AdapterCours(this, _cours);
+        _adapterEvenements = new AdapterEvenements(this, _cours);
 
-        _recyclerview.setAdapter(_adapterCours);
+        _recyclerview.setAdapter(_adapterEvenements);
 
     }
 
@@ -74,7 +74,7 @@ public class ListeEvenementsCours extends AppCompatActivity {
                             }
                         }
                         // Afficher la liste des évenements correspondants à la date selectionné
-                        _adapterCours.setListeCours(cours);
+                        _adapterEvenements.setListeCours(cours);
                     }
                 }, year, month, day);
 
@@ -98,6 +98,6 @@ public class ListeEvenementsCours extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        _adapterCours.setListeCours(_cours);
+        _adapterEvenements.setListeCours(_cours);
     }
 }

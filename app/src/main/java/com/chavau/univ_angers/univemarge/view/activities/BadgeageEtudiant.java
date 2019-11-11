@@ -5,12 +5,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.chavau.univ_angers.univemarge.R;
-import com.chavau.univ_angers.univemarge.adapters.AdapterCours;
+import com.chavau.univ_angers.univemarge.adapters.AdapterEvenements;
 import com.chavau.univ_angers.univemarge.adapters.AdapterPersonneInscrite;
 import com.chavau.univ_angers.univemarge.intermediaire.Etudiant;
 
@@ -29,28 +29,17 @@ public class BadgeageEtudiant extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_creation_seance);
 
+        // Récuperation des données envoyées par l'activité précedente
         _intent = getIntent();
 
-        _titreActivite = _intent.getStringExtra(AdapterCours.getNomAct());
+        _titreActivite = _intent.getStringExtra(AdapterEvenements.getNomAct());
 
         setTitle(_titreActivite);
 
         _recyclerview = findViewById(R.id.recyclerview_creation_seance);
 
-        _etudiants = _intent.getParcelableArrayListExtra(AdapterCours.getListeEtud());
+        _etudiants = _intent.getParcelableArrayListExtra(AdapterEvenements.getListeEtud());
 
-        _api = new AdapterPersonneInscrite(this, _etudiants, AdapterPersonneInscrite.VueChoix.NS);
-
-        _recyclerview.setLayoutManager(new LinearLayoutManager(this));
-        _recyclerview.setAdapter(_api);
-
-        _api.set_listener(new AdapterPersonneInscrite.Listener() {
-            @Override
-            public void onClick(int position) {
-                _api.setPresence(position);
-                _api.ajoutPosition(position);
-            }
-        });
     }
 
     @Override
@@ -61,9 +50,14 @@ public class BadgeageEtudiant extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
         switch (item.getItemId()) {
             case R.id.menu_code_pin :
-
+                intent = new Intent(this,BadgeageEnseignant.class);
+                intent.putExtra(AdapterEvenements.getNomAct(),_titreActivite);
+                intent.putParcelableArrayListExtra(AdapterEvenements.getListeEtud(),_etudiants);
+                startActivityForResult(intent, 1);
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -71,8 +65,32 @@ public class BadgeageEtudiant extends AppCompatActivity {
 
 
     @Override
-    public void onBackPressed() {
-        //_api.notifyDataSetChanged();
-        finish();
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK){
+                _etudiants = data.getParcelableArrayListExtra(AdapterEvenements.getListeEtud());
+            }
+            if (resultCode == RESULT_CANCELED) {
+
+            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        _api = new AdapterPersonneInscrite(this, _etudiants, AdapterPersonneInscrite.VueChoix.NS);
+
+        _recyclerview.setLayoutManager(new LinearLayoutManager(this));
+        _recyclerview.setAdapter(_api);
+
+        _api.set_listener(new AdapterPersonneInscrite.Listener() {
+            @Override
+            public void onClick(int position) {
+                _api.setPresence(position, Etudiant.STATUE_ETUDIANT.PRESENT);
+                _api.notifyDataSetChanged();
+            }
+        });
     }
 }
