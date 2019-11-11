@@ -1,22 +1,22 @@
 package com.chavau.univ_angers.univemarge.database.entities;
 
-import java.util.Date;
-
 public class Inscription {
     private int idPersonnel;
     private int idInscription;
     private int idEvenement;
     private int numeroEtudiant;
-    private Date dateMaj;
     private boolean deleted;
+    private String typeInscription;
+    private int idAutre;
 
-    public Inscription(int idPersonnel, int idInscription, int idEvenement, int numeroEtudiant, Date dateMaj, boolean deleted) {
+    public Inscription(int idPersonnel, int idInscription, int idEvenement, int numeroEtudiant, boolean deleted, String typeInscription, int idAutre) {
         this.idPersonnel = idPersonnel;
         this.idInscription = idInscription;
         this.idEvenement = idEvenement;
         this.numeroEtudiant = numeroEtudiant;
-        this.dateMaj = dateMaj;
         this.deleted = deleted;
+        this.typeInscription = typeInscription;
+        this.idAutre = idAutre;
     }
 
     public int getIdPersonnel() {
@@ -35,11 +35,19 @@ public class Inscription {
         return numeroEtudiant;
     }
 
-    public Date getDateMaj() {
-        return dateMaj;
+    public String getTypeInscription() {
+        return typeInscription;
     }
 
     public boolean isDeleted() {
         return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public int getIdAutre() {
+        return idAutre;
     }
 }
