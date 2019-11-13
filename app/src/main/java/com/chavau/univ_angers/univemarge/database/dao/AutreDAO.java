@@ -86,11 +86,35 @@ public class AutreDAO extends DAO<Autre> implements IMergeable {
         );
     }
 
+    public ArrayList<Autre> listePersonnelInscritCour(Identifiant id) {
+        SQLiteDatabase db = super.helper.getWritableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT " +
+                        DBTables.Autre.COLONNE_ID_AUTRE + ", " +
+                        DBTables.Autre.COLONNE_NOM + ", " +
+                        DBTables.Autre.COLONNE_PRENOM + ", " +
+                        DBTables.Autre.COLONNE_EMAIL + " " +
+                        "FROM " + DBTables.Autre.TABLE_NAME + " a " +
+                        " INNER JOIN " + DBTables.Inscription.TABLE_NAME + " i " +
+                        " ON a." + DBTables.Autre.COLONNE_ID_AUTRE + " = i." + DBTables.Inscription.COLONNE_ID_AUTRE +
+                        " INNER JOIN " + DBTables.Evenement.TABLE_NAME + " e " +
+                        " ON e." + DBTables.Evenement.COLONNE_ID_EVENEMENT + " = i." + DBTables.Inscription.COLONNE_ID_EVENEMENT +
+                        " WHERE " + DBTables.Evenement.COLONNE_ID_COURS + " = ? ",
+                new String[]{String.valueOf(id.getId(DBTables.Evenement.COLONNE_ID_COURS))});
+
+        ArrayList<Autre> list = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            list.add(this.cursorToType(cursor));
+        }
+        return list;
+    }
+
     public ArrayList<Autre> listePersonnelInscrit(Identifiant id) {
         SQLiteDatabase db = super.helper.getWritableDatabase();
         Cursor cursor = db.rawQuery(
-                "SELECT * FROM " + DBTables.Autre.TABLE_NAME +
-                        " INNER JOIN " + DBTables.Inscription.TABLE_NAME +
+                "SELECT * FROM " + DBTables.Autre.TABLE_NAME + " a" +
+                        " INNER JOIN " + DBTables.Inscription.TABLE_NAME + " i " +
+                        " ON a." + DBTables.Autre.COLONNE_ID_AUTRE + " = i." + DBTables.Inscription.COLONNE_ID_AUTRE +
                         " WHERE " + DBTables.Autre.COLONNE_ID_AUTRE + " = ? ",
                 new String[]{String.valueOf(id.getId(DBTables.Inscription.COLONNE_ID_AUTRE))});
 

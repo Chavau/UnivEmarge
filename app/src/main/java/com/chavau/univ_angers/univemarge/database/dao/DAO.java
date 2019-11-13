@@ -24,6 +24,9 @@ public abstract class DAO<Type> {
 
     public abstract Type cursorToType(Cursor cursor);
 /*
+    TODO: listePersonneInscritCours -> inscrit à un cours
+
+    // Ici pour un evenement
     public final ArrayList<Personne> listePersonneInscrit(ArrayList<Etudiant> etudiants,
                                                     ArrayList<Personnel> personnels,
                                                     ArrayList<Autre> autres) {

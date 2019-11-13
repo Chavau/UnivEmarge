@@ -9,6 +9,7 @@ import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
 import com.chavau.univ_angers.univemarge.database.entities.Entity;
 import com.chavau.univ_angers.univemarge.database.entities.Personnel;
+import com.chavau.univ_angers.univemarge.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -37,8 +38,7 @@ public class PersonnelDAO extends DAO<Personnel> implements IMergeable {
         values.put(DBTables.Personnel.COLONNE_PRENOM, item.getPrenom());
         values.put(DBTables.Personnel.COLONNE_LOGIN, item.getLogin());
         values.put(DBTables.Personnel.COLONNE_EMAIL, item.getEmail());
-        // TODO: convert java.Blob to sql.blob
-//        values.put(DBTables.Personnel.COLONNE_PHOTO, item.getPhoto());
+        values.put(DBTables.Personnel.COLONNE_PHOTO, Utils.convertBlobToString(item.getPhoto()));
         values.put(DBTables.Personnel.COLONNE_NO_MIFARE, item.getNo_mifare());
         values.put(DBTables.Personnel.COLONNE_PIN, item.getPin());
         values.put(DBTables.Personnel.COLONNE_DELETED, item.isDeleted());
@@ -99,8 +99,7 @@ public class PersonnelDAO extends DAO<Personnel> implements IMergeable {
                 cursor.getString(email),
                 cursor.getInt(idPersonnel),
                 cursor.getString(login),
-//                cursor.getBlob(photo),
-                null,
+                Utils.convertByteToBlob(cursor.getBlob(photo)),
                 cursor.getString(no_mifare),
                 cursor.getString(pin),
                 (cursor.getInt(deleted) == 1)
