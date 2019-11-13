@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.chavau.univ_angers.univemarge.sync.APICall;
 import com.chavau.univ_angers.univemarge.view.activities.Authentification;
 import com.chavau.univ_angers.univemarge.view.activities.ListeEvenementsCours;
+import com.chavau.univ_angers.univemarge.view.activities.RFIDActivity;
 
 public class MainActivity extends AppCompatActivity {
 
