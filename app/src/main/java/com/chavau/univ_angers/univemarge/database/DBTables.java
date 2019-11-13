@@ -190,6 +190,7 @@ public final class DBTables {
         public static final String COLONNE_ID_EVENEMENT = "idEvenement";
         public static final String COLONNE_NUMERO_ETUDIANT = "numeroEtudiant";
         public static final String COLONNE_STATUT_PRESENCE = "statutPresence";
+        public static final String COLONNE_DATE_MAJ = "dateMaj";
         public static final String COLONNE_DELETED = "deleted";
         public static final String COLONNE_ID_PERSONNEL = "idPersonnel";
         public static final String COLONNE_ID_AUTRE = "idAutre";
@@ -200,6 +201,7 @@ public final class DBTables {
                         Presence.COLONNE_ID_EVENEMENT + " integer, " +
                         Presence.COLONNE_NUMERO_ETUDIANT + " integer, " +
                         Presence.COLONNE_STATUT_PRESENCE + " integer, " +
+                        Presence.COLONNE_DATE_MAJ + " varchar(255), " +
                         Presence.COLONNE_DELETED + " integer, " +
                         Presence.COLONNE_ID_PERSONNEL + " integer, " +
                         Presence.COLONNE_ID_AUTRE + " integer, " +
