@@ -4,9 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.chavau.univ_angers.univemarge.R;
+import com.chavau.univ_angers.univemarge.database.entities.StatutPresence;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class Etudiant implements Parcelable {
     private String _nom;
@@ -18,7 +18,7 @@ public class Etudiant implements Parcelable {
     public static enum STATUE_ETUDIANT {PRESENT, ABSENT, RETARD, EXCUSE};
     private STATUE_ETUDIANT _etat;
 
-    public static final ArrayList<Etudiant> creerEtudiants () {
+    public static ArrayList<Etudiant> creerEtudiants () {
 
         ArrayList<Etudiant> etu = new ArrayList<>();
 
@@ -82,6 +82,7 @@ public class Etudiant implements Parcelable {
         _numEtud = parcel.readString();
         _typeActivite = parcel.readString();
         _imageId = parcel.readInt();
+        _etat = STATUE_ETUDIANT.values()[parcel.readInt()];
     }
 
     public String get_nom() {
@@ -116,9 +117,14 @@ public class Etudiant implements Parcelable {
         parcel.writeString(get_numEtud());
         parcel.writeString(get_typeActivite());
         parcel.writeInt(get_imageId());
+        parcel.writeInt(_etat.ordinal());
     }
 
     public void set_etat(STATUE_ETUDIANT etat) {
         this._etat = etat;
+    }
+
+    public STATUE_ETUDIANT get_etat() {
+        return _etat;
     }
 }

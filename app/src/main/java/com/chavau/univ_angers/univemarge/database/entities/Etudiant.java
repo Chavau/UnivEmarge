@@ -1,17 +1,46 @@
 package com.chavau.univ_angers.univemarge.database.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import java.sql.Blob;
 
-public class Etudiant extends Personne {
+@JsonIgnoreProperties(value = { "dateMaj" })
+public class Etudiant extends Entity {
+
+    @JsonProperty("numero")
     private int numeroEtudiant;
+
+    @JsonProperty("nom")
+    private String nom;
+
+    @JsonProperty("prenom")
+    private String prenom;
+
+    @JsonProperty("no_mifare")
     private String no_mifare;
+
+    @JsonProperty("email")
+    private String email;
+
+    @JsonIgnore
     private Blob photo;
+
+    @JsonDeserialize(using = NumericBooleanDeserializer.class)
+    @JsonProperty("deleted")
     private boolean deleted;
 
+    // needed for jackson parser
+    public Etudiant() {}
+
     public Etudiant(String nom, String prenom, String email, int numeroEtudiant, String no_mifare, Blob photo, boolean deleted) {
-        super(nom, prenom, email);
         this.numeroEtudiant = numeroEtudiant;
+        this.nom = nom;
+        this.prenom = prenom;
         this.no_mifare = no_mifare;
+        this.email = email;
         this.photo = photo;
         this.deleted = deleted;
     }
@@ -20,8 +49,20 @@ public class Etudiant extends Personne {
         return numeroEtudiant;
     }
 
+    public String getNom() {
+        return nom;
+    }
+
+    public String getPrenom() {
+        return prenom;
+    }
+
     public String getNo_mifare() {
         return no_mifare;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public Blob getPhoto() {

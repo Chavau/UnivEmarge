@@ -3,14 +3,19 @@ package com.chavau.univ_angers.univemarge.database.dao;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import com.chavau.univ_angers.univemarge.database.DBTables;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
+import com.chavau.univ_angers.univemarge.database.entities.Entity;
+import com.chavau.univ_angers.univemarge.database.entities.Responsable;
 import com.chavau.univ_angers.univemarge.database.entities.RoulantParametre;
 import com.chavau.univ_angers.univemarge.utils.Utils;
 
-public class RoulantParametreDAO extends DAO<RoulantParametre> {
+import java.util.Date;
+
+public class RoulantParametreDAO extends DAO<RoulantParametre> implements IMergeable {
     private static final String[] PROJECTION = {
             DBTables.RoulantParametre.COLONNE_ID_COUR,
             DBTables.RoulantParametre.COLONNE_TEMPS_SEANCE,
@@ -78,5 +83,26 @@ public class RoulantParametreDAO extends DAO<RoulantParametre> {
                 Utils.convertStringToDate(cursor.getString(tempsSeance)),
                 cursor.getInt(maxPersonnes)
         );
+    }
+
+    @Override
+    public void merge(Entity[] entities) {
+        for(Entity e : entities) {
+            RoulantParametre roulantParametre = (RoulantParametre) e;
+            deleteItem(roulantParametre.getIdCours(), roulantParametre.getTempsSeance(), roulantParametre.getMaxPersonnes());
+            long res = insertItem(roulantParametre);
+            if(res == -1) {
+                throw new SQLException("Unable to merge RoulantParametre Table");
+            }
+        }
+    }
+
+    private int deleteItem(int idCours, Date tempsSeance, int maxPersonnes) {
+        SQLiteDatabase db = super.helper.getWritableDatabase();
+        return db.delete(DBTables.RoulantParametre.TABLE_NAME,
+                DBTables.RoulantParametre.COLONNE_ID_COUR + " = ? AND " +
+                DBTables.RoulantParametre.COLONNE_TEMPS_SEANCE + " = ? AND " +
+                DBTables.RoulantParametre.COLONNE_MAX_PERSONNES + " = ?",
+                new String[]{String.valueOf(idCours), String.valueOf(tempsSeance), String.valueOf(maxPersonnes)});
     }
 }

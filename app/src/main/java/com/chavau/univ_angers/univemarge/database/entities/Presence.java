@@ -1,13 +1,38 @@
 package com.chavau.univ_angers.univemarge.database.entities;
 
-public class Presence {
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
+import java.util.Date;
+
+public class Presence extends Entity {
     private int idPresence;
     private int idEvenement;
+
+    @JsonProperty("idSeance")
+    private int idSeance;
+
+    @JsonProperty("idInscription")
+    private int idInscription;
+
+    @JsonProperty("numeroEtudiant")
     private int numeroEtudiant;
+
+    @JsonProperty("statutPresence")
     private StatutPresence statutPresence;
+
+    @JsonProperty("dateMaj")
+    private Date dateMaj;
+
+    @JsonDeserialize(using = NumericBooleanDeserializer.class)
+    @JsonProperty("deleted")
     private boolean deleted;
+
     private int idPersonnel;
     private int idAutre;
+
+    // needed for jackson parser
+    public Presence() {}
 
     public Presence(int idPresence, int idEvenement, int numeroEtudiant, StatutPresence statutPresence, boolean deleted, int idPersonnel, int idAutre) {
         this.idPresence = idPresence;

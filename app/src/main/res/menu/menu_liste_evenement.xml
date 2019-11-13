@@ -1,24 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
     <item
-        android:id="@+id/menu_option_calendrier"
-        android:icon="@drawable/ic_iconcalendar"
-        android:title="@string/menu_calendrier"
-        app:showAsAction="ifRoom" />
+        android:icon="@drawable/ic_iconmore"
+        android:title="@string/menu"
+        app:showAsAction="always">
+        <menu>
 
-    <item
-        android:id="@+id/menu_option_synchronisation"
-        android:icon="@drawable/ic_iconsynchron"
-        android:title="@string/menu_synchronisation"
-        app:showAsAction="ifRoom" />
+            <item
+                android:id="@+id/calendar"
+                android:icon="@drawable/ic_iconcalendar"
+                android:title="@string/menu_calendrier" />
+
+            <item
+                android:id="@+id/synchron"
+                android:icon="@drawable/ic_iconsynchron"
+                android:title="@string/menu_synchronisation" />
 
 
-    <item
-        android:id="@+id/menu_option_setting"
-        android:icon="@drawable/ic_iconsetting"
-        android:title="@string/menu_option"
-        app:showAsAction="ifRoom" />
+            <item
+                android:id="@+id/setting"
+                android:icon="@drawable/ic_iconsetting"
+                android:title="@string/menu_option" />
+
+            <item
+                android:id="@+id/deconnect"
+                android:icon="@drawable/ic_iconlogout"
+                android:title="@string/menu_deconnexion" />
+
+        </menu>
+
+
+    </item>
 
 </menu>

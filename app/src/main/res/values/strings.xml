@@ -1,7 +1,7 @@
 <resources>
     <!-- APPLICATION-->
     <string name="app_name">UnivEmarge</string>
-  
+
     <!-- INTERFACE-->
     <string name="photo_de_l_etudiant">Photo de l\'étudiant(e)</string>
     <string name="etat_etudiant">Etat de l\'étudiant(e)</string>
@@ -10,11 +10,11 @@
     <string name="code_pin">Code Pin</string>
 
     <!-- MENU -->
-    <string name="menu_calendrier">menu_calendrier</string>
-    <string name="menu_synchronisation">synchronisation</string>
-    <string name="menu_option">option</string>
-
-
+    <string name="menu">Menu</string>
+    <string name="menu_calendrier">Calendrier</string>
+    <string name="menu_synchronisation">Synchronisation</string>
+    <string name="menu_option">Option</string>
+    <string name="menu_deconnexion">Déconnexion</string>
 
 
     <!-- PREFERENCES-->
@@ -30,4 +30,10 @@
     <string name="connexion_erreur_mdp">Login ou mot de passe incorrect</string>
     <string name="connexion_erreur_champ">Il faut remplir les deux champs</string>
 
+    <!-- Paramètres -->
+    <string name="preference">...</string>
+    <string name="notification">Notifications</string>
+    <string name="old_pass">Ancien code pin</string>
+    <string name="new_pass">Nouveau code pin </string>
+    <string name="Synchronisation_automatique">Synchronisation automatique</string>
 </resources>

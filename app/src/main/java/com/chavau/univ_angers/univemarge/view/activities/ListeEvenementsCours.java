@@ -2,6 +2,7 @@ package com.chavau.univ_angers.univemarge.view.activities;
 
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,7 +14,7 @@ import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.chavau.univ_angers.univemarge.R;
-import com.chavau.univ_angers.univemarge.adapters.AdapterCours;
+import com.chavau.univ_angers.univemarge.adapters.AdapterEvenements;
 import com.chavau.univ_angers.univemarge.intermediaire.Cours;
 
 
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 public class ListeEvenementsCours extends AppCompatActivity {
 
     RecyclerView _recyclerview;
-    AdapterCours _adapterCours;
+    AdapterEvenements _adapterEvenements;
     ArrayList<Cours> _cours = new ArrayList<>();
 
     DatePickerDialog _datepickerdialog;
@@ -39,9 +40,9 @@ public class ListeEvenementsCours extends AppCompatActivity {
 
         _cours = Cours.creeCours();
 
-        _adapterCours = new AdapterCours(this, _cours);
+        _adapterEvenements = new AdapterEvenements(this, _cours);
 
-        _recyclerview.setAdapter(_adapterCours);
+        _recyclerview.setAdapter(_adapterEvenements);
 
     }
 
@@ -54,43 +55,44 @@ public class ListeEvenementsCours extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_option_calendrier:
+            case R.id.calendar:
                 final Calendar cldr = Calendar.getInstance();
                 int day = cldr.get(Calendar.DAY_OF_MONTH);
                 int month = cldr.get(Calendar.MONTH);
                 int year = cldr.get(Calendar.YEAR);
 
-                _datepickerdialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int annee, int mois, int jour) {
-                        mois++; // le mois selectionné correspond à mois+1
+                _datepickerdialog = new DatePickerDialog(this, (datePicker, annee, mois, jour) -> {
+                    mois++; // le mois selectionné correspond à mois+1
 
-                        String date = (jour) + "/" + ((mois < 10) ? "0" + (mois) : String.valueOf(mois)) + "/" + (annee);
-                        ArrayList<Cours> cours = new ArrayList<>();
+                    String date = (jour) + "/" + ((mois < 10) ? "0" + (mois) : String.valueOf(mois)) + "/" + (annee);
+                    ArrayList<Cours> cours = new ArrayList<>();
 
-                        for (Cours c : _cours) {
-                            if (c.get_date() != null && c.get_date().equals(date)) {
-                                cours.add(c);
-                            }
+                    for (Cours c : _cours) {
+                        if (c.get_date() != null && c.get_date().equals(date)) {
+                            cours.add(c);
                         }
-                        // Afficher la liste des évenements correspondants à la date selectionné
-                        _adapterCours.setListeCours(cours);
                     }
+                    // Afficher la liste des évenements correspondants à la date selectionné
+                    _adapterEvenements.setListeCours(cours);
                 }, year, month, day);
 
                 _datepickerdialog.show();
 
                 return true;
-            case R.id.menu_option_synchronisation:
-                //TODO : à enlever, temporaire pour les tests
+            case R.id.synchron:
+                return true;
+            case R.id.setting:
+                Intent start_settings_activity = new Intent(this, SettingsActivity.class);
+                startActivity(start_settings_activity);
+                return true;
+            case R.id.deconnect:
                 SharedPreferences preferences = getSharedPreferences(getResources().getString(R.string.PREFERENCE),0);
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString(getResources().getString(R.string.PREF_LOGIN),"");
                 editor.commit();
                 Toast.makeText(this, "login effacé de l'appli", Toast.LENGTH_LONG).show();
                 return true;
-            case R.id.menu_option_setting:
-                return true;
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -98,6 +100,6 @@ public class ListeEvenementsCours extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        _adapterCours.setListeCours(_cours);
+        _adapterEvenements.setListeCours(_cours);
     }
 }
