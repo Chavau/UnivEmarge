@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import com.chavau.univ_angers.univemarge.MainActivity;
 import com.chavau.univ_angers.univemarge.R;
 import com.chavau.univ_angers.univemarge.adapters.AdapterEvenements;
 import com.chavau.univ_angers.univemarge.intermediaire.Cours;
@@ -86,11 +87,14 @@ public class ListeEvenementsCours extends AppCompatActivity {
                 startActivity(start_settings_activity);
                 return true;
             case R.id.deconnect:
+                //Remet le login à vide ( la clef aussi quand celle-ci sera opérationnelle)
                 SharedPreferences preferences = getSharedPreferences(getResources().getString(R.string.PREFERENCE),0);
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString(getResources().getString(R.string.PREF_LOGIN),"");
                 editor.commit();
-                Toast.makeText(this, "login effacé de l'appli", Toast.LENGTH_LONG).show();
+                // relance la MainActivity qui redirigera vers l'activité d'authentification
+                Intent intent = new Intent(ListeEvenementsCours.this, MainActivity.class);
+                startActivity(intent);
                 return true;
 
         }
