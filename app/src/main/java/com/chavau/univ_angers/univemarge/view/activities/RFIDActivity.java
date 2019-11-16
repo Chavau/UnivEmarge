@@ -2,9 +2,11 @@ package com.chavau.univ_angers.univemarge.view.activities;
 
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.MediaPlayer;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
+import android.nfc.tech.NfcA;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -19,6 +21,91 @@ import com.chavau.univ_angers.univemarge.R;
  * d'envoyer les informations lues à la base de données.
  */
 public class RFIDActivity extends AppCompatActivity {
+//    NFCForegroundUtil nfcForegroundUtil = null;
+//
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        System.out.println("create");
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.lecture_rfid);
+//
+//        nfcForegroundUtil = new NFCForegroundUtil(this);
+//    }
+//
+//    public void onPause() {
+//        System.out.println("pause");
+//        super.onPause();
+//        nfcForegroundUtil.disableForeground();
+//    }
+//
+//    public void onResume() {
+//        System.out.println("resume");
+//        super.onResume();
+//        nfcForegroundUtil.enableForeground();
+//
+//        if (!nfcForegroundUtil.getNfc().isEnabled()) {
+//            Toast.makeText(getApplicationContext(),
+//                    "Please activate NFC and press Back to return to the application!",
+//                    Toast.LENGTH_LONG).show();
+//            startActivity(
+//                    new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
+//        }
+//
+//    }
+//
+//    public void onNewIntent(Intent intent) {
+//        System.out.println("intent");
+//        Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+//    /*StringBuilder sb = new StringBuilder();
+//    for(int i = 0; i < tag.getId().length; i++){
+//        sb.append(new Integer(tag.getId()[i]) + " ");
+//    }*/
+//        System.out.println("TagID: " + bytesToHex(tag.getId()));
+//        //byte[] id = tag.getId();
+//    }
+//
+//    /**
+//     * Convenience method to convert a byte array to a hex string.
+//     *
+//     * @param data the byte[] to convert
+//     * @return String the converted byte[]
+//     */
+//
+//    public static String bytesToHex(byte[] data) {
+//        StringBuffer buf = new StringBuffer();
+//        for (int i = 0; i < data.length; i++) {
+//            buf.append(byteToHex(data[i]).toUpperCase());
+//            buf.append(" ");
+//        }
+//        return (buf.toString());
+//    }
+//
+//    /**
+//     * method to convert a byte to a hex string.
+//     *
+//     * @param data the byte to convert
+//     * @return String the converted byte
+//     */
+//    public static String byteToHex(byte data) {
+//        StringBuffer buf = new StringBuffer();
+//        buf.append(toHexChar((data >>> 4) & 0x0F));
+//        buf.append(toHexChar(data & 0x0F));
+//        return buf.toString();
+//    }
+//
+//    /**
+//     * Convenience method to convert an int to a hex char.
+//     *
+//     * @param i the int to convert
+//     * @return char the converted char
+//     */
+//    public static char toHexChar(int i) {
+//        if ((0 <= i) && (i <= 9)) {
+//            return (char) ('0' + i);
+//        } else {
+//            return (char) ('a' + (i - 10));
+//        }
+//    }
 
     /**
      * L'adaptateur gérant l'intéraction avec le téléphone pour le NFC.
@@ -33,17 +120,14 @@ public class RFIDActivity extends AppCompatActivity {
      * permettant de pouvoir réafficher le message initial de demande de badgeage.
      */
     public int compteur = 0;
-
     /**
      * Contient le son à utiliser lorsque quelqu'un ayant badger est accepté par la base de données.
      */
     public MediaPlayer mp_son_approuver;
-
     /**
      * Contient le son à utiliser lorsque quelqu'un ayant badge n'est pas dans la base de données.
      */
     public MediaPlayer mp_son_refuser;
-
     /**
      * Méthode appelée au lancement de l'activité. Cette activité contient la majorité des initialisations
      * ayant pour but d'assurer un bon fonctionnement de l'application.
@@ -83,8 +167,9 @@ public class RFIDActivity extends AppCompatActivity {
             Toast.makeText(this, "Il faut activer le NFC", Toast.LENGTH_LONG).show();
             startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
         }
-        System.out.println("onCreate");
-        new RFIDActivity.TraitementAsynchrone().execute(getIntent());
+
+        // new RFIDActivity.TraitementAsynchrone().execute(getIntent());
+        System.out.println("RFIDActivity:OnCreate End");
     }
 
     /**
@@ -96,14 +181,30 @@ public class RFIDActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         System.out.println("RFIDActivity:OnResume");
-        System.out.println("getIntent" + getIntent());
 
         Intent intent = new Intent(this, RFIDActivity.class);
         intent.addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
-        nfcAdapter.enableForegroundDispatch(this, pendingIntent, null, null);
+        // TESTS
+        IntentFilter[] intentFilters = new IntentFilter[]{
+                new IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED),
+        };
+        String[][] techLists = new String[][]{
+                new String[]{
+                        NfcA.class.getName()
+                },
+        };
+
+        // BUG !!!
+        try {
+//            nfcAdapter.enableForegroundDispatch(this, pendingIntent, null, null);
+            nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFilters, techLists);
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        System.out.println("RFIDActivity:OnResume End");
     }
 
 
@@ -155,8 +256,8 @@ public class RFIDActivity extends AppCompatActivity {
      */
     private String toReversedHex(byte[] bytes) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < bytes.length; ++i) {
-            int b = bytes[i] & 0xff;
+        for (byte aByte : bytes) {
+            int b = aByte & 0xff;
             if (b < 0x10)
                 sb.append('0');
             sb.append(Integer.toHexString(b).toUpperCase());
@@ -181,7 +282,7 @@ public class RFIDActivity extends AppCompatActivity {
          */
         @Override
         protected String doInBackground(Intent... intents) {
-
+            System.out.println("doInBackground");
             /*
              * Récupérer l'intent
              */
@@ -190,8 +291,6 @@ public class RFIDActivity extends AppCompatActivity {
             Tag tagId = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG); //Récupération du Tag permettant d'avoir l'identifiant
 
             String idEtudiant = dumpTagData(tagId);
-            //Log.e("Identifiant carte Etu",idEtudiant);
-
             /*
              * Permet d'aller dans la méthode onPostExecute
              */
