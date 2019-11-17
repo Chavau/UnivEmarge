@@ -1,11 +1,10 @@
 package com.chavau.univ_angers.univemarge.view.fragment;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
+import android.support.v4.app.Fragment;
 
 import java.io.IOException;
 import java.util.ArrayList;
