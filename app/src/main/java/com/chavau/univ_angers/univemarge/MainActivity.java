@@ -7,6 +7,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.chavau.univ_angers.univemarge.view.activities.CodePinDialogue;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
