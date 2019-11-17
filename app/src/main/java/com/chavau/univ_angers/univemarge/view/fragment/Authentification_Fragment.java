@@ -113,12 +113,12 @@ public class Authentification_Fragment extends Fragment {
             try {
 
                 Response responseok = client.newCall(requestok).execute();
-                String responseBody = responseok.body().string();
+                //String responseBody = responseok.body().string();
 
-                String url_token = responseBody.substring(137, 137+140); // 140 est la longueur de l'url, 137 est la longueur de la chaine avant l'url
+                //String url_token = responseBody.substring(137, 137+140); // 140 est la longueur de l'url, 137 est la longueur de la chaine avant l'url
                 retour =  responseok.isSuccessful();
 
-                System.out.println(" AUTHENTIFICATION : url token : " + url_token);
+                //System.out.println(" AUTHENTIFICATION : url token : " + url_token);
 
                 // TODO : appeler EMA pour verifier l'identité et obtenir la clef
 
