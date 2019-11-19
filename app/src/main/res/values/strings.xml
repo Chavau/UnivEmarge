@@ -36,4 +36,10 @@
     <string name="old_pass">Ancien code pin</string>
     <string name="new_pass">Nouveau code pin </string>
     <string name="Synchronisation_automatique">Synchronisation automatique</string>
+
+    <!-- Configuration -->
+    <string name="etiquetteCapacite">Capacité : </string>
+    <string name="etiquetteTempsMinimum">Temps Minimum : </string>
+    <string name="etiquetteConfigValider">Valider</string>
+    <string name="etiquetteConfigAnnuler">Annuler</string>
 </resources>

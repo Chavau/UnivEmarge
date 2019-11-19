@@ -6,13 +6,45 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.chavau.univ_angers.univemarge.sync.APICall;
 import com.chavau.univ_angers.univemarge.view.activities.Authentification;
 import com.chavau.univ_angers.univemarge.view.activities.ListeEvenementsCours;
+import com.chavau.univ_angers.univemarge.view.fragment.Configuration_dialog;
+
 
 public class MainActivity extends AppCompatActivity {
+
+
+    /**
+     * Capacité d'accueil du cours.
+     */
+
+    private int capacity = 0;
+
+
+    /**
+     * Durée minimale du cours.
+     */
+
+    private String duration = "00:00";
+
+    /**
+     * Méthode Retournant la capacité de la séance
+     * @return Capacité de la sénace
+     */
+
+    public int capacity() { return capacity; }
+
+
+    /**
+     * Méthode Retournant la durée de la séance
+     * @return Durée de la sénace
+     */
+    public String duration() { return duration; }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +101,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    //appel dialog de configuration de la durée et capacité
+    public void configurerCours(View view) {
+        new Configuration_dialog().show(getSupportFragmentManager(),"configClasse");
+    }
 
 
 }
