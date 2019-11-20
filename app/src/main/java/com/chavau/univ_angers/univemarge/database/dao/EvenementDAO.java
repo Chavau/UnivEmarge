@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+
 import com.chavau.univ_angers.univemarge.database.DBTables;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
@@ -101,7 +102,12 @@ public class EvenementDAO extends DAO<Evenement> implements IMergeable {
         );
     }
 
-    // TODO: tester listeEvenementsPourPersonnel
+    /**
+     * Retourne la liste des evenements pour 1 personnel
+     *
+     * @param id
+     * @return ArrayList
+     */
     public ArrayList<Evenement> listeEvenementsPourPersonnel(Identifiant id) {
         SQLiteDatabase db = super.helper.getWritableDatabase();
         Cursor cursor = db.rawQuery(

@@ -2,6 +2,9 @@ package com.chavau.univ_angers.univemarge.database;
 
 import android.provider.BaseColumns;
 
+/**
+ * Classe de structure pour la création de la table (cf. MCD)
+ */
 public final class DBTables {
 
     // Empeche la classe d'etre instancié

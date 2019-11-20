@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+
 import com.chavau.univ_angers.univemarge.database.DBTables;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
@@ -100,6 +101,7 @@ public class EtudiantDAO extends DAO<Etudiant> implements IMergeable {
 
     /**
      * Retourne la liste des etudiants inscrit à un cour
+     *
      * @param id
      * @return ArrayList
      */
@@ -131,6 +133,7 @@ public class EtudiantDAO extends DAO<Etudiant> implements IMergeable {
 
     /**
      * Retourne la liste des etudiants inscrit à un evenement
+     *
      * @param id
      * @return ArrayList
      */
@@ -146,7 +149,7 @@ public class EtudiantDAO extends DAO<Etudiant> implements IMergeable {
                         DBTables.Etudiant.COLONNE_PHOTO + " , " +
                         DBTables.Etudiant.COLONNE_DELETED + " " +
                         " FROM " + DBTables.Etudiant.TABLE_NAME + " e " +
-                        " INNER JOIN " + DBTables.Inscription.TABLE_NAME +  " i " +
+                        " INNER JOIN " + DBTables.Inscription.TABLE_NAME + " i " +
                         " ON e." + DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT + " = i." + DBTables.Inscription.COLONNE_NUMERO_ETUDIANT +
                         " WHERE " + DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT + " = ? ",
                 new String[]{String.valueOf(id.getId(DBTables.Inscription.COLONNE_NUMERO_ETUDIANT))});

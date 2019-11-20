@@ -3,6 +3,7 @@ package com.chavau.univ_angers.univemarge.database.dao;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
 import com.chavau.univ_angers.univemarge.database.DBTables;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
@@ -87,6 +88,7 @@ public class AutreDAO extends DAO<Autre> implements IMergeable {
 
     /**
      * Retourne la liste des autres inscrit à un cour
+     *
      * @param id
      * @return ArrayList
      */
@@ -115,6 +117,7 @@ public class AutreDAO extends DAO<Autre> implements IMergeable {
 
     /**
      * Retourne la liste des autres inscrit à un evenement
+     *
      * @param id
      * @return ArrayList
      */
@@ -136,6 +139,6 @@ public class AutreDAO extends DAO<Autre> implements IMergeable {
 
     @Override
     public void merge(Entity[] entities) {
-        
+
     }
 }

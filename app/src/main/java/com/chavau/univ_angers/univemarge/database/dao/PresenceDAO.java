@@ -102,7 +102,7 @@ public class PresenceDAO extends DAO<Presence> implements IMergeable {
 
     @Override
     public void merge(Entity[] entities) {
-        for(Entity e : entities) {
+        for (Entity e : entities) {
             Presence presence = (Presence) e;
             deleteItem(presence.getIdPresence());
             long res = insertItem(presence);
