@@ -85,8 +85,9 @@ public class BadgeageEtudiant extends AppCompatActivity {
         _recyclerview.setAdapter(_api);
 
         _api.set_listener(position -> {
-            _api.setPresence(position, Etudiant.STATUE_ETUDIANT.PRESENT);
-            _api.notifyDataSetChanged();
+            //TODO : utilité de ces lignes ? met en vert lors d'un click lors du badgeage
+            //_api.setPresence(position, Etudiant.STATUE_ETUDIANT.PRESENT);
+            //_api.notifyDataSetChanged();
         });
     }
 }

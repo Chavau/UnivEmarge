@@ -2,7 +2,7 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/HeightLinearLayout"
-    android:layout_margin="5dp"
+    android:layout_margin="2dp"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -83,6 +83,7 @@
             android:layout_weight="1"
             android:id="@+id/tv_menu_presence"
             android:text="&#8942;"
+            android:textSize="25sp"
             android:textColor="@color/noir"
             android:layout_marginRight="10dp"
             android:gravity="center_vertical|right"/>
