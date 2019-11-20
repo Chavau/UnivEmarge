@@ -112,14 +112,14 @@ public class EvenementDAO extends DAO<Evenement> implements IMergeable {
         SQLiteDatabase db = super.helper.getWritableDatabase();
         Cursor cursor = db.rawQuery(
                 "SELECT " +
-                        DBTables.Evenement.COLONNE_ID_EVENEMENT + ", " +
-                        DBTables.Evenement.COLONNE_DATE_DEBUT + ", " +
-                        DBTables.Evenement.COLONNE_DATE_FIN + ", " +
-                        DBTables.Evenement.COLONNE_LIEU + ", " +
-                        DBTables.Evenement.COLONNE_TYPE_EMARGEMENT + ", " +
-                        DBTables.Evenement.COLONNE_LIBELLE_EVENEMENT + ", " +
-                        DBTables.Evenement.COLONNE_ID_COURS + ", " +
-                        DBTables.Evenement.COLONNE_DELETED + " " +
+                        " e." + DBTables.Evenement.COLONNE_ID_EVENEMENT + ", " +
+                        " e." + DBTables.Evenement.COLONNE_DATE_DEBUT + ", " +
+                        " e." + DBTables.Evenement.COLONNE_DATE_FIN + ", " +
+                        " e." + DBTables.Evenement.COLONNE_LIEU + ", " +
+                        " e." + DBTables.Evenement.COLONNE_TYPE_EMARGEMENT + ", " +
+                        " e." + DBTables.Evenement.COLONNE_LIBELLE_EVENEMENT + ", " +
+                        " e." + DBTables.Evenement.COLONNE_ID_COURS + ", " +
+                        " e." + DBTables.Evenement.COLONNE_DELETED + " " +
                         " FROM " + DBTables.Evenement.TABLE_NAME + " e " +
                         " INNER JOIN " + DBTables.Responsable.TABLE_NAME + " r " +
                         " ON e." + DBTables.Evenement.COLONNE_ID_EVENEMENT + " = r." + DBTables.Responsable.COLONNE_ID_EVENEMENT +

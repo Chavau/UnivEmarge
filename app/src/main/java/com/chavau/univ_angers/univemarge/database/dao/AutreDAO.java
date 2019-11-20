@@ -96,10 +96,10 @@ public class AutreDAO extends DAO<Autre> implements IMergeable {
         SQLiteDatabase db = super.helper.getWritableDatabase();
         Cursor cursor = db.rawQuery(
                 "SELECT " +
-                        DBTables.Autre.COLONNE_ID_AUTRE + ", " +
-                        DBTables.Autre.COLONNE_NOM + ", " +
-                        DBTables.Autre.COLONNE_PRENOM + ", " +
-                        DBTables.Autre.COLONNE_EMAIL + " " +
+                        " a." + DBTables.Autre.COLONNE_ID_AUTRE + ", " +
+                        " a." + DBTables.Autre.COLONNE_NOM + ", " +
+                        " a." + DBTables.Autre.COLONNE_PRENOM + ", " +
+                        " a." + DBTables.Autre.COLONNE_EMAIL + " " +
                         "FROM " + DBTables.Autre.TABLE_NAME + " a " +
                         " INNER JOIN " + DBTables.Inscription.TABLE_NAME + " i " +
                         " ON a." + DBTables.Autre.COLONNE_ID_AUTRE + " = i." + DBTables.Inscription.COLONNE_ID_AUTRE +
@@ -124,7 +124,12 @@ public class AutreDAO extends DAO<Autre> implements IMergeable {
     public ArrayList<Autre> listeAutresInscrit(Identifiant id) {
         SQLiteDatabase db = super.helper.getWritableDatabase();
         Cursor cursor = db.rawQuery(
-                "SELECT * FROM " + DBTables.Autre.TABLE_NAME + " a" +
+                "SELECT " +
+                        " a." + DBTables.Autre.COLONNE_ID_AUTRE + ", " +
+                        " a." + DBTables.Autre.COLONNE_NOM + ", " +
+                        " a." + DBTables.Autre.COLONNE_PRENOM + ", " +
+                        " a." + DBTables.Autre.COLONNE_EMAIL + " " +
+                        " FROM " + DBTables.Autre.TABLE_NAME + " a" +
                         " INNER JOIN " + DBTables.Inscription.TABLE_NAME + " i " +
                         " ON a." + DBTables.Autre.COLONNE_ID_AUTRE + " = i." + DBTables.Inscription.COLONNE_ID_AUTRE +
                         " WHERE " + DBTables.Autre.COLONNE_ID_AUTRE + " = ? ",

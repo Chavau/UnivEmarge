@@ -109,13 +109,13 @@ public class EtudiantDAO extends DAO<Etudiant> implements IMergeable {
         SQLiteDatabase db = super.helper.getWritableDatabase();
         Cursor cursor = db.rawQuery(
                 "SELECT " +
-                        DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT + " , " +
-                        DBTables.Etudiant.COLONNE_NOM + " , " +
-                        DBTables.Etudiant.COLONNE_PRENOM + " , " +
-                        DBTables.Etudiant.COLONNE_NO_MIFARE + " , " +
-                        DBTables.Etudiant.COLONNE_EMAIL + " , " +
-                        DBTables.Etudiant.COLONNE_PHOTO + " , " +
-                        DBTables.Etudiant.COLONNE_DELETED + " " +
+                        " e." + DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT + " , " +
+                        " e." + DBTables.Etudiant.COLONNE_NOM + " , " +
+                        " e." + DBTables.Etudiant.COLONNE_PRENOM + " , " +
+                        " e." + DBTables.Etudiant.COLONNE_NO_MIFARE + " , " +
+                        " e." + DBTables.Etudiant.COLONNE_EMAIL + " , " +
+                        " e." + DBTables.Etudiant.COLONNE_PHOTO + " , " +
+                        " e." + DBTables.Etudiant.COLONNE_DELETED + " " +
                         "FROM " + DBTables.Autre.TABLE_NAME + " a " +
                         " INNER JOIN " + DBTables.Inscription.TABLE_NAME + " i " +
                         " ON a." + DBTables.Autre.COLONNE_ID_AUTRE + " = i." + DBTables.Inscription.COLONNE_ID_AUTRE +
@@ -141,13 +141,13 @@ public class EtudiantDAO extends DAO<Etudiant> implements IMergeable {
         SQLiteDatabase db = super.helper.getWritableDatabase();
         Cursor cursor = db.rawQuery(
                 "SELECT " +
-                        DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT + " , " +
-                        DBTables.Etudiant.COLONNE_NOM + " , " +
-                        DBTables.Etudiant.COLONNE_PRENOM + " , " +
-                        DBTables.Etudiant.COLONNE_NO_MIFARE + " , " +
-                        DBTables.Etudiant.COLONNE_EMAIL + " , " +
-                        DBTables.Etudiant.COLONNE_PHOTO + " , " +
-                        DBTables.Etudiant.COLONNE_DELETED + " " +
+                        " e." + DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT + " , " +
+                        " e." + DBTables.Etudiant.COLONNE_NOM + " , " +
+                        " e." + DBTables.Etudiant.COLONNE_PRENOM + " , " +
+                        " e." + DBTables.Etudiant.COLONNE_NO_MIFARE + " , " +
+                        " e." + DBTables.Etudiant.COLONNE_EMAIL + " , " +
+                        " e." + DBTables.Etudiant.COLONNE_PHOTO + " , " +
+                        " e." + DBTables.Etudiant.COLONNE_DELETED + " " +
                         " FROM " + DBTables.Etudiant.TABLE_NAME + " e " +
                         " INNER JOIN " + DBTables.Inscription.TABLE_NAME + " i " +
                         " ON e." + DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT + " = i." + DBTables.Inscription.COLONNE_NUMERO_ETUDIANT +
