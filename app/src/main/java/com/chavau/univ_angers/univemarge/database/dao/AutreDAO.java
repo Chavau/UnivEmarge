@@ -85,7 +85,12 @@ public class AutreDAO extends DAO<Autre> implements IMergeable {
         );
     }
 
-    public ArrayList<Autre> listePersonnelInscritCour(Identifiant id) {
+    /**
+     * Retourne la liste des autres inscrit à un cour
+     * @param id
+     * @return ArrayList
+     */
+    public ArrayList<Autre> listeAutresInscritCour(Identifiant id) {
         SQLiteDatabase db = super.helper.getWritableDatabase();
         Cursor cursor = db.rawQuery(
                 "SELECT " +
@@ -108,7 +113,12 @@ public class AutreDAO extends DAO<Autre> implements IMergeable {
         return list;
     }
 
-    public ArrayList<Autre> listePersonnelInscrit(Identifiant id) {
+    /**
+     * Retourne la liste des autres inscrit à un evenement
+     * @param id
+     * @return ArrayList
+     */
+    public ArrayList<Autre> listeAutresInscrit(Identifiant id) {
         SQLiteDatabase db = super.helper.getWritableDatabase();
         Cursor cursor = db.rawQuery(
                 "SELECT * FROM " + DBTables.Autre.TABLE_NAME + " a" +

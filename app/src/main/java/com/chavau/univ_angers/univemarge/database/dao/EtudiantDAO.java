@@ -98,6 +98,11 @@ public class EtudiantDAO extends DAO<Etudiant> implements IMergeable {
         );
     }
 
+    /**
+     * Retourne la liste des etudiants inscrit à un cour
+     * @param id
+     * @return ArrayList
+     */
     public ArrayList<Etudiant> listeEtudiantInscritCours(Identifiant id) {
         SQLiteDatabase db = super.helper.getWritableDatabase();
         Cursor cursor = db.rawQuery(
@@ -124,6 +129,11 @@ public class EtudiantDAO extends DAO<Etudiant> implements IMergeable {
         return list;
     }
 
+    /**
+     * Retourne la liste des etudiants inscrit à un evenement
+     * @param id
+     * @return ArrayList
+     */
     public ArrayList<Etudiant> listeEtudiantInscrit(Identifiant id) {
         SQLiteDatabase db = super.helper.getWritableDatabase();
         Cursor cursor = db.rawQuery(

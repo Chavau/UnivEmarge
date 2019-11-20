@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.chavau.univ_angers.univemarge.database.DBTables;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
+import com.chavau.univ_angers.univemarge.database.entities.Autre;
 import com.chavau.univ_angers.univemarge.database.entities.Entity;
 import com.chavau.univ_angers.univemarge.database.entities.Personnel;
 import com.chavau.univ_angers.univemarge.utils.Utils;
@@ -106,6 +107,46 @@ public class PersonnelDAO extends DAO<Personnel> implements IMergeable {
         );
     }
 
+    /**
+     * Retourne la liste du personnel inscrit à un cour
+     *
+     * @param id
+     * @return ArrayList
+     */
+    public ArrayList<Personnel> listePersonnelInscritCour(Identifiant id) {
+        SQLiteDatabase db = super.helper.getWritableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT " +
+                        DBTables.Personnel.COLONNE_ID_PERSONNEL + ", " +
+                        DBTables.Personnel.COLONNE_NOM + ", " +
+                        DBTables.Personnel.COLONNE_PRENOM + ", " +
+                        DBTables.Personnel.COLONNE_LOGIN + ", " +
+                        DBTables.Personnel.COLONNE_EMAIL + ", " +
+                        DBTables.Personnel.COLONNE_PHOTO + ", " +
+                        DBTables.Personnel.COLONNE_NO_MIFARE + ", " +
+                        DBTables.Personnel.COLONNE_PIN + ", " +
+                        DBTables.Personnel.COLONNE_DELETED +
+                        " FROM " + DBTables.Personnel.TABLE_NAME + " p " +
+                        " INNER JOIN " + DBTables.Inscription.TABLE_NAME + " i " +
+                        " ON p." + DBTables.Personnel.COLONNE_ID_PERSONNEL + " = i." + DBTables.Inscription.COLONNE_ID_PERSONNEL +
+                        " INNER JOIN " + DBTables.Evenement.TABLE_NAME + " e " +
+                        " ON e." + DBTables.Evenement.COLONNE_ID_EVENEMENT + " = i." + DBTables.Inscription.COLONNE_ID_EVENEMENT +
+                        " WHERE " + DBTables.Evenement.COLONNE_ID_COURS + " = ? ",
+                new String[]{String.valueOf(id.getId(DBTables.Evenement.COLONNE_ID_COURS))});
+
+        ArrayList<Personnel> list = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            list.add(this.cursorToType(cursor));
+        }
+        return list;
+    }
+
+    /**
+     * Retourne la liste des etudiants inscrit à un evenement
+     *
+     * @param id
+     * @return
+     */
     public ArrayList<Personnel> listePersonnelInscrit(Identifiant id) {
         SQLiteDatabase db = super.helper.getWritableDatabase();
         Cursor cursor = db.rawQuery(
