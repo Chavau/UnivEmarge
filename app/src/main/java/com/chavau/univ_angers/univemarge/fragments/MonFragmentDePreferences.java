@@ -1,5 +1,6 @@
 package com.chavau.univ_angers.univemarge.fragments;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v14.preference.SwitchPreference;
 import android.support.v7.preference.EditTextPreference;
@@ -23,8 +24,6 @@ public class MonFragmentDePreferences extends PreferenceFragmentCompat {
 
     EditText et_new_pin;
     Button btn_change_pin;
-
-
 
 
     @Override
@@ -86,18 +85,32 @@ public class MonFragmentDePreferences extends PreferenceFragmentCompat {
             public void onClick(View view) {
                 String newPassSaisi = et_new_pin.getText().toString();
                 if (newPassSaisi.isEmpty()) {
-                    Toast.makeText(getActivity(), "Veuillez remplir le nouveau code pin !", Toast.LENGTH_LONG).show();
+                    // Toast.makeText(getActivity(), "Veuillez remplir le nouveau code pin !", Toast.LENGTH_LONG).show();
+                    dialog_msg("Veuillez remplir le nouveau code pin !");
                 } else {
                     if (newPassSaisi.length() != 4) {
-                        Toast.makeText(getActivity(), "Votre nouveau code pin doit avoir 4 numéros !", Toast.LENGTH_LONG).show();
+                       // Toast.makeText(getActivity(), "Votre nouveau code pin doit avoir 4 numéros !", Toast.LENGTH_LONG).show();
+                        dialog_msg("Votre nouveau code pin doit avoir 4 numéros !");
                     } else {
                         etp_old_pin.setText(et_new_pin.getText().toString());
-                        Toast.makeText(getActivity(), "Code pin modifié avec succès !", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getActivity(), "Code pin modifié avec succès !", Toast.LENGTH_LONG).show();
+                        dialog_msg("Code pin modifié avec succès !");
                     }
                 }
             }
         });
     }
+
+    public void dialog_msg(String msg) {
+
+        //final SettingsActivity activity = (SettingsActivity) getActivity();
+        new AlertDialog.Builder(getActivity())
+                .setTitle(msg)
+                //.setView(view)
+                .setPositiveButton("DONE", null)
+                .create().show();
+    }
+
 
     @Override
     public void onStart() {
