@@ -3,7 +3,7 @@
     <string name="app_name">UnivEmarge</string>
   
     <!-- INTERFACE-->
-    <string name="menu_calendrier">menu_calendrier</string>
+    <string name="menu_calendrier">Calendrier</string>
     <string name="photo_de_l_etudiant">Photo de l\'étudiant(e)</string>
     <string name="etat_etudiant">Etat de l\'étudiant(e)</string>
     <string name="modifier_une_s_ance">Modifier une séance</string>

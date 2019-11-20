@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.chavau.univ_angers.univemarge.R;
 import com.chavau.univ_angers.univemarge.intermediaire.Cours;
 import com.chavau.univ_angers.univemarge.view.activities.BadgeageEtudiant;
+import com.chavau.univ_angers.univemarge.view.activities.Musculation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,7 @@ public class AdapterEvenements extends RecyclerView.Adapter<AdapterEvenements.Vi
     }
 
     @Override
-    public void onBindViewHolder(ViewHolderCours viewHolderCours, final int i) {
+    public void onBindViewHolder(final ViewHolderCours viewHolderCours, final int i) {
         final Cours cours = _cours.get(i);
         final CardView cardview = viewHolderCours._cardview;
 
@@ -69,16 +70,25 @@ public class AdapterEvenements extends RecyclerView.Adapter<AdapterEvenements.Vi
         cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Préparation des données à envoyer au deuxième activité
-                Intent intent = new Intent(_context, BadgeageEtudiant.class);
-                intent.putExtra(AdapterEvenements.getNomAct(),((TextView) cardview.findViewById(R.id.tv_intituleCours)).getText().toString());
 
-                // Envoie la liste des étudiant(e)s inscrit(e)s dans l'activité
-                intent.putParcelableArrayListExtra(AdapterEvenements.getListeEtud(),cours.get_listeEtudiantInscrit());
+                if (cours.get_intitule() != "Musculation") {
+                    // Préparation des données à envoyer au deuxième activité
+                    Intent intent = new Intent(_context, BadgeageEtudiant.class);
+                    intent.putExtra(AdapterEvenements.getNomAct(),((TextView) cardview.findViewById(R.id.tv_intituleCours)).getText().toString());
 
-                //Commencer la deuxième activité
-                _context.startActivity(intent);
+                    // Envoie la liste des étudiant(e)s inscrit(e)s dans l'activité
+                    intent.putParcelableArrayListExtra(AdapterEvenements.getListeEtud(),cours.get_listeEtudiantInscrit());
+
+                    //Commencer la deuxième activité
+                    _context.startActivity(intent);
+                }
+                else {
+                    Intent intent = new Intent(_context, Musculation.class);
+                    _context.startActivity(intent);
+                }
+
             }
+
         });
 
     }

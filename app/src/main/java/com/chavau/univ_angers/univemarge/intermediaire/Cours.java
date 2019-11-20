@@ -52,7 +52,7 @@ public class Cours {
     public static final ArrayList<Cours> creeCours() {
         ArrayList<com.chavau.univ_angers.univemarge.intermediaire.Cours> cours = new ArrayList<>();
 
-        String nomCours[] = {"Logique et techniques de preuve", "Programmation avancée en C++",
+        String nomCours[] = {"Musculation","Logique et techniques de preuve", "Programmation avancée en C++",
                 "Analyse et conception de systèmes d'information", "Introduction à la programmation",
                 "Pratique du génie logiciel", "Réseaux pour ingénieurs", "Mathématiques pour informaticien",
                 "Informatique théorique", "Développement d'applications Web", "Introduction à la robotique mobile",

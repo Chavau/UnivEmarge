@@ -8,6 +8,7 @@
     android:scrollbars="vertical"
     android:focusable="true"
     android:clickable="true"
+    android:layout_margin="2dp"
     android:foreground="?android:attr/selectableItemBackground"
     cardview:contentPadding="5dp"
     cardview:cardCornerRadius="4dp"
