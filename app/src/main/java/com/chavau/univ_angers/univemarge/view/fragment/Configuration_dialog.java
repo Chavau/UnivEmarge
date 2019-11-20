@@ -11,7 +11,10 @@ import android.view.View;
 import android.widget.NumberPicker;
 import android.widget.TimePicker;
 
-public class Configuration_dialog {
+import com.chavau.univ_angers.univemarge.MainActivity;
+import com.chavau.univ_angers.univemarge.R;
+
+public class Configuration_dialog extends DialogFragment{
 
 
     /**
@@ -39,7 +42,7 @@ public class Configuration_dialog {
          * inutile d'abstraire ceux avec qui on communique
          */
         final MainActivity activity = (MainActivity) getActivity();
-        final View view = LayoutInflater.from(activity).inflate(R.layout.dialog_config,null);
+        final View view = LayoutInflater.from(activity).inflate(R.layout.vue_configuration,null);
 
         /*
          * Initialiser la sélection de la capacité à la valeur actuelle
