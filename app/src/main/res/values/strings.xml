@@ -1,7 +1,7 @@
 <resources>
     <!-- APPLICATION-->
     <string name="app_name">UnivEmarge</string>
-  
+
     <!-- INTERFACE-->
     <string name="photo_de_l_etudiant">Photo de l\'étudiant(e)</string>
     <string name="etat_etudiant">Etat de l\'étudiant(e)</string>
@@ -30,4 +30,10 @@
     <string name="connexion_erreur_mdp">Login ou mot de passe incorrect</string>
     <string name="connexion_erreur_champ">Il faut remplir les deux champs</string>
 
+    <!-- Paramètres -->
+    <string name="preference">...</string>
+    <string name="notification">Notifications</string>
+    <string name="old_pass">Ancien code pin</string>
+    <string name="new_pass">Nouveau code pin </string>
+    <string name="Synchronisation_automatique">Synchronisation automatique</string>
 </resources>

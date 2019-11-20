@@ -1,11 +1,24 @@
 package com.chavau.univ_angers.univemarge.database.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
 
-public class RoulantParametre {
+@JsonIgnoreProperties(value = { "dateMaj" })
+public class RoulantParametre extends Entity {
+
+    @JsonProperty("id")
     private int idCours;
+
+    @JsonProperty("")
     private Date tempsSeance;
+
+    @JsonProperty("")
     private int maxPersonnes;
+
+    // needed for jackson parser
+    public RoulantParametre() {}
 
     public RoulantParametre(int idCours, Date tempsSeance, int maxPersonnes) {
         this.idCours = idCours;

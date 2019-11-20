@@ -2,6 +2,7 @@ package com.chavau.univ_angers.univemarge.view.activities;
 
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.MenuItem;
 import android.widget.DatePicker;
 import android.widget.Toast;
 
+import com.chavau.univ_angers.univemarge.MainActivity;
 import com.chavau.univ_angers.univemarge.R;
 import com.chavau.univ_angers.univemarge.adapters.AdapterEvenements;
 import com.chavau.univ_angers.univemarge.intermediaire.Cours;
@@ -60,37 +62,41 @@ public class ListeEvenementsCours extends AppCompatActivity {
                 int month = cldr.get(Calendar.MONTH);
                 int year = cldr.get(Calendar.YEAR);
 
-                _datepickerdialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int annee, int mois, int jour) {
-                        mois++; // le mois selectionné correspond à mois+1
+                _datepickerdialog = new DatePickerDialog(this, (datePicker, annee, mois, jour) -> {
+                    mois++; // le mois selectionné correspond à mois+1
 
-                        String date = (jour) + "/" + ((mois < 10) ? "0" + (mois) : String.valueOf(mois)) + "/" + (annee);
-                        ArrayList<Cours> cours = new ArrayList<>();
+                    String date = (jour) + "/" + ((mois < 10) ? "0" + (mois) : String.valueOf(mois)) + "/" + (annee);
+                    ArrayList<Cours> cours = new ArrayList<>();
 
-                        for (Cours c : _cours) {
-                            if (c.get_date() != null && c.get_date().equals(date)) {
-                                cours.add(c);
-                            }
+                    for (Cours c : _cours) {
+                        if (c.get_date() != null && c.get_date().equals(date)) {
+                            cours.add(c);
                         }
-                        // Afficher la liste des évenements correspondants à la date selectionné
-                        _adapterEvenements.setListeCours(cours);
                     }
+                    // Afficher la liste des évenements correspondants à la date selectionné
+                    _adapterEvenements.setListeCours(cours);
                 }, year, month, day);
 
                 _datepickerdialog.show();
 
                 return true;
             case R.id.synchron:
-                //TODO : à enlever, temporaire pour les tests
+                return true;
+            case R.id.setting:
+                Intent start_settings_activity = new Intent(this, SettingsActivity.class);
+                startActivity(start_settings_activity);
+                return true;
+            case R.id.deconnect:
+                //Remet le login à vide ( la clef aussi quand celle-ci sera opérationnelle)
                 SharedPreferences preferences = getSharedPreferences(getResources().getString(R.string.PREFERENCE),0);
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString(getResources().getString(R.string.PREF_LOGIN),"");
                 editor.commit();
-                Toast.makeText(this, "login effacé de l'appli", Toast.LENGTH_LONG).show();
+                // relance la MainActivity qui redirigera vers l'activité d'authentification
+                Intent intent = new Intent(ListeEvenementsCours.this, MainActivity.class);
+                startActivity(intent);
                 return true;
-            case R.id.setting:
-                return true;
+
         }
 
         return super.onOptionsItemSelected(item);

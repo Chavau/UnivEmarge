@@ -88,7 +88,6 @@ public class AdapterEvenements extends RecyclerView.Adapter<AdapterEvenements.Vi
                 }
 
             }
-
         });
 
     }

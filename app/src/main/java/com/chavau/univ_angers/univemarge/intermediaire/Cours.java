@@ -1,9 +1,6 @@
 package com.chavau.univ_angers.univemarge.intermediaire;
 
-import com.chavau.univ_angers.univemarge.R;
-
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Random;
 
 public class Cours {
@@ -49,7 +46,7 @@ public class Cours {
         return _listeEtudiantInscrit;
     }
 
-    public static final ArrayList<Cours> creeCours() {
+    public static ArrayList<Cours> creeCours() {
         ArrayList<com.chavau.univ_angers.univemarge.intermediaire.Cours> cours = new ArrayList<>();
 
         String nomCours[] = {"Musculation","Logique et techniques de preuve", "Programmation avancée en C++",

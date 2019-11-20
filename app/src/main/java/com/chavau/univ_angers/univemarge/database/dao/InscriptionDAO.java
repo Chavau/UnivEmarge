@@ -2,13 +2,16 @@ package com.chavau.univ_angers.univemarge.database.dao;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import com.chavau.univ_angers.univemarge.database.DBTables;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
+import com.chavau.univ_angers.univemarge.database.entities.Entity;
+import com.chavau.univ_angers.univemarge.database.entities.Evenement;
 import com.chavau.univ_angers.univemarge.database.entities.Inscription;
 
-public class InscriptionDAO extends DAO<Inscription> {
+public class InscriptionDAO extends DAO<Inscription> implements IMergeable {
     private static final String[] PROJECTION = {
             DBTables.Inscription.COLONNE_ID_PERSONNEL,
             DBTables.Inscription.COLONNE_ID_INSCRIPTION,
@@ -90,5 +93,22 @@ public class InscriptionDAO extends DAO<Inscription> {
                 cursor.getString(typeInscription),
                 cursor.getInt(idAutre)
         );
+    }
+
+    @Override
+    public void merge(Entity[] entities) {
+        for(Entity e : entities) {
+            Inscription inscription = (Inscription) e;
+            deleteItem(inscription.getIdInscription());
+            long res = insertItem(inscription);
+            if(res == -1) {
+                throw new SQLException("Unable to merge Inscription Table");
+            }
+        }
+    }
+
+    private int deleteItem(int idInscription) {
+        SQLiteDatabase db = super.helper.getWritableDatabase();
+        return db.delete(DBTables.Inscription.TABLE_NAME, DBTables.Inscription.COLONNE_ID_INSCRIPTION + " = ?", new String[]{String.valueOf(idInscription)});
     }
 }

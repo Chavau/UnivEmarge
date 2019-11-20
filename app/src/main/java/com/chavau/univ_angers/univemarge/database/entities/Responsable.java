@@ -1,9 +1,25 @@
 package com.chavau.univ_angers.univemarge.database.entities;
 
-public class Responsable {
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Date;
+
+public class Responsable extends Entity {
+
+    @JsonProperty("")
     private int idEvenement;
+
+    @JsonProperty("")
     private int idPersonnelResponsable;
+
+    @JsonProperty("")
+    private Date dateMaj;
+
+    @JsonProperty("")
     private boolean deleted;
+
+    // needed for jackson parser
+    public Responsable() {}
 
     public Responsable(int idEvenement, int idPersonnelResponsable, boolean deleted) {
         this.idEvenement = idEvenement;

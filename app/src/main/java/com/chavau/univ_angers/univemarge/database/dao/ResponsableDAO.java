@@ -2,13 +2,15 @@ package com.chavau.univ_angers.univemarge.database.dao;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import com.chavau.univ_angers.univemarge.database.DBTables;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
+import com.chavau.univ_angers.univemarge.database.entities.Entity;
 import com.chavau.univ_angers.univemarge.database.entities.Responsable;
 
-public class ResponsableDAO extends DAO<Responsable> {
+public class ResponsableDAO extends DAO<Responsable> implements IMergeable {
     private static final String[] PROJECTION = {
             DBTables.Responsable.COLONNE_ID_EVENEMENT,
             DBTables.Responsable.COLONNE_ID_PERSONNEL_RESPONSABLE,
@@ -78,5 +80,22 @@ public class ResponsableDAO extends DAO<Responsable> {
                 cursor.getInt(idPersonnelResponsable),
                 (cursor.getInt(deleted) == 1)
         );
+    }
+
+    @Override
+    public void merge(Entity[] entities) {
+        for(Entity e : entities) {
+            Responsable responsable = (Responsable) e;
+            deleteItem(responsable.getIdPersonnelResponsable());
+            long res = insertItem(responsable);
+            if(res == -1) {
+                throw new SQLException("Unable to merge Responsable Table");
+            }
+        }
+    }
+
+    private int deleteItem(int idPersonnelResponsable) {
+        SQLiteDatabase db = super.helper.getWritableDatabase();
+        return db.delete(DBTables.Responsable.TABLE_NAME, DBTables.Responsable.COLONNE_ID_PERSONNEL_RESPONSABLE + " = ?", new String[]{String.valueOf(idPersonnelResponsable)});
     }
 }

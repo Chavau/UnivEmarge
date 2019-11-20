@@ -2,16 +2,18 @@ package com.chavau.univ_angers.univemarge.database.dao;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import com.chavau.univ_angers.univemarge.database.DBTables;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
+import com.chavau.univ_angers.univemarge.database.entities.Entity;
 import com.chavau.univ_angers.univemarge.database.entities.Evenement;
 import com.chavau.univ_angers.univemarge.utils.Utils;
 
 import java.util.ArrayList;
 
-public class EvenementDAO extends DAO<Evenement> {
+public class EvenementDAO extends DAO<Evenement> implements IMergeable {
 
     private static final String[] PROJECTION = {
             DBTables.Evenement.COLONNE_ID_EVENEMENT,
@@ -104,8 +106,8 @@ public class EvenementDAO extends DAO<Evenement> {
         SQLiteDatabase db = super.helper.getWritableDatabase();
         Cursor cursor = db.rawQuery(
                 "SELECT * FROM " + DBTables.Evenement.TABLE_NAME +
-                " INNER JOIN " + DBTables.Responsable.TABLE_NAME +
-                " WHERE " + DBTables.Responsable.COLONNE_ID_PERSONNEL_RESPONSABLE + " = ? ",
+                        " INNER JOIN " + DBTables.Responsable.TABLE_NAME +
+                        " WHERE " + DBTables.Responsable.COLONNE_ID_PERSONNEL_RESPONSABLE + " = ? ",
                 new String[]{String.valueOf(id.getId(DBTables.Responsable.COLONNE_ID_PERSONNEL_RESPONSABLE))});
 
         ArrayList<Evenement> list = new ArrayList<>();
@@ -113,5 +115,22 @@ public class EvenementDAO extends DAO<Evenement> {
             list.add(this.cursorToType(cursor));
         }
         return list;
+    }
+
+    @Override
+    public void merge(Entity[] entities) {
+        for(Entity e : entities) {
+            Evenement evenement = (Evenement) e;
+            deleteItem(evenement.getIdEvenement());
+            long res = insertItem(evenement);
+            if(res == -1) {
+                throw new SQLException("Unable to merge Evenement Table");
+            }
+        }
+    }
+
+    private int deleteItem(int idEvenement) {
+        SQLiteDatabase db = super.helper.getWritableDatabase();
+        return db.delete(DBTables.Evenement.TABLE_NAME, DBTables.Evenement.COLONNE_ID_EVENEMENT + " = ?", new String[]{String.valueOf(idEvenement)});
     }
 }

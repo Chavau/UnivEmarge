@@ -2,14 +2,16 @@ package com.chavau.univ_angers.univemarge.database.dao;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import com.chavau.univ_angers.univemarge.database.DBTables;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
+import com.chavau.univ_angers.univemarge.database.entities.Entity;
 import com.chavau.univ_angers.univemarge.database.entities.Presence;
 import com.chavau.univ_angers.univemarge.database.entities.StatutPresence;
 
-public class PresenceDAO extends DAO<Presence> {
+public class PresenceDAO extends DAO<Presence> implements IMergeable {
     private static final String[] PROJECTION = {
             DBTables.Presence.COLONNE_ID_PRESENCE,
             DBTables.Presence.COLONNE_ID_EVENEMENT,
@@ -91,5 +93,22 @@ public class PresenceDAO extends DAO<Presence> {
                 cursor.getInt(idPersonnel),
                 cursor.getInt(idAutre)
         );
+    }
+
+    @Override
+    public void merge(Entity[] entities) {
+        for(Entity e : entities) {
+            Presence presence = (Presence) e;
+            deleteItem(presence.getIdPresence());
+            long res = insertItem(presence);
+            if(res == -1) {
+                throw new SQLException("Unable to merge Presence Table");
+            }
+        }
+    }
+
+    private int deleteItem(int idPresence) {
+        SQLiteDatabase db = super.helper.getWritableDatabase();
+        return db.delete(DBTables.Presence.TABLE_NAME, DBTables.Presence.COLONNE_ID_PRESENCE + " = ?", new String[]{String.valueOf(idPresence)});
     }
 }
