@@ -18,34 +18,6 @@ import com.chavau.univ_angers.univemarge.view.fragment.Configuration_dialog;
 public class MainActivity extends AppCompatActivity {
 
 
-    /**
-     * Capacité d'accueil du cours.
-     */
-
-    private int capacity = 0;
-
-
-    /**
-     * Durée minimale du cours.
-     */
-
-    private String duration = "00:00";
-
-    /**
-     * Méthode Retournant la capacité de la séance
-     * @return Capacité de la sénace
-     */
-
-    public int capacity() { return capacity; }
-
-
-    /**
-     * Méthode Retournant la durée de la séance
-     * @return Durée de la sénace
-     */
-    public String duration() { return duration; }
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,12 +71,5 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
 
     }
-
-
-    //appel dialog de configuration de la durée et capacité
-    public void configurerCours(View view) {
-        new Configuration_dialog().show(getSupportFragmentManager(),"configClasse");
-    }
-
 
 }

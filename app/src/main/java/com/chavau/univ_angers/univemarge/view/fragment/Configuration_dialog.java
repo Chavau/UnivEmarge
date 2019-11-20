@@ -13,6 +13,7 @@ import android.widget.TimePicker;
 
 import com.chavau.univ_angers.univemarge.MainActivity;
 import com.chavau.univ_angers.univemarge.R;
+import com.chavau.univ_angers.univemarge.view.activities.Musculation;
 
 public class Configuration_dialog extends DialogFragment{
 
@@ -41,7 +42,7 @@ public class Configuration_dialog extends DialogFragment{
          * dialogue d'ajout est déjà spécifique à l'application de toute manière :
          * inutile d'abstraire ceux avec qui on communique
          */
-        final MainActivity activity = (MainActivity) getActivity();
+        final Musculation activity = (Musculation) getActivity();
         final View view = LayoutInflater.from(activity).inflate(R.layout.vue_configuration,null);
 
         /*

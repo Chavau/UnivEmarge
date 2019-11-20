@@ -6,14 +6,19 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.chavau.univ_angers.univemarge.MainActivity;
 import com.chavau.univ_angers.univemarge.R;
 import com.chavau.univ_angers.univemarge.adapters.AdapterMusculation;
 import com.chavau.univ_angers.univemarge.adapters.AdapterViewPager;
 import com.chavau.univ_angers.univemarge.intermediaire.MusculationData;
 import com.chavau.univ_angers.univemarge.intermediaire.Personnel;
+import com.chavau.univ_angers.univemarge.view.fragment.Configuration_dialog;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -27,6 +32,34 @@ public class Musculation extends AppCompatActivity {
     private MusculationData mdata;
     private ArrayList<Personnel> presences = creerPers();
     private TabLayout tabLayout;
+
+    /**
+     * Capacité d'accueil du cours.
+     */
+
+    private int capacity = 0;
+
+
+    /**
+     * Durée minimale du cours.
+     */
+
+    private String duration = "00:00";
+
+    /**
+     * Méthode Retournant la capacité de la séance
+     * @return Capacité de la sénace
+     */
+
+    public int capacity() { return capacity; }
+
+
+    /**
+     * Méthode Retournant la durée de la séance
+     * @return Durée de la sénace
+     */
+    public String duration() { return duration; }
+
 
     private static String PERSONNELS_PRESENTS = "presences";
 
@@ -115,4 +148,31 @@ public class Musculation extends AppCompatActivity {
         }
         return personnels;
     }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_configuration,menu);
+        return(super.onCreateOptionsMenu(menu));
+
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.setting:
+                configurerCours(null);
+                return true;
+       }
+        return super.onOptionsItemSelected(item);
+
+    }
+
+    //appel dialog de configuration de la durée et capacité
+    public void configurerCours(View view) {
+        new Configuration_dialog().show(getSupportFragmentManager(),"configClasse");
+
+    }
+
+
+
+
 }
