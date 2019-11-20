@@ -30,8 +30,6 @@
         <activity android:name=".view.activities.ListeEvenementsCours"></activity>
         <activity
                 android:name=".view.activities.RFIDActivity">
-<!--                android:screenOrientation="portrait"-->
-<!--                android:permission="android.permission.BIND_NFC_SERVICE">-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -42,14 +40,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/plain" />
             </intent-filter>
-
-<!--            <intent-filter>-->
-<!--                <action android:name="android.nfc.action.TECH_DISCOVERED" />-->
-<!--            </intent-filter>-->
-
-<!--            <meta-data-->
-<!--                    android:name="android.nfc.action.TECH_DISCOVERED"-->
-<!--                    android:resource="@xml/nfc_tech_filter" />-->
         </activity>
         <activity
                 android:name=".view.activities.SettingsActivity"
