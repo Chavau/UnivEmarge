@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+
 import com.chavau.univ_angers.univemarge.database.DBTables;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
@@ -101,12 +102,27 @@ public class EvenementDAO extends DAO<Evenement> implements IMergeable {
         );
     }
 
-    // TODO: tester listeEvenementsPourPersonnel
+    /**
+     * Retourne la liste des evenements pour 1 personnel
+     *
+     * @param id
+     * @return ArrayList
+     */
     public ArrayList<Evenement> listeEvenementsPourPersonnel(Identifiant id) {
         SQLiteDatabase db = super.helper.getWritableDatabase();
         Cursor cursor = db.rawQuery(
-                "SELECT * FROM " + DBTables.Evenement.TABLE_NAME +
-                        " INNER JOIN " + DBTables.Responsable.TABLE_NAME +
+                "SELECT " +
+                        DBTables.Evenement.COLONNE_ID_EVENEMENT + ", " +
+                        DBTables.Evenement.COLONNE_DATE_DEBUT + ", " +
+                        DBTables.Evenement.COLONNE_DATE_FIN + ", " +
+                        DBTables.Evenement.COLONNE_LIEU + ", " +
+                        DBTables.Evenement.COLONNE_TYPE_EMARGEMENT + ", " +
+                        DBTables.Evenement.COLONNE_LIBELLE_EVENEMENT + ", " +
+                        DBTables.Evenement.COLONNE_ID_COURS + ", " +
+                        DBTables.Evenement.COLONNE_DELETED + " " +
+                        " FROM " + DBTables.Evenement.TABLE_NAME + " e " +
+                        " INNER JOIN " + DBTables.Responsable.TABLE_NAME + " r " +
+                        " ON e." + DBTables.Evenement.COLONNE_ID_EVENEMENT + " = r." + DBTables.Responsable.COLONNE_ID_EVENEMENT +
                         " WHERE " + DBTables.Responsable.COLONNE_ID_PERSONNEL_RESPONSABLE + " = ? ",
                 new String[]{String.valueOf(id.getId(DBTables.Responsable.COLONNE_ID_PERSONNEL_RESPONSABLE))});
 
@@ -119,11 +135,11 @@ public class EvenementDAO extends DAO<Evenement> implements IMergeable {
 
     @Override
     public void merge(Entity[] entities) {
-        for(Entity e : entities) {
+        for (Entity e : entities) {
             Evenement evenement = (Evenement) e;
             deleteItem(evenement.getIdEvenement());
             long res = insertItem(evenement);
-            if(res == -1) {
+            if (res == -1) {
                 throw new SQLException("Unable to merge Evenement Table");
             }
         }

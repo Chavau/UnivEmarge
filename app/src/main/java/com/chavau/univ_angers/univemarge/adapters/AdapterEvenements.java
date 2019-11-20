@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.chavau.univ_angers.univemarge.R;
+import com.chavau.univ_angers.univemarge.database.entities.Evenement;
 import com.chavau.univ_angers.univemarge.intermediaire.Cours;
 import com.chavau.univ_angers.univemarge.view.activities.BadgeageEtudiant;
 import com.chavau.univ_angers.univemarge.view.activities.Musculation;
@@ -19,13 +20,13 @@ import java.util.List;
 
 public class AdapterEvenements extends RecyclerView.Adapter<AdapterEvenements.ViewHolderCours> {
 
-    private List<Cours> _cours;
+    private List<Evenement> _cours;
     private Context _context; //pouvoir utiliser des layouts plus tard
 
     private final static String nomAct = "NOM_ACTIVITE";
     private final static String listeEtud = "LISTE_ETUDIANT";
 
-    public AdapterEvenements(Context context, ArrayList<Cours> cours) {
+    public AdapterEvenements(Context context, ArrayList<Evenement> cours) {
         _context = context;
         _cours = cours;
     }
@@ -49,35 +50,35 @@ public class AdapterEvenements extends RecyclerView.Adapter<AdapterEvenements.Vi
 
     @Override
     public void onBindViewHolder(final ViewHolderCours viewHolderCours, final int i) {
-        final Cours cours = _cours.get(i);
+        final Evenement cours = _cours.get(i);
         final CardView cardview = viewHolderCours._cardview;
 
         //Recuperation du TEXTVIEW pour l'intitulé de cours
         TextView tv = (TextView) cardview.findViewById(R.id.tv_intituleCours);
         //Recuperation de donnée correspondante
-        tv.setText(cours.get_intitule());
+        tv.setText(cours.getLibelleEvenement());
 
         // Affectation des différentes textview avec les bonnes données
         tv = (TextView) cardview.findViewById(R.id.tv_jourSemaine);
-        tv.setText(cours.get_jourDeLaSemaine());
+        //tv.setText(cours.get_jourDeLaSemaine());
 
         tv = (TextView) cardview.findViewById(R.id.tv_date);
-        tv.setText(cours.get_date());
+        //tv.setText(cours.get_date());
 
         tv = (TextView) cardview.findViewById(R.id.tx_details);
-        tv.setText("De "+cours.get_heureDebut()+" à "+cours.get_heureFin());
+        tv.setText("De "+cours.getDateDebut()+" à "+cours.getDateFin());
 
         cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if (cours.get_intitule() != "Musculation") {
+                if (cours.getLibelleEvenement() != "Musculation") { // TODO : ne pas mettre musuculation mais plutot utiliser indice roulant
                     // Préparation des données à envoyer au deuxième activité
                     Intent intent = new Intent(_context, BadgeageEtudiant.class);
                     intent.putExtra(AdapterEvenements.getNomAct(),((TextView) cardview.findViewById(R.id.tv_intituleCours)).getText().toString());
 
                     // Envoie la liste des étudiant(e)s inscrit(e)s dans l'activité
-                    intent.putParcelableArrayListExtra(AdapterEvenements.getListeEtud(),cours.get_listeEtudiantInscrit());
+                    //intent.putParcelableArrayListExtra(AdapterEvenements.getListeEtud(),cours.get_listeEtudiantInscrit()); // TODO : récupérer la liste via la bdd
 
                     //Commencer la deuxième activité
                     _context.startActivity(intent);
@@ -92,7 +93,7 @@ public class AdapterEvenements extends RecyclerView.Adapter<AdapterEvenements.Vi
 
     }
 
-    public void setListeCours(ArrayList<Cours> lc) {
+    public void setListeCours(ArrayList<Evenement> lc) {
         _cours = lc;
         notifyDataSetChanged();
     }

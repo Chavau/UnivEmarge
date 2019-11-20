@@ -1,5 +1,6 @@
 package com.chavau.univ_angers.univemarge.database.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
@@ -22,6 +23,7 @@ public class Presence extends Entity {
     private StatutPresence statutPresence;
 
     @JsonProperty("dateMaj")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss.S", timezone="Europe/Paris")
     private Date dateMaj;
 
     @JsonDeserialize(using = NumericBooleanDeserializer.class)
@@ -34,7 +36,7 @@ public class Presence extends Entity {
     // needed for jackson parser
     public Presence() {}
 
-    public Presence(int idPresence, int idEvenement, int numeroEtudiant, StatutPresence statutPresence, boolean deleted, int idPersonnel, int idAutre) {
+    public Presence(int idPresence, int idEvenement, int numeroEtudiant, StatutPresence statutPresence, boolean deleted, int idPersonnel, int idAutre, Date dateMaj) {
         this.idPresence = idPresence;
         this.idEvenement = idEvenement;
         this.numeroEtudiant = numeroEtudiant;
@@ -42,6 +44,7 @@ public class Presence extends Entity {
         this.deleted = deleted;
         this.idPersonnel = idPersonnel;
         this.idAutre = idAutre;
+        this.dateMaj = dateMaj;
     }
 
     public int getIdPresence() {
@@ -66,6 +69,14 @@ public class Presence extends Entity {
 
     public int getIdAutre() {
         return idAutre;
+    }
+
+    public Date getDateMaj() {
+        return dateMaj;
+    }
+
+    public void setDateMaj(Date dateMaj) {
+        this.dateMaj = dateMaj;
     }
 
     public boolean isDeleted() {

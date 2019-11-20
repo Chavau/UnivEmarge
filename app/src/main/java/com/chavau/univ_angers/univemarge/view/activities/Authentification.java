@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import com.chavau.univ_angers.univemarge.MainActivity;
 import com.chavau.univ_angers.univemarge.R;
+import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
+import com.chavau.univ_angers.univemarge.database.dao.PersonnelDAO;
 import com.chavau.univ_angers.univemarge.view.fragment.Authentification_Fragment;
 
 /**
@@ -37,6 +39,7 @@ public class Authentification extends AppCompatActivity implements Authentificat
 
         authentification_fragment = (Authentification_Fragment)frag_manage.findFragmentByTag(TAG_AUTHENTIFICATION_FRAGMENT);
 
+        // Fragment sans interface pour l'appel API dans une asyncTask
         if(authentification_fragment == null){
             authentification_fragment = new Authentification_Fragment();
             frag_manage.beginTransaction().add(authentification_fragment, TAG_AUTHENTIFICATION_FRAGMENT).commit();
@@ -57,14 +60,31 @@ public class Authentification extends AppCompatActivity implements Authentificat
         }
     }
 
+    /**
+     * Recupère le login de l'enseignant, met aussi son identifiant en paramètre TODO
+     * @param result vrai ou faux, en fonction du succès de la requete
+     * @param login login de la personne authentifiée
+     * @param key clef de sécurisation pour les appels API
+     */
     @Override
     public void onItemDone(boolean result, String login, String key) {
         if(result) {
             //TODO : mettre login en préférence (voir token) et lancer MainActivity (ou activité de liste de cours)
             SharedPreferences preferences = getSharedPreferences(getResources().getString(R.string.PREFERENCE),0);
             SharedPreferences.Editor editor = preferences.edit();
+
+            login = "t.delestang";
+
+            // TODO récupérer l'identifiant du personnel pour les futurs appels
+            PersonnelDAO dao = new PersonnelDAO(new DatabaseHelper(this));
+            int identifiant_responsable = dao.getIdFromLogin(login.toLowerCase());
+
             editor.putString(getResources().getString(R.string.PREF_LOGIN),login.toLowerCase());
+            editor.putInt(getResources().getString(R.string.PREF_LOGIN),identifiant_responsable);
+
             editor.commit();
+
+            System.out.println("login : " + login + " identifiant : " + identifiant_responsable);
 
             Intent intent = new Intent(Authentification.this, MainActivity.class);
             startActivity(intent);

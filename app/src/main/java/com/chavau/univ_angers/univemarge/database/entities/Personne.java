@@ -1,25 +1,10 @@
 package com.chavau.univ_angers.univemarge.database.entities;
 
-public abstract class Personne {
-    private String nom;
-    private String prenom;
-    private String email;
-
-    public Personne(String nom, String prenom, String email) {
-        this.nom = nom;
-        this.prenom = prenom;
-        this.email = email;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public String getPrenom() {
-        return prenom;
-    }
-
-    public String getEmail() {
-        return email;
-    }
+/**
+ * La classe personne nous permet de regrouper la table Personnel, Etudiant et Autre
+ */
+public interface Personne {
+    String getNom();
+    String getPrenom();
+    String getEmail();
 }

@@ -10,13 +10,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.DatePicker;
-import android.widget.Toast;
 
 import com.chavau.univ_angers.univemarge.MainActivity;
 import com.chavau.univ_angers.univemarge.R;
 import com.chavau.univ_angers.univemarge.adapters.AdapterEvenements;
-import com.chavau.univ_angers.univemarge.intermediaire.Cours;
+import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
+import com.chavau.univ_angers.univemarge.database.Identifiant;
+import com.chavau.univ_angers.univemarge.database.dao.EvenementDAO;
+import com.chavau.univ_angers.univemarge.database.entities.Evenement;
 
 
 import java.util.Calendar;
@@ -26,7 +27,7 @@ public class ListeEvenementsCours extends AppCompatActivity {
 
     RecyclerView _recyclerview;
     AdapterEvenements _adapterEvenements;
-    ArrayList<Cours> _cours = new ArrayList<>();
+    ArrayList<Evenement> _cours = new ArrayList<>();
 
     DatePickerDialog _datepickerdialog;
 
@@ -35,11 +36,19 @@ public class ListeEvenementsCours extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_liste_evenements_cours);
 
+        SharedPreferences preferences = getSharedPreferences(getResources().getString(R.string.PREFERENCE),0);
+
         _recyclerview = findViewById(R.id.recyclerview_cours);
 
         _recyclerview.setLayoutManager(new LinearLayoutManager(this));
 
-        _cours = Cours.creeCours();
+        EvenementDAO dao = new EvenementDAO(new DatabaseHelper(this));
+
+        //Création de l'identifiant avec l'id de l'enseignant qui est enregistré
+        Identifiant c_nul_les_identifiant = new Identifiant();
+        c_nul_les_identifiant.ajoutId("id", preferences.getInt(getResources().getString(R.string.PREF_IDENTIFIANT),0));
+
+        _cours = dao.listeEvenementsPourPersonnel(c_nul_les_identifiant);
 
         _adapterEvenements = new AdapterEvenements(this, _cours);
 
@@ -66,10 +75,10 @@ public class ListeEvenementsCours extends AppCompatActivity {
                     mois++; // le mois selectionné correspond à mois+1
 
                     String date = (jour) + "/" + ((mois < 10) ? "0" + (mois) : String.valueOf(mois)) + "/" + (annee);
-                    ArrayList<Cours> cours = new ArrayList<>();
+                    ArrayList<Evenement> cours = new ArrayList<>();
 
-                    for (Cours c : _cours) {
-                        if (c.get_date() != null && c.get_date().equals(date)) {
+                    for (Evenement c : _cours) {
+                        if (c.getDateDebut() != null && c.getDateDebut().equals(date)) {
                             cours.add(c);
                         }
                     }
@@ -90,7 +99,8 @@ public class ListeEvenementsCours extends AppCompatActivity {
                 //Remet le login à vide ( la clef aussi quand celle-ci sera opérationnelle)
                 SharedPreferences preferences = getSharedPreferences(getResources().getString(R.string.PREFERENCE),0);
                 SharedPreferences.Editor editor = preferences.edit();
-                editor.putString(getResources().getString(R.string.PREF_LOGIN),"");
+                editor.putString(getResources().getString(R.string.PREF_LOGIN),""); // remise à zéro du login
+                editor.putInt(getResources().getString(R.string.PREF_IDENTIFIANT), 0); // remise à zéro de l'identifiant
                 editor.commit();
                 // relance la MainActivity qui redirigera vers l'activité d'authentification
                 Intent intent = new Intent(ListeEvenementsCours.this, MainActivity.class);

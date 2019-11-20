@@ -8,7 +8,6 @@ import com.chavau.univ_angers.univemarge.database.DBTables;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
 import com.chavau.univ_angers.univemarge.database.entities.Entity;
-import com.chavau.univ_angers.univemarge.database.entities.Evenement;
 import com.chavau.univ_angers.univemarge.database.entities.Inscription;
 
 public class InscriptionDAO extends DAO<Inscription> implements IMergeable {
@@ -101,7 +100,7 @@ public class InscriptionDAO extends DAO<Inscription> implements IMergeable {
             Inscription inscription = (Inscription) e;
             deleteItem(inscription.getIdInscription());
             long res = insertItem(inscription);
-            if(res == -1) {
+            if (res == -1) {
                 throw new SQLException("Unable to merge Inscription Table");
             }
         }

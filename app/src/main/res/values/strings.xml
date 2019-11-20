@@ -20,6 +20,8 @@
     <!-- PREFERENCES-->
     <string name="PREFERENCE">app_preferences_univ_emarge</string>
     <string name="PREF_LOGIN">login_univ_emarge</string>
+    <string name="PREF_IDENTIFIANT">identifiant_personel</string>
+
 
 
     <!-- Connexion -->

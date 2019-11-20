@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.sql.Blob;
 
 @JsonIgnoreProperties(value = { "dateMaj" })
-public class Etudiant extends Entity {
+public class Etudiant extends Entity implements Personne {
 
     @JsonProperty("numero")
     private int numeroEtudiant;

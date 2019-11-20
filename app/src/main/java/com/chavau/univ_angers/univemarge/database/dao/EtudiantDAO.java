@@ -10,6 +10,7 @@ import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
 import com.chavau.univ_angers.univemarge.database.entities.Entity;
 import com.chavau.univ_angers.univemarge.database.entities.Etudiant;
+import com.chavau.univ_angers.univemarge.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -37,8 +38,7 @@ public class EtudiantDAO extends DAO<Etudiant> implements IMergeable {
         values.put(DBTables.Etudiant.COLONNE_PRENOM, item.getPrenom());
         values.put(DBTables.Etudiant.COLONNE_NO_MIFARE, item.getNo_mifare());
         values.put(DBTables.Etudiant.COLONNE_EMAIL, item.getEmail());
-        // TODO: convert java.Blob to sql.blob
-//        values.put(DBTables.Etudiant.COLONNE_PHOTO, item.getPhoto());
+        values.put(DBTables.Etudiant.COLONNE_PHOTO, Utils.convertBlobToString(item.getPhoto()));
         values.put(DBTables.Etudiant.COLONNE_DELETED, item.isDeleted());
         return values;
     }
@@ -88,24 +88,69 @@ public class EtudiantDAO extends DAO<Etudiant> implements IMergeable {
         int photo = cursor.getColumnIndex(DBTables.Etudiant.COLONNE_EMAIL);
         int deleted = cursor.getColumnIndex(DBTables.Etudiant.COLONNE_DELETED);
 
-        // TODO: convert sql.blob to java.Blob
-//                cursor.getBlob(photo),
         return new Etudiant(
                 cursor.getString(nom),
                 cursor.getString(prenom),
                 cursor.getString(email),
                 cursor.getInt(numeroEtudiant),
                 cursor.getString(no_mifare),
-                null,
+                Utils.convertByteToBlob(cursor.getBlob(photo)),
                 (cursor.getInt(deleted) == 1)
         );
     }
 
-    public ArrayList<Etudiant> listePersonnelInscrit(Identifiant id) {
+    /**
+     * Retourne la liste des etudiants inscrit à un cour
+     *
+     * @param id
+     * @return ArrayList
+     */
+    public ArrayList<Etudiant> listeEtudiantInscritCours(Identifiant id) {
         SQLiteDatabase db = super.helper.getWritableDatabase();
         Cursor cursor = db.rawQuery(
-                "SELECT * FROM " + DBTables.Etudiant.TABLE_NAME +
-                        " INNER JOIN " + DBTables.Inscription.TABLE_NAME +
+                "SELECT " +
+                        DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT + " , " +
+                        DBTables.Etudiant.COLONNE_NOM + " , " +
+                        DBTables.Etudiant.COLONNE_PRENOM + " , " +
+                        DBTables.Etudiant.COLONNE_NO_MIFARE + " , " +
+                        DBTables.Etudiant.COLONNE_EMAIL + " , " +
+                        DBTables.Etudiant.COLONNE_PHOTO + " , " +
+                        DBTables.Etudiant.COLONNE_DELETED + " " +
+                        "FROM " + DBTables.Autre.TABLE_NAME + " a " +
+                        " INNER JOIN " + DBTables.Inscription.TABLE_NAME + " i " +
+                        " ON a." + DBTables.Autre.COLONNE_ID_AUTRE + " = i." + DBTables.Inscription.COLONNE_ID_AUTRE +
+                        " INNER JOIN " + DBTables.Evenement.TABLE_NAME + " e " +
+                        " ON e." + DBTables.Evenement.COLONNE_ID_EVENEMENT + " = i." + DBTables.Inscription.COLONNE_ID_EVENEMENT +
+                        " WHERE " + DBTables.Evenement.COLONNE_ID_COURS + " = ? ",
+                new String[]{String.valueOf(id.getId(DBTables.Evenement.COLONNE_ID_COURS))});
+
+        ArrayList<Etudiant> list = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            list.add(this.cursorToType(cursor));
+        }
+        return list;
+    }
+
+    /**
+     * Retourne la liste des etudiants inscrit à un evenement
+     *
+     * @param id
+     * @return ArrayList
+     */
+    public ArrayList<Etudiant> listeEtudiantInscrit(Identifiant id) {
+        SQLiteDatabase db = super.helper.getWritableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT " +
+                        DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT + " , " +
+                        DBTables.Etudiant.COLONNE_NOM + " , " +
+                        DBTables.Etudiant.COLONNE_PRENOM + " , " +
+                        DBTables.Etudiant.COLONNE_NO_MIFARE + " , " +
+                        DBTables.Etudiant.COLONNE_EMAIL + " , " +
+                        DBTables.Etudiant.COLONNE_PHOTO + " , " +
+                        DBTables.Etudiant.COLONNE_DELETED + " " +
+                        " FROM " + DBTables.Etudiant.TABLE_NAME + " e " +
+                        " INNER JOIN " + DBTables.Inscription.TABLE_NAME + " i " +
+                        " ON e." + DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT + " = i." + DBTables.Inscription.COLONNE_NUMERO_ETUDIANT +
                         " WHERE " + DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT + " = ? ",
                 new String[]{String.valueOf(id.getId(DBTables.Inscription.COLONNE_NUMERO_ETUDIANT))});
 
@@ -118,11 +163,11 @@ public class EtudiantDAO extends DAO<Etudiant> implements IMergeable {
 
     @Override
     public void merge(Entity[] entities) {
-        for(Entity e : entities) {
+        for (Entity e : entities) {
             Etudiant etudiant = (Etudiant) e;
             deleteItem(etudiant.getNumeroEtudiant());
             long res = insertItem(etudiant);
-            if(res == -1) {
+            if (res == -1) {
                 throw new SQLException("Unable to merge Etudiant Table");
             }
         }
