@@ -2,6 +2,7 @@ package com.chavau.univ_angers.univemarge.view.activities;
 
 
 import android.app.DatePickerDialog;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import com.chavau.univ_angers.univemarge.R;
 import com.chavau.univ_angers.univemarge.adapters.AdapterEvenements;
@@ -45,14 +47,14 @@ public class ListeEvenementsCours extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_calendrier, menu);
+        getMenuInflater().inflate(R.menu.menu_liste_evenement, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_option_calendrier:
+            case R.id.calendar:
                 final Calendar cldr = Calendar.getInstance();
                 int day = cldr.get(Calendar.DAY_OF_MONTH);
                 int month = cldr.get(Calendar.MONTH);
@@ -79,7 +81,18 @@ public class ListeEvenementsCours extends AppCompatActivity {
                 _datepickerdialog.show();
 
                 return true;
+            case R.id.synchron:
+                //TODO : à enlever, temporaire pour les tests
+                SharedPreferences preferences = getSharedPreferences(getResources().getString(R.string.PREFERENCE),0);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString(getResources().getString(R.string.PREF_LOGIN),"");
+                editor.commit();
+                Toast.makeText(this, "login effacé de l'appli", Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.setting:
+                return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
