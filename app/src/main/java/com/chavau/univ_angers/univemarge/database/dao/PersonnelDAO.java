@@ -173,6 +173,18 @@ public class PersonnelDAO extends DAO<Personnel> implements IMergeable {
         return list;
     }
 
+    public int getIdFromLogin(String login) {
+        SQLiteDatabase db = super.helper.getWritableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT " +
+                        DBTables.Personnel.COLONNE_ID_PERSONNEL +
+                        " FROM " + DBTables.Personnel.TABLE_NAME +
+                        " WHERE " + DBTables.Personnel.COLONNE_LOGIN + " = ? ",
+                new String[]{login});
+        cursor.moveToNext();
+        return cursor.getInt(cursor.getColumnIndex(DBTables.Personnel.COLONNE_ID_PERSONNEL));
+    }
+
     @Override
     public void merge(Entity[] entities) {
         for (Entity e : entities) {
