@@ -4,11 +4,9 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-
 import com.chavau.univ_angers.univemarge.database.DBTables;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
-import com.chavau.univ_angers.univemarge.database.entities.Autre;
 import com.chavau.univ_angers.univemarge.database.entities.Entity;
 import com.chavau.univ_angers.univemarge.database.entities.Etudiant;
 import com.chavau.univ_angers.univemarge.utils.Utils;
@@ -129,8 +127,17 @@ public class EtudiantDAO extends DAO<Etudiant> implements IMergeable {
     public ArrayList<Etudiant> listeEtudiantInscrit(Identifiant id) {
         SQLiteDatabase db = super.helper.getWritableDatabase();
         Cursor cursor = db.rawQuery(
-                "SELECT * FROM " + DBTables.Etudiant.TABLE_NAME +
-                        " INNER JOIN " + DBTables.Inscription.TABLE_NAME +
+                "SELECT " +
+                        DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT + " , " +
+                        DBTables.Etudiant.COLONNE_NOM + " , " +
+                        DBTables.Etudiant.COLONNE_PRENOM + " , " +
+                        DBTables.Etudiant.COLONNE_NO_MIFARE + " , " +
+                        DBTables.Etudiant.COLONNE_EMAIL + " , " +
+                        DBTables.Etudiant.COLONNE_PHOTO + " , " +
+                        DBTables.Etudiant.COLONNE_DELETED + " " +
+                        " FROM " + DBTables.Etudiant.TABLE_NAME + " e " +
+                        " INNER JOIN " + DBTables.Inscription.TABLE_NAME +  " i " +
+                        " ON e." + DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT + " = i." + DBTables.Inscription.COLONNE_NUMERO_ETUDIANT +
                         " WHERE " + DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT + " = ? ",
                 new String[]{String.valueOf(id.getId(DBTables.Inscription.COLONNE_NUMERO_ETUDIANT))});
 
@@ -143,11 +150,11 @@ public class EtudiantDAO extends DAO<Etudiant> implements IMergeable {
 
     @Override
     public void merge(Entity[] entities) {
-        for(Entity e : entities) {
+        for (Entity e : entities) {
             Etudiant etudiant = (Etudiant) e;
             deleteItem(etudiant.getNumeroEtudiant());
             long res = insertItem(etudiant);
-            if(res == -1) {
+            if (res == -1) {
                 throw new SQLException("Unable to merge Etudiant Table");
             }
         }

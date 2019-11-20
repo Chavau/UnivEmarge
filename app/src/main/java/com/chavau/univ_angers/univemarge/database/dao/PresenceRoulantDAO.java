@@ -8,7 +8,6 @@ import com.chavau.univ_angers.univemarge.database.DBTables;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
 import com.chavau.univ_angers.univemarge.database.entities.Entity;
-import com.chavau.univ_angers.univemarge.database.entities.Presence;
 import com.chavau.univ_angers.univemarge.database.entities.PresenceRoulant;
 import com.chavau.univ_angers.univemarge.utils.Utils;
 

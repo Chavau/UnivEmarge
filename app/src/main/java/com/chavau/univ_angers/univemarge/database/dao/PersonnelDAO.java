@@ -109,8 +109,19 @@ public class PersonnelDAO extends DAO<Personnel> implements IMergeable {
     public ArrayList<Personnel> listePersonnelInscrit(Identifiant id) {
         SQLiteDatabase db = super.helper.getWritableDatabase();
         Cursor cursor = db.rawQuery(
-                "SELECT * FROM " + DBTables.Personnel.TABLE_NAME +
-                        " INNER JOIN " + DBTables.Inscription.TABLE_NAME +
+                "SELECT " +
+                        DBTables.Personnel.COLONNE_ID_PERSONNEL + ", " +
+                        DBTables.Personnel.COLONNE_NOM + ", " +
+                        DBTables.Personnel.COLONNE_PRENOM + ", " +
+                        DBTables.Personnel.COLONNE_LOGIN + ", " +
+                        DBTables.Personnel.COLONNE_EMAIL + ", " +
+                        DBTables.Personnel.COLONNE_PHOTO + ", " +
+                        DBTables.Personnel.COLONNE_NO_MIFARE + ", " +
+                        DBTables.Personnel.COLONNE_PIN + ", " +
+                        DBTables.Personnel.COLONNE_DELETED +
+                        " FROM " + DBTables.Personnel.TABLE_NAME + " p " +
+                        " INNER JOIN " + DBTables.Inscription.TABLE_NAME + " i " +
+                        " ON p." + DBTables.Personnel.COLONNE_ID_PERSONNEL + " = i." + DBTables.Inscription.COLONNE_ID_PERSONNEL +
                         " WHERE " + DBTables.Personnel.COLONNE_ID_PERSONNEL + " = ? ",
                 new String[]{String.valueOf(id.getId(DBTables.Inscription.COLONNE_ID_PERSONNEL))});
 
@@ -123,11 +134,11 @@ public class PersonnelDAO extends DAO<Personnel> implements IMergeable {
 
     @Override
     public void merge(Entity[] entities) {
-        for(Entity e : entities) {
+        for (Entity e : entities) {
             Personnel personnel = (Personnel) e;
             deleteItem(personnel.getIdPersonnel());
             long res = insertItem(personnel);
-            if(res == -1) {
+            if (res == -1) {
                 throw new SQLException("Unable to merge Personnel Table");
             }
         }
