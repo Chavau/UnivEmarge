@@ -31,7 +31,7 @@ public class PresenceDAO extends DAO<Presence> implements IMergeable {
     @Override
     public ContentValues getContentValues(Presence item) {
         ContentValues values = new ContentValues();
-        values.put(DBTables.Presence.COLONNE_ID_PRESENCE, item.getIdPresence());
+//        values.put(DBTables.Presence.COLONNE_ID_PRESENCE, item.getIdPresence());
         values.put(DBTables.Presence.COLONNE_ID_EVENEMENT, item.getIdEvenement());
         values.put(DBTables.Presence.COLONNE_STATUT_PRESENCE, item.getStatutPresence().getValue());
         values.put(DBTables.Presence.COLONNE_DATE_MAJ, Utils.convertDateToString(item.getDateMaj()));
@@ -100,13 +100,63 @@ public class PresenceDAO extends DAO<Presence> implements IMergeable {
         );
     }
 
+    /**
+     * insère la nouvelle présence dans la table si la personne n'a pas encore badgé.
+     * sinon effectue un update.
+     * @param mifare
+     * @param idEvenement
+     * @param sp
+     * @return
+     */
+    public boolean insererPresence(String mifare, int idEvenement, StatutPresence sp) {
+        // TODO : faire le contenu
+        return false;
+        /*
+        SQLiteDatabase db = super.helper.getWritableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT " +
+                        " p." + DBTables.Personnel.COLONNE_ID_PERSONNEL + ", " +
+                        " e." + DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT +
+                        " AS countPersonne FROM " + DBTables.Inscription.TABLE_NAME + " i " +
+                        " INNER JOIN " + DBTables.Personnel.TABLE_NAME + " p " +
+                        " ON p." + DBTables.Personnel.COLONNE_ID_PERSONNEL + " = i." + DBTables.Inscription.COLONNE_ID_PERSONNEL +
+                        " INNER JOIN " + DBTables.Etudiant.TABLE_NAME + " e " +
+                        " ON e." + DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT + " = i." + DBTables.Inscription.COLONNE_NUMERO_ETUDIANT +
+                        " WHERE " + DBTables.Inscription.COLONNE_ID_EVENEMENT + " = ? " +
+                        " AND ( " + DBTables.Etudiant.COLONNE_NO_MIFARE + " = ?" +
+                        " OR " + DBTables.Personnel.COLONNE_NO_MIFARE + " = ? )",
+                new String[]{String.valueOf(idEvenement), mifare, mifare});
+        cursor.moveToNext();
+        if (cursor.getColumnCount() == 0)
+            return false;
+
+        int indexIdPersonnel = cursor.getColumnIndex(DBTables.Personnel.COLONNE_ID_PERSONNEL);
+        int indexNumEtudiant = cursor.getColumnIndex(DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT);
+
+        int idPersonnel = (!cursor.isNull(indexIdPersonnel)) ? cursor.getInt(indexIdPersonnel) : -1;
+        int numEtudiant = (!cursor.isNull(indexNumEtudiant)) ? cursor.getInt(indexNumEtudiant) : -1;
+
+        Presence item = new Presence(
+                idEvenement,
+                numEtudiant,
+                sp,
+                false,
+                idPersonnel,
+                -1
+        );
+        db.insert(DBTables.Presence.TABLE_NAME, null, this.getContentValues(item));
+        return true;
+        */
+    }
+
+
     @Override
     public void merge(Entity[] entities) {
         for (Entity e : entities) {
             Presence presence = (Presence) e;
             deleteItem(presence.getIdPresence());
             long res = insertItem(presence);
-            if(res == -1) {
+            if (res == -1) {
                 throw new SQLException("Unable to merge Presence Table");
             }
         }

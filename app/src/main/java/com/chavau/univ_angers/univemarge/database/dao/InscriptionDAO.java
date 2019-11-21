@@ -10,6 +10,8 @@ import com.chavau.univ_angers.univemarge.database.Identifiant;
 import com.chavau.univ_angers.univemarge.database.entities.Entity;
 import com.chavau.univ_angers.univemarge.database.entities.Inscription;
 
+import java.sql.ResultSet;
+
 public class InscriptionDAO extends DAO<Inscription> implements IMergeable {
     private static final String[] PROJECTION = {
             DBTables.Inscription.COLONNE_ID_PERSONNEL,
@@ -96,7 +98,7 @@ public class InscriptionDAO extends DAO<Inscription> implements IMergeable {
 
     @Override
     public void merge(Entity[] entities) {
-        for(Entity e : entities) {
+        for (Entity e : entities) {
             Inscription inscription = (Inscription) e;
             deleteItem(inscription.getIdInscription());
             long res = insertItem(inscription);
@@ -109,5 +111,70 @@ public class InscriptionDAO extends DAO<Inscription> implements IMergeable {
     private int deleteItem(int idInscription) {
         SQLiteDatabase db = super.helper.getWritableDatabase();
         return db.delete(DBTables.Inscription.TABLE_NAME, DBTables.Inscription.COLONNE_ID_INSCRIPTION + " = ?", new String[]{String.valueOf(idInscription)});
+    }
+
+    /**
+     * Cette méthode prend un mifare et modifie la table associée à celui-ci (étudiant ou personnel)
+     * et nous donne la colonne ainsi que la valeur associé à l'identifiant de la personne
+     * @param mifare
+     * @param table
+     * @param column
+     * @param idPersonne
+     */
+    public void fromMiFareGetTableAndColumn(String mifare, String table, String column, int idPersonne) {
+
+        // cas pour un étudiant
+        SQLiteDatabase db = super.helper.getWritableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT " + DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT + " FROM " + DBTables.Etudiant.TABLE_NAME +
+                    " WHERE " + DBTables.Etudiant.COLONNE_NO_MIFARE + " = ?",
+                new String[]{mifare});
+
+        // si le nombre d'entrées est supérieur à 0,
+        // ce mifare correspond donc à un étudiant
+        if (cursor.getCount() > 0) {
+            cursor.moveToNext();
+            table = DBTables.Etudiant.TABLE_NAME;
+            column = DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT;
+            idPersonne = cursor.getInt(cursor.getColumnIndex(DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT));
+            return;
+        }
+
+        // cas pour un personnel
+        cursor = db.rawQuery(
+                "SELECT " + DBTables.Personnel.COLONNE_ID_PERSONNEL + " FROM " + DBTables.Personnel.TABLE_NAME +
+                    " WHERE " + DBTables.Personnel.COLONNE_NO_MIFARE + " = ?",
+                new String[]{mifare});
+
+        // si le nombre d'entrées est supérieur à 0,
+        // ce mifare correspond donc à un personnel
+        if (cursor.getCount() > 0) {
+            cursor.moveToNext();
+            table = DBTables.Personnel.TABLE_NAME;
+            column = DBTables.Personnel.COLONNE_ID_PERSONNEL;
+            idPersonne = cursor.getInt(cursor.getColumnIndex(DBTables.Personnel.COLONNE_ID_PERSONNEL));
+            return;
+        }
+
+        throw new IllegalArgumentException("Unknown mifare");
+    }
+
+    /**
+     * retourne un booléen décrivant si la personne est inscrite au cours
+     * @param idPersonne valeur associée à l'identifiant de la personne (soit un num étudiant, soit is personnel)
+     * @param columnNameForId Le nom de la colonne associé à la valeur (soit numeroEtudiant soit idPersonnel)
+     * @return si la personne est bien inscrite au cours
+     */
+    public boolean estInscrit(int idEvenement, int idPersonne, String columnNameForId) {
+        SQLiteDatabase db = super.helper.getWritableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM " + DBTables.Inscription.TABLE_NAME +
+                    " WHERE " + columnNameForId + " = ?" +
+                    " AND " + DBTables.Inscription.COLONNE_ID_EVENEMENT + " = ?",
+                new String[]{Integer.toString(idPersonne), Integer.toString(idEvenement)});
+
+        // si le nombre d'entrées est supérieur à 0,
+        // la personne est bel et bien inscrite
+        return cursor.getCount() > 0;
     }
 }

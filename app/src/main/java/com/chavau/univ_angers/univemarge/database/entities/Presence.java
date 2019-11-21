@@ -36,7 +36,16 @@ public class Presence extends Entity {
     // needed for jackson parser
     public Presence() {}
 
-    public Presence(int idPresence, int idEvenement, int numeroEtudiant, StatutPresence statutPresence, boolean deleted, int idPersonnel, int idAutre, Date dateMaj) {
+    public Presence(int idEvenement, int numeroEtudiant, StatutPresence statutPresence, boolean deleted, int idPersonnel, int idAutre) {
+        this.idEvenement = idEvenement;
+        this.numeroEtudiant = numeroEtudiant;
+        this.statutPresence = statutPresence;
+        this.deleted = deleted;
+        this.idPersonnel = idPersonnel;
+        this.idAutre = idAutre;
+    }
+
+    public Presence(int idPresence, int idEvenement, int numeroEtudiant, StatutPresence statutPresence, boolean deleted, int idPersonnel, int idAutre) {
         this.idPresence = idPresence;
         this.idEvenement = idEvenement;
         this.numeroEtudiant = numeroEtudiant;
