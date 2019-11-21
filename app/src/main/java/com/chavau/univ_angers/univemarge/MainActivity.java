@@ -24,12 +24,12 @@ public class MainActivity extends AppCompatActivity {
         apiCall.setContext(this);
         apiCall.onCreate(savedInstanceState);
 
-        SharedPreferences preferences = getSharedPreferences(getResources().getString(R.string.PREFERENCE),0);
+        SharedPreferences preferences = getSharedPreferences(getResources().getString(R.string.PREFERENCE), 0);
 
-        if(preferences.getString(getResources().getString(R.string.PREF_LOGIN),"").equals("")) {
+        if (preferences.getString(getResources().getString(R.string.PREF_LOGIN), "").equals("")) {
             Intent intent = new Intent(MainActivity.this, Authentification.class);
             startActivity(intent);
-        }else {
+        } else {
             Intent intent = new Intent(MainActivity.this, ListeEvenementsCours.class);
             startActivity(intent);
         }
@@ -37,39 +37,29 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_liste_evenement,menu);
-        return(super.onCreateOptionsMenu(menu));
-
+        getMenuInflater().inflate(R.menu.menu_liste_evenement, menu);
+        return (super.onCreateOptionsMenu(menu));
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case R.id.calendar:
-                Toast msg = Toast.makeText(MainActivity.this,"Calendrier" ,Toast.LENGTH_SHORT);
+                Toast msg = Toast.makeText(MainActivity.this, "Calendrier", Toast.LENGTH_SHORT);
                 msg.show();
                 return true;
             case R.id.synchron:
-                Toast msg2 = Toast.makeText(MainActivity.this,"Synchronization" ,Toast.LENGTH_SHORT);
+                Toast msg2 = Toast.makeText(MainActivity.this, "Synchronization", Toast.LENGTH_SHORT);
                 msg2.show();
                 return true;
             case R.id.setting:
-                Toast msg3 = Toast.makeText(MainActivity.this,"Paramètre" ,Toast.LENGTH_SHORT);
+                Toast msg3 = Toast.makeText(MainActivity.this, "Paramètre", Toast.LENGTH_SHORT);
                 msg3.show();
                 return true;
             case R.id.deconnect:
-                Toast msg4 = Toast.makeText(MainActivity.this,"Déconnexion" ,Toast.LENGTH_SHORT);
+                Toast msg4 = Toast.makeText(MainActivity.this, "Déconnexion", Toast.LENGTH_SHORT);
                 msg4.show();
                 return true;
-
-
-
         }
         return super.onOptionsItemSelected(item);
-
     }
-
-
-
-
 }

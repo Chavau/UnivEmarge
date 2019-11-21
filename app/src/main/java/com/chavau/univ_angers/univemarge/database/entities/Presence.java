@@ -45,7 +45,7 @@ public class Presence extends Entity {
         this.idAutre = idAutre;
     }
 
-    public Presence(int idPresence, int idEvenement, int numeroEtudiant, StatutPresence statutPresence, boolean deleted, int idPersonnel, int idAutre) {
+    public Presence(int idPresence, int idEvenement, int numeroEtudiant, StatutPresence statutPresence, boolean deleted, int idPersonnel, int idAutre, Date dateMaj) {
         this.idPresence = idPresence;
         this.idEvenement = idEvenement;
         this.numeroEtudiant = numeroEtudiant;
