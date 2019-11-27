@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authentification);
 
-        SharedPreferences preferences = getSharedPreferences(getResources().getString(R.string.PREFERENCE),0);
+        SharedPreferences preferences = getSharedPreferences(getResources().getString(R.string.PREFERENCE), 0);
 
         if (preferences.getString(getResources().getString(R.string.PREF_LOGIN), "").equals("")) {
             Intent intent = new Intent(MainActivity.this, Authentification.class);
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         apiCall.setContext(this);
         apiCall.setDateMaj(dateMaj);
         apiCall.onCreate(savedInstanceState);
-        Toast msg = Toast.makeText(MainActivity.this,"Application à jour", Toast.LENGTH_SHORT);
+        Toast msg = Toast.makeText(MainActivity.this, "Application à jour", Toast.LENGTH_SHORT);
         msg.show();
     }
 
