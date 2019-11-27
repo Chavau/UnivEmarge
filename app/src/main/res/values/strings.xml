@@ -20,6 +20,7 @@
     <!-- PREFERENCES-->
     <string name="PREFERENCE">app_preferences_univ_emarge</string>
     <string name="PREF_LOGIN">login_univ_emarge</string>
+    <string name="PREF_DATE_MAJ">date_maj</string>
 
 
     <!-- Connexion -->
@@ -36,4 +37,8 @@
     <string name="old_pass">Ancien code pin</string>
     <string name="new_pass">Nouveau code pin </string>
     <string name="Synchronisation_automatique">Synchronisation automatique</string>
+
+    <!-- Lecture RFID -->
+    <string name="TextView_RFIDActivity">Veuillez badger</string>
+    <string name="image_carte_etudiant">Image d\'une carte d\'étudiant de l\'université d\'Angers.</string>
 </resources>

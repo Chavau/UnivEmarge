@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(value = { "dateMaj" })
-public class Autre extends Entity {
+public class Autre extends Entity implements Personne {
 
     @JsonProperty("id")
     private int idAutre;

@@ -4,12 +4,13 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+
 import com.chavau.univ_angers.univemarge.database.DBTables;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
 import com.chavau.univ_angers.univemarge.database.entities.Entity;
-import com.chavau.univ_angers.univemarge.database.entities.Presence;
 import com.chavau.univ_angers.univemarge.database.entities.PresenceRoulant;
+import com.chavau.univ_angers.univemarge.database.entities.StatutPresence;
 import com.chavau.univ_angers.univemarge.utils.Utils;
 
 public class PresenceRoulantDAO extends DAO<PresenceRoulant> implements IMergeable {
@@ -31,7 +32,7 @@ public class PresenceRoulantDAO extends DAO<PresenceRoulant> implements IMergeab
     @Override
     public ContentValues getContentValues(PresenceRoulant item) {
         ContentValues values = new ContentValues();
-        values.put(DBTables.PresenceRoulant.COLONNE_ID_ROULANT, item.getIdRoulant());
+//        values.put(DBTables.PresenceRoulant.COLONNE_ID_ROULANT, item.getIdRoulant());
         values.put(DBTables.PresenceRoulant.COLONNE_ID_EVENEMENT, item.getIdEvenement());
         values.put(DBTables.PresenceRoulant.COLONNE_NUMERO_ETUDIANT, item.getNumeroEtudiant());
         values.put(DBTables.PresenceRoulant.COLONNE_TEMPS, Utils.convertDateToString(item.getTemps()));
@@ -102,13 +103,81 @@ public class PresenceRoulantDAO extends DAO<PresenceRoulant> implements IMergeab
         );
     }
 
+    /**
+     * retourne si la personne est déjà entré dans cette séance. On en déduit qu'il sort.
+     * @return
+     */
+    public boolean estDejaEntre() {
+        // TODO : faire le contenu
+        return false;
+    }
+
+    /**
+     * ajoute l'entrée d'une personne dans le cours
+     * @return
+     */
+    private boolean addEntree() {
+        // TODO : faire le contenu
+        return false;
+    }
+
+    /**
+     * ajoute la sortir d'une personne du cours
+     * @return
+     */
+    private boolean addSortie() {
+        // TODO : faire le contenu
+        return false;
+    }
+
+    /*public boolean setPresenceRoulantMifare(String mifare, int idEvenement) {
+
+        SQLiteDatabase db = super.helper.getWritableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT " +
+                        " p." + DBTables.Personnel.COLONNE_ID_PERSONNEL + ", " +
+                        " e." + DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT +
+                        " AS countPersonne FROM " + DBTables.Inscription.TABLE_NAME + " i " +
+                        " INNER JOIN " + DBTables.Personnel.TABLE_NAME + " p " +
+                        " ON p." + DBTables.Personnel.COLONNE_ID_PERSONNEL + " = i." + DBTables.Inscription.COLONNE_ID_PERSONNEL +
+                        " INNER JOIN " + DBTables.Etudiant.TABLE_NAME + " e " +
+                        " ON e." + DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT + " = i." + DBTables.Inscription.COLONNE_NUMERO_ETUDIANT +
+                        " WHERE " + DBTables.Inscription.COLONNE_ID_EVENEMENT + " = ? " +
+                        " AND ( " + DBTables.Etudiant.COLONNE_NO_MIFARE + " = ?" +
+                        " OR " + DBTables.Personnel.COLONNE_NO_MIFARE + " = ? )",
+                new String[]{String.valueOf(idEvenement), mifare, mifare});
+        cursor.moveToNext();
+        if (cursor.getColumnCount() == 0)
+            return false;
+
+        int indexIdPersonnel = cursor.getColumnIndex(DBTables.Personnel.COLONNE_ID_PERSONNEL);
+        int indexNumEtudiant = cursor.getColumnIndex(DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT);
+
+        PresenceDAO p = new PresenceDAO(super.helper);
+
+        int idPersonnel = (!cursor.isNull(indexIdPersonnel)) ? cursor.getInt(indexIdPersonnel) : -1;
+        int numEtudiant = (!cursor.isNull(indexNumEtudiant)) ? cursor.getInt(indexNumEtudiant) : -1;
+
+
+        PresenceRoulant item = new PresenceRoulant(
+                idEvenement,
+                numEtudiant,
+                sp,
+                false,
+                idPersonnel,
+                -1
+        );
+        db.insert(DBTables.Presence.TABLE_NAME, null, this.getContentValues(item));
+        return true;
+    }*/
+
     @Override
     public void merge(Entity[] entities) {
-        for(Entity e : entities) {
+        for (Entity e : entities) {
             PresenceRoulant presenceRoulant = (PresenceRoulant) e;
             deleteItem(presenceRoulant.getIdRoulant());
             long res = insertItem(presenceRoulant);
-            if(res == -1) {
+            if (res == -1) {
                 throw new SQLException("Unable to merge PresenceRoulant Table");
             }
         }

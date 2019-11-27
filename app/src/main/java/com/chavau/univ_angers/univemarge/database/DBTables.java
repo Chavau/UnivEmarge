@@ -2,6 +2,9 @@ package com.chavau.univ_angers.univemarge.database;
 
 import android.provider.BaseColumns;
 
+/**
+ * Classe de structure pour la création de la table (cf. MCD)
+ */
 public final class DBTables {
 
     // Empeche la classe d'etre instancié
@@ -190,16 +193,18 @@ public final class DBTables {
         public static final String COLONNE_ID_EVENEMENT = "idEvenement";
         public static final String COLONNE_NUMERO_ETUDIANT = "numeroEtudiant";
         public static final String COLONNE_STATUT_PRESENCE = "statutPresence";
+        public static final String COLONNE_DATE_MAJ = "dateMaj";
         public static final String COLONNE_DELETED = "deleted";
         public static final String COLONNE_ID_PERSONNEL = "idPersonnel";
         public static final String COLONNE_ID_AUTRE = "idAutre";
 
         public static final String SQL_CREATE_ENTRIES =
                 "CREATE TABLE " + Presence.TABLE_NAME + " (" +
-                        Presence.COLONNE_ID_PRESENCE + " INTEGER PRIMARY KEY, " +
+                        Presence.COLONNE_ID_PRESENCE + " INTEGER AUTOINCREMENT PRIMARY KEY, " +
                         Presence.COLONNE_ID_EVENEMENT + " integer, " +
                         Presence.COLONNE_NUMERO_ETUDIANT + " integer, " +
                         Presence.COLONNE_STATUT_PRESENCE + " integer, " +
+                        Presence.COLONNE_DATE_MAJ + " varchar(255), " +
                         Presence.COLONNE_DELETED + " integer, " +
                         Presence.COLONNE_ID_PERSONNEL + " integer, " +
                         Presence.COLONNE_ID_AUTRE + " integer, " +
@@ -227,7 +232,7 @@ public final class DBTables {
 
         public static final String SQL_CREATE_ENTRIES =
                 "CREATE TABLE " + PresenceRoulant.TABLE_NAME + " (" +
-                        PresenceRoulant.COLONNE_ID_ROULANT + " INTEGER PRIMARY KEY, " +
+                        PresenceRoulant.COLONNE_ID_ROULANT + " INTEGER AUTOINCREMENT PRIMARY KEY, " +
                         PresenceRoulant.COLONNE_ID_EVENEMENT + " INTEGER, " +
                         PresenceRoulant.COLONNE_NUMERO_ETUDIANT + " INTEGER, " +
                         PresenceRoulant.COLONNE_TEMPS + " varchar(255), " +

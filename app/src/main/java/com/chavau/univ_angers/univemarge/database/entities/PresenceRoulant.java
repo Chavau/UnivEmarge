@@ -19,6 +19,16 @@ public class PresenceRoulant extends Entity {
     // needed for jackson parser
     public PresenceRoulant() {}
 
+    public PresenceRoulant(int idEvenement, int numeroEtudiant, Date temps, Date dateEntree, Date dateSortie, int idPersonnel, int idAutre) {
+        this.idEvenement = idEvenement;
+        this.numeroEtudiant = numeroEtudiant;
+        this.temps = temps;
+        this.dateEntree = dateEntree;
+        this.dateSortie = dateSortie;
+        this.idPersonnel = idPersonnel;
+        this.idAutre = idAutre;
+    }
+
     public PresenceRoulant(int idRoulant, int idEvenement, int numeroEtudiant, Date temps, Date dateEntree, Date dateSortie, int idPersonnel, int idAutre) {
         this.idRoulant = idRoulant;
         this.idEvenement = idEvenement;
