@@ -1,11 +1,13 @@
 package com.chavau.univ_angers.univemarge.view.activities;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.TextView;
 
@@ -25,7 +27,7 @@ public class Musculation extends AppCompatActivity {
     private AdapterMusculation adaptermusculation;
     private RecyclerView recyclerview;
     private MusculationData mdata;
-    private ArrayList<Personnel> presences = creerPers();
+    private ArrayList<Personnel> presences = new ArrayList<>();
     private TabLayout tabLayout;
 
     private static String PERSONNELS_PRESENTS = "presences";
@@ -46,9 +48,28 @@ public class Musculation extends AppCompatActivity {
         if (savedInstanceState != null) {
             presences = savedInstanceState.getParcelableArrayList(PERSONNELS_PRESENTS);
         }
-        mdata = creerMuscuData(presences.size());
-        adaptermusculation = new AdapterMusculation(this,presences,mdata);
 
+        // Affectation du nombre de presents dans la salle
+        presences = creerPers();
+        mdata = creerMuscuData(presences.size());
+
+        adaptermusculation = new AdapterMusculation(this, presences, mdata);
+
+        ItemTouchHelper.SimpleCallback ihscb = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder viewHolder1) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int i) {
+                int position = (int)viewHolder.itemView.getTag();
+                adaptermusculation.enlever(position);
+            }
+        };
+
+        new ItemTouchHelper(ihscb).attachToRecyclerView(recyclerview);
     }
 
     public MusculationData creerMuscuData(int presences) {
