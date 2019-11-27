@@ -10,12 +10,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.DatePicker;
-import android.widget.Toast;
 
 import com.chavau.univ_angers.univemarge.MainActivity;
 import com.chavau.univ_angers.univemarge.R;
-import com.chavau.univ_angers.univemarge.adapters.AdapterEvenements;
+import com.chavau.univ_angers.univemarge.view.adapters.AdapterEvenements;
 import com.chavau.univ_angers.univemarge.intermediaire.Cours;
 
 

@@ -7,8 +7,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.chavau.univ_angers.univemarge.R;
-import com.chavau.univ_angers.univemarge.adapters.AdapterEvenements;
-import com.chavau.univ_angers.univemarge.adapters.AdapterPersonneInscrite;
+import com.chavau.univ_angers.univemarge.view.adapters.AdapterEvenements;
+import com.chavau.univ_angers.univemarge.view.adapters.AdapterPersonneInscrite;
 import com.chavau.univ_angers.univemarge.intermediaire.Etudiant;
 
 import java.util.ArrayList;

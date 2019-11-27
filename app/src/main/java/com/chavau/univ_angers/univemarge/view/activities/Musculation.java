@@ -10,8 +10,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.chavau.univ_angers.univemarge.R;
-import com.chavau.univ_angers.univemarge.adapters.AdapterMusculation;
-import com.chavau.univ_angers.univemarge.adapters.AdapterViewPager;
+import com.chavau.univ_angers.univemarge.view.adapters.AdapterMusculation;
+import com.chavau.univ_angers.univemarge.view.adapters.AdapterViewPager;
 import com.chavau.univ_angers.univemarge.intermediaire.MusculationData;
 import com.chavau.univ_angers.univemarge.intermediaire.Personnel;
 

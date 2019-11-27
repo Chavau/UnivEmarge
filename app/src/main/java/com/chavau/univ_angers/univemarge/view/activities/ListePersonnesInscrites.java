@@ -9,8 +9,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.chavau.univ_angers.univemarge.R;
-import com.chavau.univ_angers.univemarge.adapters.AdapterEvenements;
-import com.chavau.univ_angers.univemarge.adapters.AdapterPersonneInscrite;
+import com.chavau.univ_angers.univemarge.view.adapters.AdapterEvenements;
+import com.chavau.univ_angers.univemarge.view.adapters.AdapterPersonneInscrite;
 import com.chavau.univ_angers.univemarge.intermediaire.Etudiant;
 import java.util.ArrayList;
 public class ListePersonnesInscrites extends AppCompatActivity {

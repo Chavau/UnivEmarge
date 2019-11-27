@@ -1,9 +1,8 @@
-package com.chavau.univ_angers.univemarge.adapters;
+package com.chavau.univ_angers.univemarge.view.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

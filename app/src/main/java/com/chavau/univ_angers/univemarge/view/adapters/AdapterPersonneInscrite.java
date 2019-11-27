@@ -1,14 +1,11 @@
-package com.chavau.univ_angers.univemarge.adapters;
+package com.chavau.univ_angers.univemarge.view.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.support.v7.view.menu.MenuBuilder;
-import android.support.v7.view.menu.MenuPopupHelper;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -23,7 +20,6 @@ import java.lang.reflect.Method;
 
 import com.chavau.univ_angers.univemarge.R;
 import com.chavau.univ_angers.univemarge.intermediaire.Etudiant;
-import com.chavau.univ_angers.univemarge.view.activities.BadgeageEnseignant;
 
 import java.util.ArrayList;
 
