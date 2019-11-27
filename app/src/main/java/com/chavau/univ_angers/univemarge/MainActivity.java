@@ -12,16 +12,18 @@ import com.chavau.univ_angers.univemarge.sync.APICall;
 import com.chavau.univ_angers.univemarge.view.activities.Authentification;
 import com.chavau.univ_angers.univemarge.view.activities.ListeEvenementsCours;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity {
+
+    private static final String DATE_MAJ_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authentification);
-
-        APICall apiCall = new APICall();
-        apiCall.setContext(this);
-        apiCall.onCreate(savedInstanceState);
 
         SharedPreferences preferences = getSharedPreferences(getResources().getString(R.string.PREFERENCE),0);
 
@@ -32,6 +34,25 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, ListeEvenementsCours.class);
             startActivity(intent);
         }
+
+        // Mise à jour des données et de la date maj
+        miseAJourAPI(savedInstanceState, preferences);
+
+    }
+
+    public void miseAJourAPI(Bundle savedInstanceState, SharedPreferences preferences) {
+        Date dateMaj = null;
+        try {
+            dateMaj = new SimpleDateFormat(DATE_MAJ_FORMAT).parse(preferences.getString(getResources().getString(R.string.PREF_DATE_MAJ), ""));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        APICall apiCall = new APICall();
+        apiCall.setContext(this);
+        apiCall.setDateMaj(dateMaj);
+        apiCall.onCreate(savedInstanceState);
+        Toast msg = Toast.makeText(MainActivity.this,"Application à jour", Toast.LENGTH_SHORT);
+        msg.show();
     }
 
     @Override
