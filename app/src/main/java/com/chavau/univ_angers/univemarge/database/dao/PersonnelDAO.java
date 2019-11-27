@@ -181,14 +181,26 @@ public class PersonnelDAO extends DAO<Personnel> implements IMergeable {
                         " FROM " + DBTables.Personnel.TABLE_NAME +
                         " WHERE " + DBTables.Personnel.COLONNE_LOGIN + " = ? ",
                 new String[]{login});
-        cursor.moveToNext();
-        return cursor.getInt(cursor.getColumnIndex(DBTables.Personnel.COLONNE_ID_PERSONNEL));
+        System.out.println(cursor == null);
+        if (cursor != null && cursor.moveToFirst()) {
+            int index = cursor.getColumnIndex(DBTables.Personnel.COLONNE_ID_PERSONNEL);
+            if (index != -1) {
+                try {
+                    return cursor.getInt(index);
+                } catch (Exception e) {
+                    System.out.println(e.toString());
+                }
+            }
+            cursor.close();
+        }
+        return -1;
     }
 
     @Override
     public void merge(Entity[] entities) {
         for (Entity e : entities) {
             Personnel personnel = (Personnel) e;
+            System.out.println(personnel.toString());
             deleteItem(personnel.getIdPersonnel());
             long res = insertItem(personnel);
             if (res == -1) {
