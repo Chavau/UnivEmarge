@@ -45,12 +45,13 @@ public class Musculation extends AppCompatActivity {
 
         // Recuperation de pesences si y'a une sauvegarde
 
+        presences = creerPers();
+
         if (savedInstanceState != null) {
             presences = savedInstanceState.getParcelableArrayList(PERSONNELS_PRESENTS);
         }
 
         // Affectation du nombre de presents dans la salle
-        presences = creerPers();
         mdata = creerMuscuData(presences.size());
 
         adaptermusculation = new AdapterMusculation(this, presences, mdata);
@@ -65,7 +66,13 @@ public class Musculation extends AppCompatActivity {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int i) {
                 int position = (int)viewHolder.itemView.getTag();
+                // Suppression d'un personnel et mise à jour du recyclerview
                 adaptermusculation.enlever(position);
+                // Mise à jour du viewpager
+                mdata.setOccupation(adaptermusculation.getItemCount(),mdata.getCapacite());
+                View v = viewpager.findViewWithTag("OcuppationValue");
+                TextView tv = v.findViewById(R.id.id_details_value);
+                tv.setText(mdata.getOccupation());
             }
         };
 
@@ -90,19 +97,6 @@ public class Musculation extends AppCompatActivity {
 
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
         recyclerview.setAdapter(adaptermusculation);
-
-        adaptermusculation.set_listener(new AdapterMusculation.Listener() {
-            @Override
-            public void onClick(int position) {
-                // Suppression d'un personnel et mise à jour du recyclerview
-                adaptermusculation.enlever(position);
-                // Mise à jour du viewpager
-                mdata.setOccupation(adaptermusculation.getItemCount(),mdata.getCapacite());
-                View v = viewpager.findViewWithTag("OcuppationValue");
-                TextView tv = v.findViewById(R.id.id_details_value);
-                tv.setText(mdata.getOccupation());
-            }
-        });
     }
 
     @Override
