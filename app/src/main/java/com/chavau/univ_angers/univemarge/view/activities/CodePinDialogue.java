@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-
 import com.chavau.univ_angers.univemarge.MainActivity;
 import com.chavau.univ_angers.univemarge.R;
 
@@ -28,9 +27,7 @@ public class CodePinDialogue extends DialogFragment {
 
     public static void alertDialogCodePin(BadgeageEtudiant activity) {
         final View view = LayoutInflater.from(activity).inflate(R.layout.dialog_pin, null);
-        //SharedPreferences preferences = activity.getApplicationContext().getSharedPreferences(activity.getResources().getString(R.string.PREFERENCE), 0);
-        //String codePin = preferences.getString("key_old_pin", "");
-        //System.out.println("HAAAAAAAAAHWA : " + codePin);
+
         new AlertDialog.Builder(activity)
                 .setTitle("Code Pin")
                 .setView(view)
@@ -44,7 +41,6 @@ public class CodePinDialogue extends DialogFragment {
                         } else {
                             msg = "L'ancien code de pin est incorrect, veuillez réessayer";
                         }
-                        //dialog_msg(msg).show();
                     }
                 })
                 .setNegativeButton("CANCEL", null)
@@ -72,12 +68,10 @@ public class CodePinDialogue extends DialogFragment {
                         } else {
                             msg = " L'ancien code de pin est incorrect, veuillez réessayer !";
                         }
-                        //dialog_msg(msg).show();
                     }
                 })
                 .setNegativeButton("CANCEL", null)
                 .create();
-
     }
 
     public Dialog dialog_msg(String msg) {

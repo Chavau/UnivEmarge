@@ -103,7 +103,7 @@ public class MonFragmentDePreferences extends PreferenceFragmentCompat {
 
     public void dialog_msg(String msg) {
 
-        //final SettingsActivity activity = (SettingsActivity) getActivity();
+
         new AlertDialog.Builder(getActivity())
                 .setTitle(msg)
                 //.setView(view)
