@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.chavau.univ_angers.univemarge.R;
 import com.chavau.univ_angers.univemarge.adapters.AdapterEvenements;
 import com.chavau.univ_angers.univemarge.adapters.AdapterPersonneInscrite;
+import com.chavau.univ_angers.univemarge.fragments.MonFragmentDePreferences;
 import com.chavau.univ_angers.univemarge.intermediaire.Etudiant;
 
 import java.util.ArrayList;
@@ -30,11 +31,10 @@ public class BadgeageEtudiant extends AppCompatActivity {
     private Intent _intent;
     private String _titreActivite;
     private ArrayList<Etudiant> _etudiants;
+    SharedPreferences preferences;
 
     public void alertDialogCodePin(final View view) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String codePin = preferences.getString("key_old_pin", "");
-       // String codePinExiste = preferences.getString("key_pin", "");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Code Pin");
         builder.setView(view);
@@ -84,6 +84,7 @@ public class BadgeageEtudiant extends AppCompatActivity {
         _recyclerview = findViewById(R.id.recyclerview_creation_seance);
 
         _etudiants = _intent.getParcelableArrayListExtra(AdapterEvenements.getListeEtud());
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
     }
 
@@ -98,10 +99,17 @@ public class BadgeageEtudiant extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.menu_code_pin:
-
-                View v = LayoutInflater.from(this).inflate(R.layout.dialog_pin, null);
-                alertDialogCodePin(v);
-
+                Boolean etatSwitch = preferences.getBoolean("key_pin", false);
+                if(etatSwitch) {
+                    View v = LayoutInflater.from(this).inflate(R.layout.dialog_pin, null);
+                    alertDialogCodePin(v);
+                }
+                else {
+                    Intent intent = new Intent(getApplicationContext(), BadgeageEnseignant.class);
+                    intent.putExtra(AdapterEvenements.getNomAct(), _titreActivite);
+                    intent.putParcelableArrayListExtra(AdapterEvenements.getListeEtud(), _etudiants);
+                    startActivityForResult(intent, 1);
+                }
                 break;
         }
 
