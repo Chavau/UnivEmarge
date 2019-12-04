@@ -307,7 +307,7 @@ public class BadgeageEtudiant extends AppCompatActivity {
 //            if () mp_son_approuver.start(); else mp_son_refuser.start();
 
             //TODO: Demo
-            Toast.makeText(BadgeageEtudiant.this, "Blanc Bertrand", Toast.LENGTH_LONG).show();
+            Toast.makeText(BadgeageEtudiant.this, "Vincent Le Quec", Toast.LENGTH_LONG).show();
             _api.setPresence(1, Etudiant.STATUE_ETUDIANT.PRESENT);
             _api.notifyDataSetChanged();
             mp_son_approuver.start();

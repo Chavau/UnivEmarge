@@ -23,7 +23,7 @@ public class Etudiant implements Parcelable {
         ArrayList<Etudiant> etu = new ArrayList<>();
 
         etu.add(new Etudiant("André", "Bertrand", "0", "Loisirs", R.drawable.man));
-        etu.add(new Etudiant("Blanc", "Bertrand", "1", "Loisirs", R.drawable.man));
+        etu.add(new Etudiant("Le Quec", "Vincent", "1", "Loisirs", R.drawable.vlc));
         etu.add(new Etudiant("Bonnet", "Chevaliere", "2", "Loisirs", R.drawable.woman));
         etu.add(new Etudiant("Paul", "Durand", "3", "Loisirs", R.drawable.man));
         etu.add(new Etudiant("Faure", "Blanche", "4", "Loisirs", R.drawable.woman));
