@@ -1,30 +1,21 @@
 package com.chavau.univ_angers.univemarge.view.activities;
 
-import android.Manifest;
-import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.pm.PackageManager;
-import android.media.MediaPlayer;
-import android.nfc.NfcAdapter;
-import android.nfc.Tag;
-import android.nfc.tech.NfcA;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import android.widget.Toast;
 import com.chavau.univ_angers.univemarge.R;
-import com.chavau.univ_angers.univemarge.view.adapters.AdapterEvenements;
-import com.chavau.univ_angers.univemarge.view.adapters.AdapterPersonneInscrite;
+import com.chavau.univ_angers.univemarge.adapters.AdapterEvenements;
+import com.chavau.univ_angers.univemarge.adapters.AdapterPersonneInscrite;
 import com.chavau.univ_angers.univemarge.intermediaire.Etudiant;
 
 import java.util.ArrayList;
@@ -36,11 +27,12 @@ import java.util.ArrayList;
  */
 public class BadgeageEtudiant extends AppCompatActivity {
 
-    private RecyclerView _recyclerview;
     AdapterPersonneInscrite _api;
+    private RecyclerView _recyclerview;
     private Intent _intent;
     private String _titreActivite;
     private ArrayList<Etudiant> _etudiants;
+    SharedPreferences preferences;
 
     private final int MY_PERMISSIONS_REQUEST_NFC = 1;
     /**
@@ -57,6 +49,42 @@ public class BadgeageEtudiant extends AppCompatActivity {
     public MediaPlayer mp_son_refuser;
 
 
+    public void alertDialogCodePin(final View view) {
+        String codePin = preferences.getString("key_old_pin", "");
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Code Pin");
+        builder.setView(view);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+            }
+        });
+        builder.setNegativeButton("CANCEL", null);
+        builder.create();
+        AlertDialog dialog = builder.show();
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Boolean wantToCloseDialog = false;
+                final EditText _text_code_pin = view.findViewById(R.id.code_pin);
+                String code_pin_saisi = _text_code_pin.getText().toString();
+                String msg = "Erreur";
+                if (code_pin_saisi.matches(codePin)) {
+                    Intent intent = new Intent(getApplicationContext(), BadgeageEnseignant.class);
+                    intent.putExtra(AdapterEvenements.getNomAct(), _titreActivite);
+                    intent.putParcelableArrayListExtra(AdapterEvenements.getListeEtud(), _etudiants);
+                    startActivityForResult(intent, 1);
+                    dialog.dismiss();
+                } else {
+                    TextView tv = view.findViewById(R.id.errorCodePin);
+                    msg = " Le code pin est incorrect, veuillez réessayer !";
+                    tv.setText(msg);
+                    tv.setVisibility(View.VISIBLE);
+
+                }
+            }
+        });
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +96,7 @@ public class BadgeageEtudiant extends AppCompatActivity {
         setTitle(_titreActivite);
         _recyclerview = findViewById(R.id.recyclerview_creation_seance);
         _etudiants = _intent.getParcelableArrayListExtra(AdapterEvenements.getListeEtud());
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // RFID
         mp_son_approuver = MediaPlayer.create(BadgeageEtudiant.this, R.raw.bonbadgeaccepter);
@@ -122,13 +151,20 @@ public class BadgeageEtudiant extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent;
+
         switch (item.getItemId()) {
             case R.id.menu_code_pin:
-                intent = new Intent(this, BadgeageEnseignant.class);
-                intent.putExtra(AdapterEvenements.getNomAct(), _titreActivite);
-                intent.putParcelableArrayListExtra(AdapterEvenements.getListeEtud(), _etudiants);
-                startActivityForResult(intent, 1);
+                Boolean etatSwitch = preferences.getBoolean("key_pin", false);
+                if(etatSwitch) {
+                    View v = LayoutInflater.from(this).inflate(R.layout.dialog_pin, null);
+                    alertDialogCodePin(v);
+                }
+                else {
+                    Intent intent = new Intent(getApplicationContext(), BadgeageEnseignant.class);
+                    intent.putExtra(AdapterEvenements.getNomAct(), _titreActivite);
+                    intent.putParcelableArrayListExtra(AdapterEvenements.getListeEtud(), _etudiants);
+                    startActivityForResult(intent, 1);
+                }
                 break;
         }
 
