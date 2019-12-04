@@ -81,14 +81,8 @@ public class AdapterMusculation extends RecyclerView.Adapter<AdapterMusculation.
             iv_light.setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
         }
 
-        cv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (listener != null) {
-                    listener.onClick(i);
-                }
-            }
-        });
+        //Récupération de la position pour une suppression par la suite
+        monViewHolder.itemView.setTag(i);
 
     }
 
@@ -101,6 +95,7 @@ public class AdapterMusculation extends RecyclerView.Adapter<AdapterMusculation.
     public void enlever(int position) {
         personnels.remove(position);
         notifyDataSetChanged();
+        notifyItemRangeChanged(position,getItemCount()-position);
     }
 
 }

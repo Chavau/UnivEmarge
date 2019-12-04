@@ -11,6 +11,7 @@ import android.nfc.Tag;
 import android.nfc.tech.NfcA;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
@@ -20,6 +21,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.TextView;
 
@@ -40,7 +42,7 @@ public class Musculation extends AppCompatActivity {
     private AdapterMusculation adaptermusculation;
     private RecyclerView recyclerview;
     private MusculationData mdata;
-    private ArrayList<Personnel> presences = creerPers();
+    private ArrayList<Personnel> presences = new ArrayList<>();
     private TabLayout tabLayout;
 
     private static String PERSONNELS_PRESENTS = "presences";
@@ -73,11 +75,15 @@ public class Musculation extends AppCompatActivity {
 
         // Recuperation de pesences si y'a une sauvegarde
 
+        presences = creerPers();
+
         if (savedInstanceState != null) {
             presences = savedInstanceState.getParcelableArrayList(PERSONNELS_PRESENTS);
         }
+
+        // Affectation du nombre de presents dans la salle
         mdata = creerMuscuData(presences.size());
-        adaptermusculation = new AdapterMusculation(this, presences, mdata);
+        adaptermusculation = new AdapterMusculation(this,presences,mdata);
 
         // RFID
         mp_son_approuver = MediaPlayer.create(Musculation.this, R.raw.bonbadgeaccepter);
