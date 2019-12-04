@@ -44,9 +44,7 @@ public class MainActivity extends AppCompatActivity {
         Date dateMaj = null;
         try {
             dateMaj = new SimpleDateFormat(DATE_MAJ_FORMAT).parse(preferences.getString(getResources().getString(R.string.PREF_DATE_MAJ), ""));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        } catch (ParseException e) {}
         APICall apiCall = new APICall();
         apiCall.setContext(this);
         apiCall.setDateMaj(dateMaj);
