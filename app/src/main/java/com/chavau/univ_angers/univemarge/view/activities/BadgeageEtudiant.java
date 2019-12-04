@@ -303,9 +303,14 @@ public class BadgeageEtudiant extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             System.out.println("MIFARE=" + s);
-            Toast.makeText(BadgeageEtudiant.this, "MIFARE:\n" + s, Toast.LENGTH_LONG).show();
-
+//            Toast.makeText(BadgeageEtudiant.this, "MIFARE:\n" + s, Toast.LENGTH_LONG).show();
 //            if () mp_son_approuver.start(); else mp_son_refuser.start();
+
+            //TODO: Demo
+            Toast.makeText(BadgeageEtudiant.this, "Blanc Bertrand", Toast.LENGTH_LONG).show();
+            _api.setPresence(1, Etudiant.STATUE_ETUDIANT.PRESENT);
+            _api.notifyDataSetChanged();
+            mp_son_approuver.start();
         }
     }
 
