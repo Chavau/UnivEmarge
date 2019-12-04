@@ -361,13 +361,21 @@ public class Musculation extends AppCompatActivity {
 //            Toast.makeText(Musculation.this, "MIFARE:\n" + s, Toast.LENGTH_LONG).show();
 //            if () mp_son_approuver.start(); else mp_son_refuser.start();
 
-            //TODO: Demo
-            Toast.makeText(Musculation.this, "Vincent LE QUEC", Toast.LENGTH_LONG).show();
-            adaptermusculation.setPresenceDemo();
-            adaptermusculation.notifyDataSetChanged();
-            mp_son_approuver.start();
+            if (demo) {
+                Toast.makeText(Musculation.this, "Vincent LE QUEC", Toast.LENGTH_LONG).show();
+                adaptermusculation.setPresenceDemo();
+                adaptermusculation.notifyDataSetChanged();
+                mp_son_approuver.start();
+                demo = !demo;
+            } else {
+                adaptermusculation.enlever(14);
+                demo = !demo;
+            }
 
         }
+
     }
+    //TODO: Demo
+    private static boolean demo = true;
 
 }
