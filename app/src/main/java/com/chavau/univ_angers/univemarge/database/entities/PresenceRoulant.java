@@ -71,4 +71,12 @@ public class PresenceRoulant extends Entity {
     public int getIdAutre() {
         return idAutre;
     }
+
+    public void setTemps(Date temps) {
+        this.temps = temps;
+    }
+
+    public void setDateSortie(Date dateSortie) {
+        this.dateSortie = dateSortie;
+    }
 }

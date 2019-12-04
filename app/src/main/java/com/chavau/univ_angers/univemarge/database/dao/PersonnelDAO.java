@@ -173,6 +173,27 @@ public class PersonnelDAO extends DAO<Personnel> implements IMergeable {
         return list;
     }
 
+    /**
+     * prend un mifare et retourne l'identifiant associé à cet étudiant
+     * @param mifare
+     * @return
+     */
+    public int fromMifareGetId(String mifare) {
+        SQLiteDatabase db = super.helper.getWritableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT " + DBTables.Personnel.COLONNE_ID_PERSONNEL + " FROM " + DBTables.Personnel.TABLE_NAME +
+                        " WHERE " + DBTables.Personnel.COLONNE_NO_MIFARE + " = ?",
+                new String[]{mifare});
+
+        if(cursor.getCount() == 0) { throw new IllegalArgumentException("Ce mifare n'est pas a un personnel !");}
+
+        if(cursor.getCount() > 1) { throw new IllegalArgumentException("Ce mifare est associé à plusieurs personnel !");}
+
+        int res = cursor.getInt(cursor.getColumnIndex(DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT));
+        cursor.close();
+        return res;
+    }
+
     public int getIdFromLogin(String login) {
         SQLiteDatabase db = super.helper.getWritableDatabase();
         Cursor cursor = db.rawQuery(
@@ -181,26 +202,26 @@ public class PersonnelDAO extends DAO<Personnel> implements IMergeable {
                         " FROM " + DBTables.Personnel.TABLE_NAME +
                         " WHERE " + DBTables.Personnel.COLONNE_LOGIN + " = ? ",
                 new String[]{login});
-        System.out.println(cursor == null);
-        if (cursor != null && cursor.moveToFirst()) {
-            int index = cursor.getColumnIndex(DBTables.Personnel.COLONNE_ID_PERSONNEL);
-            if (index != -1) {
-                try {
-                    return cursor.getInt(index);
-                } catch (Exception e) {
-                    System.out.println(e.toString());
-                }
-            }
-            cursor.close();
-        }
-        return -1;
+        cursor.moveToNext();
+        return cursor.getInt(cursor.getColumnIndex(DBTables.Personnel.COLONNE_ID_PERSONNEL));
+    }
+
+    public boolean isPersonnel(int idPersonne) {
+        SQLiteDatabase db = super.helper.getWritableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM " + DBTables.Personnel.TABLE_NAME +
+                        " WHERE " + DBTables.Personnel.COLONNE_ID_PERSONNEL + " = ?",
+                new String[]{Integer.toString(idPersonne)});
+
+        int res = cursor.getCount();
+        cursor.close();
+        return res > 0;
     }
 
     @Override
     public void merge(Entity[] entities) {
         for (Entity e : entities) {
             Personnel personnel = (Personnel) e;
-            System.out.println(personnel.toString());
             deleteItem(personnel.getIdPersonnel());
             long res = insertItem(personnel);
             if (res == -1) {

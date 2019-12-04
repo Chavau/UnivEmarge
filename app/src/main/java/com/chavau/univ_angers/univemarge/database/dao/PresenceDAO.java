@@ -8,6 +8,8 @@ import com.chavau.univ_angers.univemarge.database.DBTables;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
 import com.chavau.univ_angers.univemarge.database.entities.Entity;
+import com.chavau.univ_angers.univemarge.database.entities.Etudiant;
+import com.chavau.univ_angers.univemarge.database.entities.Personne;
 import com.chavau.univ_angers.univemarge.database.entities.Presence;
 import com.chavau.univ_angers.univemarge.database.entities.StatutPresence;
 import com.chavau.univ_angers.univemarge.utils.Utils;
@@ -109,44 +111,48 @@ public class PresenceDAO extends DAO<Presence> implements IMergeable {
      * @return
      */
     public boolean insererPresence(String mifare, int idEvenement, StatutPresence sp) {
-        // TODO : faire le contenu
-        return false;
-        /*
-        SQLiteDatabase db = super.helper.getWritableDatabase();
-        Cursor cursor = db.rawQuery(
-                "SELECT " +
-                        " p." + DBTables.Personnel.COLONNE_ID_PERSONNEL + ", " +
-                        " e." + DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT +
-                        " AS countPersonne FROM " + DBTables.Inscription.TABLE_NAME + " i " +
-                        " INNER JOIN " + DBTables.Personnel.TABLE_NAME + " p " +
-                        " ON p." + DBTables.Personnel.COLONNE_ID_PERSONNEL + " = i." + DBTables.Inscription.COLONNE_ID_PERSONNEL +
-                        " INNER JOIN " + DBTables.Etudiant.TABLE_NAME + " e " +
-                        " ON e." + DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT + " = i." + DBTables.Inscription.COLONNE_NUMERO_ETUDIANT +
-                        " WHERE " + DBTables.Inscription.COLONNE_ID_EVENEMENT + " = ? " +
-                        " AND ( " + DBTables.Etudiant.COLONNE_NO_MIFARE + " = ?" +
-                        " OR " + DBTables.Personnel.COLONNE_NO_MIFARE + " = ? )",
-                new String[]{String.valueOf(idEvenement), mifare, mifare});
-        cursor.moveToNext();
-        if (cursor.getColumnCount() == 0)
+
+        // nom de la colonne qui est clée primaire de la table
+        String colunmName = "";
+        // valeur de l'identifiant de la personne à qui appartient le mifare
+        int idPersonne = 0;
+
+
+        InscriptionDAO inscriptionDAO = new InscriptionDAO(this.helper);
+
+        // de quelle classe est la personne à qui appartient le mifare
+        Class<? extends Personne> className = inscriptionDAO.fromMiFareGetType(mifare);
+
+
+        // nous avons affaire à un étudiant
+        if(className == Etudiant.class) {
+            colunmName = DBTables.Presence.COLONNE_NUMERO_ETUDIANT;
+            idPersonne = new EtudiantDAO(this.helper).fromMifareGetId(mifare);
+        }
+        // nous avons affaire à un personnel
+        else {
+            colunmName = DBTables.Presence.COLONNE_NUMERO_ETUDIANT;
+            idPersonne = new PersonnelDAO(this.helper).fromMifareGetId(mifare);
+        }
+
+
+        // si la personne n'est pas inscrite on ne peut pas insérer sa présence
+        if(!inscriptionDAO.estInscrit(idEvenement, idPersonne))
             return false;
 
-        int indexIdPersonnel = cursor.getColumnIndex(DBTables.Personnel.COLONNE_ID_PERSONNEL);
-        int indexNumEtudiant = cursor.getColumnIndex(DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT);
 
-        int idPersonnel = (!cursor.isNull(indexIdPersonnel)) ? cursor.getInt(indexIdPersonnel) : -1;
-        int numEtudiant = (!cursor.isNull(indexNumEtudiant)) ? cursor.getInt(indexNumEtudiant) : -1;
+        // suppression d'une potentielle précédente présence, évite une erreur d'insertion
+        deletePresenceForPersonne(idEvenement, colunmName, idPersonne);
 
-        Presence item = new Presence(
-                idEvenement,
-                numEtudiant,
-                sp,
-                false,
-                idPersonnel,
-                -1
-        );
-        db.insert(DBTables.Presence.TABLE_NAME, null, this.getContentValues(item));
+        // insertion de la présence de la personne
+        Presence presence = null;
+        // etudiant
+        if(className == Etudiant.class) { presence = new Presence(idEvenement, idPersonne, sp, false, 0, 0);}
+        // personnel
+        else { presence = new Presence(idEvenement, 0, sp, false, idPersonne, 0);}
+        insertItem(presence);
+
         return true;
-        */
     }
 
 
@@ -160,6 +166,11 @@ public class PresenceDAO extends DAO<Presence> implements IMergeable {
                 throw new SQLException("Unable to merge Presence Table");
             }
         }
+    }
+
+    private int deletePresenceForPersonne(int idEvenement, String columnName, int idPersonne) {
+        SQLiteDatabase db = super.helper.getWritableDatabase();
+        return db.delete(DBTables.Presence.TABLE_NAME, DBTables.Presence.COLONNE_ID_EVENEMENT + " = ? " + columnName + " = ?", new String[]{String.valueOf(idEvenement), String.valueOf(idPersonne)});
     }
 
     private int deleteItem(int idPresence) {

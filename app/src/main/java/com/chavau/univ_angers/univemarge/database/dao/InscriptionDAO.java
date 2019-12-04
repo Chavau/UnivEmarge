@@ -4,13 +4,15 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+
 import com.chavau.univ_angers.univemarge.database.DBTables;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
 import com.chavau.univ_angers.univemarge.database.entities.Entity;
+import com.chavau.univ_angers.univemarge.database.entities.Etudiant;
 import com.chavau.univ_angers.univemarge.database.entities.Inscription;
-
-import java.sql.ResultSet;
+import com.chavau.univ_angers.univemarge.database.entities.Personne;
+import com.chavau.univ_angers.univemarge.database.entities.Personnel;
 
 public class InscriptionDAO extends DAO<Inscription> implements IMergeable {
     private static final String[] PROJECTION = {
@@ -114,67 +116,62 @@ public class InscriptionDAO extends DAO<Inscription> implements IMergeable {
     }
 
     /**
-     * Cette méthode prend un mifare et modifie la table associée à celui-ci (étudiant ou personnel)
-     * et nous donne la colonne ainsi que la valeur associé à l'identifiant de la personne
-     * @param mifare
-     * @param table
-     * @param column
-     * @param idPersonne
+     * Cette méthode prend un mifare et renvoit la classe de l'objet a qui appartient ce mifare
+     * @param mifare identifiant de la carte scannée
      */
-    public void fromMiFareGetTableAndColumn(String mifare, String table, String column, int idPersonne) {
+    public Class<? extends Personne> fromMiFareGetType(String mifare) {
 
         // cas pour un étudiant
         SQLiteDatabase db = super.helper.getWritableDatabase();
         Cursor cursor = db.rawQuery(
                 "SELECT " + DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT + " FROM " + DBTables.Etudiant.TABLE_NAME +
-                    " WHERE " + DBTables.Etudiant.COLONNE_NO_MIFARE + " = ?",
+                        " WHERE " + DBTables.Etudiant.COLONNE_NO_MIFARE + " = ?",
                 new String[]{mifare});
 
         // si le nombre d'entrées est supérieur à 0,
         // ce mifare correspond donc à un étudiant
         if (cursor.getCount() > 0) {
             cursor.moveToNext();
-            table = DBTables.Etudiant.TABLE_NAME;
-            column = DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT;
-            idPersonne = cursor.getInt(cursor.getColumnIndex(DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT));
-            return;
+            return Etudiant.class;
         }
 
         // cas pour un personnel
         cursor = db.rawQuery(
                 "SELECT " + DBTables.Personnel.COLONNE_ID_PERSONNEL + " FROM " + DBTables.Personnel.TABLE_NAME +
-                    " WHERE " + DBTables.Personnel.COLONNE_NO_MIFARE + " = ?",
+                        " WHERE " + DBTables.Personnel.COLONNE_NO_MIFARE + " = ?",
                 new String[]{mifare});
 
         // si le nombre d'entrées est supérieur à 0,
         // ce mifare correspond donc à un personnel
         if (cursor.getCount() > 0) {
             cursor.moveToNext();
-            table = DBTables.Personnel.TABLE_NAME;
-            column = DBTables.Personnel.COLONNE_ID_PERSONNEL;
-            idPersonne = cursor.getInt(cursor.getColumnIndex(DBTables.Personnel.COLONNE_ID_PERSONNEL));
-            return;
+            return Personnel.class;
         }
+        cursor.close();
 
         throw new IllegalArgumentException("Unknown mifare");
     }
 
     /**
      * retourne un booléen décrivant si la personne est inscrite au cours
+     * indiféremment de si la personne est un étudiant, un personnel ou autre
      * @param idPersonne valeur associée à l'identifiant de la personne (soit un num étudiant, soit is personnel)
-     * @param columnNameForId Le nom de la colonne associé à la valeur (soit numeroEtudiant soit idPersonnel)
      * @return si la personne est bien inscrite au cours
      */
-    public boolean estInscrit(int idEvenement, int idPersonne, String columnNameForId) {
+    public boolean estInscrit(int idEvenement, int idPersonne) {
         SQLiteDatabase db = super.helper.getWritableDatabase();
         Cursor cursor = db.rawQuery(
                 "SELECT * FROM " + DBTables.Inscription.TABLE_NAME +
-                    " WHERE " + columnNameForId + " = ?" +
-                    " AND " + DBTables.Inscription.COLONNE_ID_EVENEMENT + " = ?",
-                new String[]{Integer.toString(idPersonne), Integer.toString(idEvenement)});
+                        " WHERE " + DBTables.Inscription.COLONNE_ID_EVENEMENT + " = ?" +
+                        " AND (" + DBTables.Inscription.COLONNE_ID_PERSONNEL + " = ? " +
+                        " OR " + DBTables.Inscription.COLONNE_NUMERO_ETUDIANT + " = ? " +
+                        " OR " + DBTables.Inscription.COLONNE_ID_AUTRE + " = ? )",
+                new String[]{Integer.toString(idEvenement), Integer.toString(idPersonne), Integer.toString(idPersonne), Integer.toString(idPersonne)});
 
         // si le nombre d'entrées est supérieur à 0,
         // la personne est bel et bien inscrite
-        return cursor.getCount() > 0;
+        int res = cursor.getCount();
+        cursor.close();
+        return res > 0;
     }
 }

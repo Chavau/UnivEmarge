@@ -161,6 +161,39 @@ public class EtudiantDAO extends DAO<Etudiant> implements IMergeable {
         return list;
     }
 
+    /**
+     * prend un mifare et retourne l'identifiant associé à cet étudiant
+     * @param mifare
+     * @return
+     */
+    public int fromMifareGetId(String mifare) {
+        SQLiteDatabase db = super.helper.getWritableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT " + DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT + " FROM " + DBTables.Etudiant.TABLE_NAME +
+                        " WHERE " + DBTables.Etudiant.COLONNE_NO_MIFARE + " = ?",
+                new String[]{mifare});
+
+        if(cursor.getCount() == 0) { throw new IllegalArgumentException("Ce mifare n'est pas a un étudiant !");}
+
+        if(cursor.getCount() > 1) { throw new IllegalArgumentException("Ce mifare est associé à plusieurs étudiant !");}
+
+        int res = cursor.getInt(cursor.getColumnIndex(DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT));
+        cursor.close();
+        return res;
+    }
+
+    public boolean isEtudiant(int idPersonne) {
+        SQLiteDatabase db = super.helper.getWritableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM " + DBTables.Etudiant.TABLE_NAME +
+                        " WHERE " + DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT + " = ?",
+                new String[]{Integer.toString(idPersonne)});
+
+        int res = cursor.getCount();
+        cursor.close();
+        return res > 0;
+    }
+
     @Override
     public void merge(Entity[] entities) {
         for (Entity e : entities) {
