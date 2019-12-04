@@ -53,8 +53,7 @@ public class MainActivity extends AppCompatActivity {
         apiCall.setContext(this);
         apiCall.setDateMaj(dateMaj);
         apiCall.onCreate(savedInstanceState);
-        Toast msg = Toast.makeText(MainActivity.this, "Application à jour", Toast.LENGTH_SHORT);
-        msg.show();
+        Toast.makeText(MainActivity.this, "Application à jour", Toast.LENGTH_SHORT).show();
     }
 
     @Override
