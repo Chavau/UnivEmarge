@@ -200,7 +200,7 @@ public final class DBTables {
 
         public static final String SQL_CREATE_ENTRIES =
                 "CREATE TABLE " + Presence.TABLE_NAME + " (" +
-                        Presence.COLONNE_ID_PRESENCE + " INTEGER PRIMARY KEY, " +
+                        Presence.COLONNE_ID_PRESENCE + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         Presence.COLONNE_ID_EVENEMENT + " integer, " +
                         Presence.COLONNE_NUMERO_ETUDIANT + " integer, " +
                         Presence.COLONNE_STATUT_PRESENCE + " integer, " +
@@ -232,7 +232,7 @@ public final class DBTables {
 
         public static final String SQL_CREATE_ENTRIES =
                 "CREATE TABLE " + PresenceRoulant.TABLE_NAME + " (" +
-                        PresenceRoulant.COLONNE_ID_ROULANT + " INTEGER PRIMARY KEY, " +
+                        PresenceRoulant.COLONNE_ID_ROULANT + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         PresenceRoulant.COLONNE_ID_EVENEMENT + " INTEGER, " +
                         PresenceRoulant.COLONNE_NUMERO_ETUDIANT + " INTEGER, " +
                         PresenceRoulant.COLONNE_TEMPS + " varchar(255), " +
