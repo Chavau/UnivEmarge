@@ -13,6 +13,8 @@ import com.chavau.univ_angers.univemarge.sync.APICall;
 import com.chavau.univ_angers.univemarge.view.activities.Authentification;
 import com.chavau.univ_angers.univemarge.view.activities.CodePinDialogue;
 import com.chavau.univ_angers.univemarge.view.activities.ListeEvenementsCours;
+import com.chavau.univ_angers.univemarge.view.fragment.Configuration_dialog;
+
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
