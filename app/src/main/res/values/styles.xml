@@ -40,13 +40,8 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">horizontal</item>
-
-    <style name="ElementVertical">
-        <item name="android:paddingTop">@dimen/espacement</item>
-        <item name="android:paddingBottom">@dimen/espacement</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">0dp</item>
     </style>
+
 
     <style name="ElementVertical.EntreeNomEtudiant">
         <item name="android:paddingTop">@dimen/espacementEntreeNomEtudiant</item>
