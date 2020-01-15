@@ -12,6 +12,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    /**
+     * Création des Tables du DBTables
+     * @param db
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(DBTables.Personnel.SQL_CREATE_ENTRIES);
@@ -25,6 +29,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(DBTables.PresenceRoulant.SQL_CREATE_ENTRIES);
     }
 
+    /**
+     * Suppression et création des Tables du DBTables
+     * @param db
+     * @param i
+     * @param i1
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL(DBTables.PresenceRoulant.SQL_DELETE_ENTRIES);

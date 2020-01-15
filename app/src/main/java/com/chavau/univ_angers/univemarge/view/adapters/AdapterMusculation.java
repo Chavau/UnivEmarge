@@ -1,9 +1,8 @@
-package com.chavau.univ_angers.univemarge.adapters;
+package com.chavau.univ_angers.univemarge.view.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chavau.univ_angers.univemarge.R;
+import com.chavau.univ_angers.univemarge.intermediaire.Etudiant;
 import com.chavau.univ_angers.univemarge.intermediaire.MusculationData;
 import com.chavau.univ_angers.univemarge.intermediaire.Personnel;
 
@@ -82,14 +82,8 @@ public class AdapterMusculation extends RecyclerView.Adapter<AdapterMusculation.
             iv_light.setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
         }
 
-        cv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (listener != null) {
-                    listener.onClick(i);
-                }
-            }
-        });
+        //Récupération de la position pour une suppression par la suite
+        monViewHolder.itemView.setTag(i);
 
     }
 
@@ -102,6 +96,12 @@ public class AdapterMusculation extends RecyclerView.Adapter<AdapterMusculation.
     public void enlever(int position) {
         personnels.remove(position);
         notifyDataSetChanged();
+        notifyItemRangeChanged(position,getItemCount()-position);
+    }
+
+    // TODO: demo
+    public void setPresenceDemo() {
+        personnels.add(new Personnel("Le Quec", "Vincent"));
     }
 
 }

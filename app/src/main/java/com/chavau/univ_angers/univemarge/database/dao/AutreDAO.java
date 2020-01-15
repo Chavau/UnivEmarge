@@ -86,11 +86,52 @@ public class AutreDAO extends DAO<Autre> implements IMergeable {
         );
     }
 
-    public ArrayList<Autre> listePersonnelInscrit(Identifiant id) {
+    /**
+     * Retourne la liste des autres inscrit à un cour
+     *
+     * @param id
+     * @return ArrayList
+     */
+    public ArrayList<Autre> listeAutresInscritCour(Identifiant id) {
         SQLiteDatabase db = super.helper.getWritableDatabase();
         Cursor cursor = db.rawQuery(
-                "SELECT * FROM " + DBTables.Autre.TABLE_NAME +
-                        " INNER JOIN " + DBTables.Inscription.TABLE_NAME +
+                "SELECT " +
+                        " a." + DBTables.Autre.COLONNE_ID_AUTRE + ", " +
+                        " a." + DBTables.Autre.COLONNE_NOM + ", " +
+                        " a." + DBTables.Autre.COLONNE_PRENOM + ", " +
+                        " a." + DBTables.Autre.COLONNE_EMAIL + " " +
+                        "FROM " + DBTables.Autre.TABLE_NAME + " a " +
+                        " INNER JOIN " + DBTables.Inscription.TABLE_NAME + " i " +
+                        " ON a." + DBTables.Autre.COLONNE_ID_AUTRE + " = i." + DBTables.Inscription.COLONNE_ID_AUTRE +
+                        " INNER JOIN " + DBTables.Evenement.TABLE_NAME + " e " +
+                        " ON e." + DBTables.Evenement.COLONNE_ID_EVENEMENT + " = i." + DBTables.Inscription.COLONNE_ID_EVENEMENT +
+                        " WHERE " + DBTables.Evenement.COLONNE_ID_COURS + " = ? ",
+                new String[]{String.valueOf(id.getId(DBTables.Evenement.COLONNE_ID_COURS))});
+
+        ArrayList<Autre> list = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            list.add(this.cursorToType(cursor));
+        }
+        return list;
+    }
+
+    /**
+     * Retourne la liste des autres inscrit à un evenement
+     *
+     * @param id
+     * @return ArrayList
+     */
+    public ArrayList<Autre> listeAutresInscrit(Identifiant id) {
+        SQLiteDatabase db = super.helper.getWritableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT " +
+                        " a." + DBTables.Autre.COLONNE_ID_AUTRE + ", " +
+                        " a." + DBTables.Autre.COLONNE_NOM + ", " +
+                        " a." + DBTables.Autre.COLONNE_PRENOM + ", " +
+                        " a." + DBTables.Autre.COLONNE_EMAIL + " " +
+                        " FROM " + DBTables.Autre.TABLE_NAME + " a" +
+                        " INNER JOIN " + DBTables.Inscription.TABLE_NAME + " i " +
+                        " ON a." + DBTables.Autre.COLONNE_ID_AUTRE + " = i." + DBTables.Inscription.COLONNE_ID_AUTRE +
                         " WHERE " + DBTables.Autre.COLONNE_ID_AUTRE + " = ? ",
                 new String[]{String.valueOf(id.getId(DBTables.Inscription.COLONNE_ID_AUTRE))});
 
@@ -103,6 +144,6 @@ public class AutreDAO extends DAO<Autre> implements IMergeable {
 
     @Override
     public void merge(Entity[] entities) {
-        
+
     }
 }

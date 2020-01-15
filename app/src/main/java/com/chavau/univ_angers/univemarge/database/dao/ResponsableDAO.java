@@ -88,7 +88,7 @@ public class ResponsableDAO extends DAO<Responsable> implements IMergeable {
             Responsable responsable = (Responsable) e;
             deleteItem(responsable.getIdPersonnelResponsable());
             long res = insertItem(responsable);
-            if(res == -1) {
+            if (res == -1) {
                 throw new SQLException("Unable to merge Responsable Table");
             }
         }

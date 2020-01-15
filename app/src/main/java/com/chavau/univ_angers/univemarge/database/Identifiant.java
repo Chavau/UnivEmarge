@@ -3,6 +3,11 @@ package com.chavau.univ_angers.univemarge.database;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Identifiant ce comporte comme une ArrayList.
+ * Il permet de stocker les identifians tels que les clés primaires des tables en clé
+ * ex: DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT avec comme valeur "42"
+ */
 public class Identifiant {
 
     private Map<String, Integer> ids;

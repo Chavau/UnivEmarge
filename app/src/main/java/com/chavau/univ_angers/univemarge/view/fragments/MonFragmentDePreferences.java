@@ -1,5 +1,6 @@
-package com.chavau.univ_angers.univemarge.fragments;
+package com.chavau.univ_angers.univemarge.view.fragments;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v14.preference.SwitchPreference;
 import android.support.v7.preference.EditTextPreference;
@@ -19,18 +20,14 @@ public class MonFragmentDePreferences extends PreferenceFragmentCompat {
     SwitchPreference sp_pin;
     SwitchPreference sp_notif;
     SwitchPreference sp_Synchro;
-
-
     EditText et_new_pin;
     Button btn_change_pin;
-
-
-
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preference);
         // Faire l'appel de l'EditText et puis le cacher
+
         etp_old_pin = (EditTextPreference) findPreference("key_old_pin");
         etp_old_pin.setVisible(false);
         //
@@ -61,6 +58,7 @@ public class MonFragmentDePreferences extends PreferenceFragmentCompat {
         });
 
         // Faire l'appel du SwitchPref du code Pin et puis faire apparaitre EditText du nouveau pin et le bouton changer
+
         sp_pin = (SwitchPreference) findPreference("key_pin");
         sp_pin.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
@@ -71,6 +69,7 @@ public class MonFragmentDePreferences extends PreferenceFragmentCompat {
                 } else {
                     setVisibilityComponents(false, et_new_pin, btn_change_pin);
                 }
+
                 return true;
             }
         });
@@ -86,17 +85,24 @@ public class MonFragmentDePreferences extends PreferenceFragmentCompat {
             public void onClick(View view) {
                 String newPassSaisi = et_new_pin.getText().toString();
                 if (newPassSaisi.isEmpty()) {
-                    Toast.makeText(getActivity(), "Veuillez remplir le nouveau code pin !", Toast.LENGTH_LONG).show();
+                    dialog_msg("Veuillez remplir le nouveau code pin !");
                 } else {
                     if (newPassSaisi.length() != 4) {
-                        Toast.makeText(getActivity(), "Votre nouveau code pin doit avoir 4 numéros !", Toast.LENGTH_LONG).show();
+                        dialog_msg("Votre nouveau code pin doit avoir 4 numéros !");
                     } else {
                         etp_old_pin.setText(et_new_pin.getText().toString());
-                        Toast.makeText(getActivity(), "Code pin modifié avec succès !", Toast.LENGTH_LONG).show();
+                        dialog_msg("Code pin modifié avec succès !");
                     }
                 }
             }
         });
+    }
+
+    public void dialog_msg(String msg) {
+        new AlertDialog.Builder(getActivity())
+                .setTitle(msg)
+                .setPositiveButton("DONE", null)
+                .create().show();
     }
 
     @Override

@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
     <!-- Configuration dialog theme -->
     <style name="ElementVertical">
         <item name="android:paddingTop">@dimen/espacementEntreeNomEtudiant</item>
@@ -34,10 +35,24 @@
         <item name="android:orientation">vertical</item>
     </style>
 
+
     <style name="ConteneurHorizontal">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">horizontal</item>
+
+    <style name="ElementVertical">
+        <item name="android:paddingTop">@dimen/espacement</item>
+        <item name="android:paddingBottom">@dimen/espacement</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+    </style>
+
+    <style name="ElementVertical.EntreeNomEtudiant">
+        <item name="android:paddingTop">@dimen/espacementEntreeNomEtudiant</item>
+        <item name="android:paddingBottom">@dimen/espacementEntreeNomEtudiant</item>
+        <item name="android:ems">10</item>
+        <item name="android:inputType">textPersonName</item>
     </style>
 
 </resources>

@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.chavau.univ_angers.univemarge.MainActivity;
 import com.chavau.univ_angers.univemarge.R;
-import com.chavau.univ_angers.univemarge.view.fragment.Authentification_Fragment;
+import com.chavau.univ_angers.univemarge.view.fragments.Authentification_Fragment;
 
 /**
  * Activité servant à authentifier un personnel responsable
