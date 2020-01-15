@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import android.widget.Toast;
 import com.chavau.univ_angers.univemarge.R;
+import com.chavau.univ_angers.univemarge.intermediaire.Etudiant;
 import com.chavau.univ_angers.univemarge.view.adapters.AdapterMusculation;
 import com.chavau.univ_angers.univemarge.view.adapters.AdapterViewPager;
 import com.chavau.univ_angers.univemarge.intermediaire.MusculationData;
@@ -83,7 +84,32 @@ public class Musculation extends AppCompatActivity {
 
         // Affectation du nombre de presents dans la salle
         mdata = creerMuscuData(presences.size());
-        adaptermusculation = new AdapterMusculation(this,presences,mdata);
+        adaptermusculation = new AdapterMusculation(this, presences, mdata);
+
+
+        adaptermusculation = new AdapterMusculation(this, presences, mdata);
+
+        ItemTouchHelper.SimpleCallback ihscb = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder viewHolder1) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int i) {
+                int position = (int) viewHolder.itemView.getTag();
+                // Suppression d'un personnel et mise à jour du recyclerview
+                adaptermusculation.enlever(position);
+                // Mise à jour du viewpager
+                mdata.setOccupation(adaptermusculation.getItemCount(), mdata.getCapacite());
+                View v = viewpager.findViewWithTag("OcuppationValue");
+                TextView tv = v.findViewById(R.id.id_details_value);
+                tv.setText(mdata.getOccupation());
+            }
+        };
+        new ItemTouchHelper(ihscb).attachToRecyclerView(recyclerview);
+
 
         // RFID
         mp_son_approuver = MediaPlayer.create(Musculation.this, R.raw.bonbadgeaccepter);
@@ -332,10 +358,24 @@ public class Musculation extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             System.out.println("MIFARE=" + s);
-            Toast.makeText(Musculation.this, "MIFARE:\n" + s, Toast.LENGTH_LONG).show();
-
+//            Toast.makeText(Musculation.this, "MIFARE:\n" + s, Toast.LENGTH_LONG).show();
 //            if () mp_son_approuver.start(); else mp_son_refuser.start();
+
+            if (demo) {
+                Toast.makeText(Musculation.this, "Vincent LE QUEC", Toast.LENGTH_LONG).show();
+                adaptermusculation.setPresenceDemo();
+                adaptermusculation.notifyDataSetChanged();
+                mp_son_approuver.start();
+                demo = !demo;
+            } else {
+                adaptermusculation.enlever(14);
+                demo = !demo;
+            }
+
         }
+
     }
+    //TODO: Demo
+    private static boolean demo = true;
 
 }

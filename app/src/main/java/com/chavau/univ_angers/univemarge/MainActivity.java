@@ -6,10 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.chavau.univ_angers.univemarge.sync.APICall;
 import com.chavau.univ_angers.univemarge.view.activities.Authentification;
+import com.chavau.univ_angers.univemarge.view.activities.CodePinDialogue;
 import com.chavau.univ_angers.univemarge.view.activities.ListeEvenementsCours;
 
 import java.text.ParseException;
@@ -51,8 +53,7 @@ public class MainActivity extends AppCompatActivity {
         apiCall.setContext(this);
         apiCall.setDateMaj(dateMaj);
         apiCall.onCreate(savedInstanceState);
-        Toast msg = Toast.makeText(MainActivity.this, "Application à jour", Toast.LENGTH_SHORT);
-        msg.show();
+        Toast.makeText(MainActivity.this, "Application à jour", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -82,4 +83,9 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public void Codepin(View view) {
+        new CodePinDialogue().show(getSupportFragmentManager(),"PinClasse");
+    }
+
 }

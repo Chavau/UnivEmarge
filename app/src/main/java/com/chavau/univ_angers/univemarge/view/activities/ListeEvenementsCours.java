@@ -113,7 +113,7 @@ public class ListeEvenementsCours extends AppCompatActivity {
                 return true;
             case R.id.setting:
                 Intent start_settings_activity = new Intent(this, SettingsActivity.class);
-                startActivity(start_settings_activity);
+                startActivityForResult(start_settings_activity,1);
                 return true;
             case R.id.deconnect:
                 //Remet le login à vide ( la clef aussi quand celle-ci sera opérationnelle)

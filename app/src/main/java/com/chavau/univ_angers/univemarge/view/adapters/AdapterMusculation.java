@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chavau.univ_angers.univemarge.R;
+import com.chavau.univ_angers.univemarge.intermediaire.Etudiant;
 import com.chavau.univ_angers.univemarge.intermediaire.MusculationData;
 import com.chavau.univ_angers.univemarge.intermediaire.Personnel;
 
@@ -96,6 +97,11 @@ public class AdapterMusculation extends RecyclerView.Adapter<AdapterMusculation.
         personnels.remove(position);
         notifyDataSetChanged();
         notifyItemRangeChanged(position,getItemCount()-position);
+    }
+
+    // TODO: demo
+    public void setPresenceDemo() {
+        personnels.add(new Personnel("Le Quec", "Vincent"));
     }
 
 }
