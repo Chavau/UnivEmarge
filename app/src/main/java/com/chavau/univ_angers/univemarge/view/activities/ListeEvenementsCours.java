@@ -2,8 +2,12 @@ package com.chavau.univ_angers.univemarge.view.activities;
 
 
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.chavau.univ_angers.univemarge.MainActivity;
 import com.chavau.univ_angers.univemarge.R;
@@ -19,12 +24,17 @@ import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
 import com.chavau.univ_angers.univemarge.database.dao.EvenementDAO;
 import com.chavau.univ_angers.univemarge.database.dao.PersonnelDAO;
+import com.chavau.univ_angers.univemarge.sync.APICall;
 import com.chavau.univ_angers.univemarge.view.adapters.AdapterEvenements;
 import com.chavau.univ_angers.univemarge.intermediaire.Cours;
+import com.chavau.univ_angers.univemarge.view.fragments.Authentification_Fragment;
 
 
 import java.util.Calendar;
 import java.util.ArrayList;
+
+import static android.app.Notification.EXTRA_NOTIFICATION_ID;
+import static android.content.ContentValues.TAG;
 
 public class ListeEvenementsCours extends AppCompatActivity {
 
@@ -39,19 +49,28 @@ public class ListeEvenementsCours extends AppCompatActivity {
     PersonnelDAO _personnelDAO;
     EvenementDAO _evenementDAO;
 
+    // Fragment
+    private static final String TAG_SYNCHRONISATION_FRAGMENT = "authentification_fragment";
+    private APICall synchronisation_fragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_liste_evenements_cours);
 
+        // fragment pour la synchronisation
+        FragmentManager frag_manage = getSupportFragmentManager();
+        synchronisation_fragment = (APICall)frag_manage.findFragmentByTag(TAG_SYNCHRONISATION_FRAGMENT);
+
+        if(synchronisation_fragment == null){
+            synchronisation_fragment = new APICall();
+            frag_manage.beginTransaction().add(synchronisation_fragment, TAG_SYNCHRONISATION_FRAGMENT).commit();
+        }
+
         _recyclerview = findViewById(R.id.recyclerview_cours);
-
         _recyclerview.setLayoutManager(new LinearLayoutManager(this));
-
         _cours = Cours.creeCours();
-
         _adapterEvenements = new AdapterEvenements(this, _cours);
-
         _recyclerview.setAdapter(_adapterEvenements);
 
         // Database
@@ -110,6 +129,8 @@ public class ListeEvenementsCours extends AppCompatActivity {
 
                 return true;
             case R.id.synchron:
+                // Mise à jour des données et de la date maj
+                miseAJourAPI();
                 return true;
             case R.id.setting:
                 Intent start_settings_activity = new Intent(this, SettingsActivity.class);
@@ -134,5 +155,10 @@ public class ListeEvenementsCours extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         _adapterEvenements.setListeCours(_cours);
+    }
+
+    public void miseAJourAPI() {
+        synchronisation_fragment.synchronize();
+        Toast.makeText(this, "Application à jour", Toast.LENGTH_SHORT).show();
     }
 }
