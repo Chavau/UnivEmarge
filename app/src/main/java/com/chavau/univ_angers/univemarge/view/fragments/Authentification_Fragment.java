@@ -1,4 +1,4 @@
-package com.chavau.univ_angers.univemarge.view.fragment;
+package com.chavau.univ_angers.univemarge.view.fragments;
 
 import android.content.Context;
 import android.os.AsyncTask;

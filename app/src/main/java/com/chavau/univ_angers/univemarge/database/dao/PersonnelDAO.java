@@ -117,15 +117,15 @@ public class PersonnelDAO extends DAO<Personnel> implements IMergeable {
         SQLiteDatabase db = super.helper.getWritableDatabase();
         Cursor cursor = db.rawQuery(
                 "SELECT " +
-                        DBTables.Personnel.COLONNE_ID_PERSONNEL + ", " +
-                        DBTables.Personnel.COLONNE_NOM + ", " +
-                        DBTables.Personnel.COLONNE_PRENOM + ", " +
-                        DBTables.Personnel.COLONNE_LOGIN + ", " +
-                        DBTables.Personnel.COLONNE_EMAIL + ", " +
-                        DBTables.Personnel.COLONNE_PHOTO + ", " +
-                        DBTables.Personnel.COLONNE_NO_MIFARE + ", " +
-                        DBTables.Personnel.COLONNE_PIN + ", " +
-                        DBTables.Personnel.COLONNE_DELETED +
+                        " p." + DBTables.Personnel.COLONNE_ID_PERSONNEL + ", " +
+                        " p." + DBTables.Personnel.COLONNE_NOM + ", " +
+                        " p." + DBTables.Personnel.COLONNE_PRENOM + ", " +
+                        " p." + DBTables.Personnel.COLONNE_LOGIN + ", " +
+                        " p." + DBTables.Personnel.COLONNE_EMAIL + ", " +
+                        " p." + DBTables.Personnel.COLONNE_PHOTO + ", " +
+                        " p." + DBTables.Personnel.COLONNE_NO_MIFARE + ", " +
+                        " p." + DBTables.Personnel.COLONNE_PIN + ", " +
+                        " p." + DBTables.Personnel.COLONNE_DELETED +
                         " FROM " + DBTables.Personnel.TABLE_NAME + " p " +
                         " INNER JOIN " + DBTables.Inscription.TABLE_NAME + " i " +
                         " ON p." + DBTables.Personnel.COLONNE_ID_PERSONNEL + " = i." + DBTables.Inscription.COLONNE_ID_PERSONNEL +
@@ -151,15 +151,15 @@ public class PersonnelDAO extends DAO<Personnel> implements IMergeable {
         SQLiteDatabase db = super.helper.getWritableDatabase();
         Cursor cursor = db.rawQuery(
                 "SELECT " +
-                        DBTables.Personnel.COLONNE_ID_PERSONNEL + ", " +
-                        DBTables.Personnel.COLONNE_NOM + ", " +
-                        DBTables.Personnel.COLONNE_PRENOM + ", " +
-                        DBTables.Personnel.COLONNE_LOGIN + ", " +
-                        DBTables.Personnel.COLONNE_EMAIL + ", " +
-                        DBTables.Personnel.COLONNE_PHOTO + ", " +
-                        DBTables.Personnel.COLONNE_NO_MIFARE + ", " +
-                        DBTables.Personnel.COLONNE_PIN + ", " +
-                        DBTables.Personnel.COLONNE_DELETED +
+                        " p." + DBTables.Personnel.COLONNE_ID_PERSONNEL + ", " +
+                        " p." + DBTables.Personnel.COLONNE_NOM + ", " +
+                        " p." + DBTables.Personnel.COLONNE_PRENOM + ", " +
+                        " p." + DBTables.Personnel.COLONNE_LOGIN + ", " +
+                        " p." + DBTables.Personnel.COLONNE_EMAIL + ", " +
+                        " p." + DBTables.Personnel.COLONNE_PHOTO + ", " +
+                        " p." + DBTables.Personnel.COLONNE_NO_MIFARE + ", " +
+                        " p." + DBTables.Personnel.COLONNE_PIN + ", " +
+                        " p." + DBTables.Personnel.COLONNE_DELETED +
                         " FROM " + DBTables.Personnel.TABLE_NAME + " p " +
                         " INNER JOIN " + DBTables.Inscription.TABLE_NAME + " i " +
                         " ON p." + DBTables.Personnel.COLONNE_ID_PERSONNEL + " = i." + DBTables.Inscription.COLONNE_ID_PERSONNEL +
@@ -181,14 +181,26 @@ public class PersonnelDAO extends DAO<Personnel> implements IMergeable {
                         " FROM " + DBTables.Personnel.TABLE_NAME +
                         " WHERE " + DBTables.Personnel.COLONNE_LOGIN + " = ? ",
                 new String[]{login});
-        cursor.moveToNext();
-        return cursor.getInt(cursor.getColumnIndex(DBTables.Personnel.COLONNE_ID_PERSONNEL));
+        System.out.println(cursor == null);
+        if (cursor != null && cursor.moveToFirst()) {
+            int index = cursor.getColumnIndex(DBTables.Personnel.COLONNE_ID_PERSONNEL);
+            if (index != -1) {
+                try {
+                    return cursor.getInt(index);
+                } catch (Exception e) {
+                    System.out.println(e.toString());
+                }
+            }
+            cursor.close();
+        }
+        return -1;
     }
 
     @Override
     public void merge(Entity[] entities) {
         for (Entity e : entities) {
             Personnel personnel = (Personnel) e;
+            System.out.println(personnel.toString());
             deleteItem(personnel.getIdPersonnel());
             long res = insertItem(personnel);
             if (res == -1) {

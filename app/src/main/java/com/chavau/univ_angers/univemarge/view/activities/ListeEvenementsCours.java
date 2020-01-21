@@ -14,11 +14,17 @@ import android.view.MenuItem;
 
 import com.chavau.univ_angers.univemarge.MainActivity;
 import com.chavau.univ_angers.univemarge.R;
-import com.chavau.univ_angers.univemarge.adapters.AdapterEvenements;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.Identifiant;
 import com.chavau.univ_angers.univemarge.database.dao.EvenementDAO;
 import com.chavau.univ_angers.univemarge.database.entities.Evenement;
+import com.chavau.univ_angers.univemarge.database.DBTables;
+import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
+import com.chavau.univ_angers.univemarge.database.Identifiant;
+import com.chavau.univ_angers.univemarge.database.dao.EvenementDAO;
+import com.chavau.univ_angers.univemarge.database.dao.PersonnelDAO;
+import com.chavau.univ_angers.univemarge.view.adapters.AdapterEvenements;
+import com.chavau.univ_angers.univemarge.intermediaire.Cours;
 
 
 import java.util.Calendar;
@@ -31,6 +37,10 @@ public class ListeEvenementsCours extends AppCompatActivity {
     ArrayList<Evenement> _cours = new ArrayList<>();
 
     DatePickerDialog _datepickerdialog;
+
+    // Database
+    PersonnelDAO _personnelDAO;
+    EvenementDAO _evenementDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +68,26 @@ public class ListeEvenementsCours extends AppCompatActivity {
 
         _recyclerview.setAdapter(_adapterEvenements);
 
+        // Database
+        DatabaseHelper helper = new DatabaseHelper(this);
+        _personnelDAO = new PersonnelDAO(helper);
+        _evenementDAO = new EvenementDAO(helper);
+//        this.getListeEvenements();
+    }
+
+    private void getListeEvenements() {
+        // TODO: get login from shared preference
+//        String login = "h.fior";
+        String login = "f.mercier";
+
+        // Get ID
+        int id = _personnelDAO.getIdFromLogin(login);
+        System.out.println("ID:" + id);
+
+//        // Get list
+//        Identifiant identifiant = new Identifiant();
+//        identifiant.ajoutId(DBTables.Responsable.COLONNE_ID_PERSONNEL_RESPONSABLE, id);
+//        _evenements = _evenementDAO.listeEvenementsPourPersonnel(identifiant);
     }
 
     @Override
@@ -97,14 +127,15 @@ public class ListeEvenementsCours extends AppCompatActivity {
                 return true;
             case R.id.setting:
                 Intent start_settings_activity = new Intent(this, SettingsActivity.class);
-                startActivity(start_settings_activity);
+                startActivityForResult(start_settings_activity,1);
                 return true;
             case R.id.deconnect:
                 //Remet le login à vide ( la clef aussi quand celle-ci sera opérationnelle)
-                SharedPreferences preferences = getSharedPreferences(getResources().getString(R.string.PREFERENCE),0);
+                SharedPreferences preferences = getSharedPreferences(getResources().getString(R.string.PREFERENCE), 0);
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString(getResources().getString(R.string.PREF_LOGIN),""); // remise à zéro du login
                 editor.putInt(getResources().getString(R.string.PREF_IDENTIFIANT), 0); // remise à zéro de l'identifiant
+
                 editor.commit();
                 // relance la MainActivity qui redirigera vers l'activité d'authentification
                 Intent intent = new Intent(ListeEvenementsCours.this, MainActivity.class);

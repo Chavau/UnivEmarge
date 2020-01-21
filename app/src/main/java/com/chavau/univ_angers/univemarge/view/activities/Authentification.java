@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -14,7 +15,7 @@ import com.chavau.univ_angers.univemarge.MainActivity;
 import com.chavau.univ_angers.univemarge.R;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.dao.PersonnelDAO;
-import com.chavau.univ_angers.univemarge.view.fragment.Authentification_Fragment;
+import com.chavau.univ_angers.univemarge.view.fragments.Authentification_Fragment;
 
 /**
  * Activité servant à authentifier un personnel responsable
@@ -30,6 +31,9 @@ public class Authentification extends AppCompatActivity implements Authentificat
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.i("activité" , "activité create authentification");
+
         setContentView(R.layout.activity_authentification);
 
         ed_login = findViewById(R.id.ed_connexion_login);
@@ -59,6 +63,7 @@ public class Authentification extends AppCompatActivity implements Authentificat
             authentification_fragment.requete_connexion(login, mdp);
         }
     }
+
 
     /**
      * Recupère le login de l'enseignant, met aussi son identifiant en paramètre TODO

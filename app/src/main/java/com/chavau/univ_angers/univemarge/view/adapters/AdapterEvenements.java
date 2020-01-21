@@ -1,4 +1,4 @@
-package com.chavau.univ_angers.univemarge.adapters;
+package com.chavau.univ_angers.univemarge.view.adapters;
 
 import android.content.Context;
 import android.content.Intent;

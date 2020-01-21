@@ -6,79 +6,52 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.dao.PersonnelDAO;
 import com.chavau.univ_angers.univemarge.sync.APICall;
 import com.chavau.univ_angers.univemarge.view.activities.Authentification;
+import com.chavau.univ_angers.univemarge.view.activities.CodePinDialogue;
 import com.chavau.univ_angers.univemarge.view.activities.ListeEvenementsCours;
+import com.chavau.univ_angers.univemarge.view.fragment.Configuration_dialog;
+
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String DATE_MAJ_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authentification);
 
-        APICall apiCall = new APICall();
-        apiCall.setContext(this);
-        apiCall.onCreate(savedInstanceState);
+        SharedPreferences preferences = getSharedPreferences(getResources().getString(R.string.PREFERENCE), 0);
 
-        SharedPreferences preferences = getSharedPreferences(getResources().getString(R.string.PREFERENCE),0);
-
-        if(preferences.getString(getResources().getString(R.string.PREF_LOGIN),"").equals("")) {
+        if (preferences.getString(getResources().getString(R.string.PREF_LOGIN), "").equals("")) {
             Intent intent = new Intent(MainActivity.this, Authentification.class);
             startActivity(intent);
-        }else {
-            if(preferences.getInt(getResources().getString(R.string.PREF_IDENTIFIANT),0)==0){
+        } else {
+            if (preferences.getInt(getResources().getString(R.string.PREF_IDENTIFIANT), 0) == 0) {
                 PersonnelDAO dao = new PersonnelDAO(new DatabaseHelper(this));
 
-                SharedPreferences.Editor editor =preferences.edit();
-                int identifiant_responsable = dao.getIdFromLogin(preferences.getString(getResources().getString(R.string.PREF_LOGIN),""));
-                editor.putInt(getResources().getString(R.string.PREF_IDENTIFIANT),identifiant_responsable);
+                SharedPreferences.Editor editor = preferences.edit();
+                int identifiant_responsable = dao.getIdFromLogin(preferences.getString(getResources().getString(R.string.PREF_LOGIN), ""));
+                editor.putInt(getResources().getString(R.string.PREF_IDENTIFIANT), identifiant_responsable);
                 editor.commit();
             }
             Intent intent = new Intent(MainActivity.this, ListeEvenementsCours.class);
             startActivity(intent);
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_liste_evenement,menu);
-        return(super.onCreateOptionsMenu(menu));
-
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.calendar:
-                Toast msg = Toast.makeText(MainActivity.this,"Calendrier" ,Toast.LENGTH_SHORT);
-                msg.show();
-                return true;
-            case R.id.synchron:
-                Toast msg2 = Toast.makeText(MainActivity.this,"Synchronization" ,Toast.LENGTH_SHORT);
-                msg2.show();
-                return true;
-            case R.id.setting:
-                Toast msg3 = Toast.makeText(MainActivity.this,"Paramètre" ,Toast.LENGTH_SHORT);
-                msg3.show();
-                return true;
-            case R.id.deconnect:
-                Toast msg4 = Toast.makeText(MainActivity.this,"Déconnexion" ,Toast.LENGTH_SHORT);
-                msg4.show();
-                return true;
-
-
+            // Mise à jour des données et de la date maj
+            //miseAJourAPI(savedInstanceState, preferences); // TODO : regler conflit sans comm
 
         }
-        return super.onOptionsItemSelected(item);
-
     }
-
-
 
 
 }

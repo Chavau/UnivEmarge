@@ -1,10 +1,12 @@
 package com.chavau.univ_angers.univemarge.sync;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
+import com.chavau.univ_angers.univemarge.R;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.dao.AutreDAO;
 import com.chavau.univ_angers.univemarge.database.dao.EtudiantDAO;
@@ -27,6 +29,7 @@ import com.chavau.univ_angers.univemarge.database.entities.RoulantParametre;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Objects;
 
 import okhttp3.Call;
@@ -45,6 +48,7 @@ public class APICall extends Fragment {
     private static final int WAIT_TIME_SEC = 7200000;
     private Thread mThread;
     private Context context;
+    private Date dateMaj;
 
     private void sendRequest(SyncElement element) {
         System.out.println("synchronising " + element.getLink());
@@ -132,7 +136,6 @@ public class APICall extends Fragment {
 
                     // update only if connected to internet
                     if(testInternetConnection()) {
-
                         sendRequest(new SyncElement("/autres", Autre[].class, new AutreDAO(new DatabaseHelper(context))));
                         sendRequest(new SyncElement("/etudiants", Etudiant[].class, new EtudiantDAO(new DatabaseHelper(context))));
                         sendRequest(new SyncElement("/evenements", Evenement[].class, new EvenementDAO(new DatabaseHelper(context))));
@@ -146,6 +149,7 @@ public class APICall extends Fragment {
                         sendRequest(new SyncElement("/roulant_parametre", RoulantParametre[].class, new RoulantParametreDAO(new DatabaseHelper(context))));
 
                         // TODO : re-assign the new DateMaj
+                        setDateMaj(new Date());
                     }
 
                     // we wait 2h to do another sync
@@ -224,5 +228,13 @@ public class APICall extends Fragment {
 
     public void setContext(Context context) {
         this.context = context;
+    }
+
+    public Date getDateMaj() {
+        return  this.dateMaj;
+    }
+
+    public void setDateMaj(Date dateMaj) {
+        this.dateMaj = dateMaj;
     }
 }
