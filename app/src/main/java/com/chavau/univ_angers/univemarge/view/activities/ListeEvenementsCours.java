@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -44,11 +45,14 @@ public class ListeEvenementsCours extends AppCompatActivity {
 
         EvenementDAO dao = new EvenementDAO(new DatabaseHelper(this));
 
-        //Création de l'identifiant avec l'id de l'enseignant qui est enregistré
-        Identifiant c_nul_les_identifiant = new Identifiant();
-        c_nul_les_identifiant.ajoutId("id", preferences.getInt(getResources().getString(R.string.PREF_IDENTIFIANT),0));
+        //int identifiant = preferences.getInt(getResources().getString(R.string.PREF_IDENTIFIANT),0);
+        int identifiant =137635;
+        // TODO : à enlever
 
-        _cours = dao.listeEvenementsPourPersonnel(c_nul_les_identifiant);
+        Log.i("identifiant_perso", "identifiant du prof pour les evenements : " + identifiant);
+        _cours = dao.listeEvenementsPourPersonnel(identifiant);
+
+        Log.i("cours_prof", "cours obtenu " + _cours.toString());
 
         _adapterEvenements = new AdapterEvenements(this, _cours);
 
@@ -78,7 +82,7 @@ public class ListeEvenementsCours extends AppCompatActivity {
                     ArrayList<Evenement> cours = new ArrayList<>();
 
                     for (Evenement c : _cours) {
-                        if (c.getDateDebut() != null && c.getDateDebut().equals(date)) {
+                        if (c.getDateDebutToString() != null && c.getDateDebutToString().equals(date)) {
                             cours.add(c);
                         }
                     }

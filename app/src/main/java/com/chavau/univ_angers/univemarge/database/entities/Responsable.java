@@ -1,21 +1,26 @@
 package com.chavau.univ_angers.univemarge.database.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.util.Date;
 
+@JsonIgnoreProperties(value = { "dateMaj" })
+
 public class Responsable extends Entity {
 
-    @JsonProperty("")
+    @JsonProperty("id_evenement")
     private int idEvenement;
 
-    @JsonProperty("")
+    @JsonProperty("id_responsable")
     private int idPersonnelResponsable;
 
-    @JsonProperty("")
-    private Date dateMaj;
+    //@JsonProperty("")
+    //private Date dateMaj;
 
-    @JsonProperty("")
+    @JsonDeserialize(using = NumericBooleanDeserializer.class)
+    @JsonProperty("deleted")
     private boolean deleted;
 
     // needed for jackson parser

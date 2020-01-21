@@ -50,7 +50,8 @@ public class APICall extends Fragment {
         System.out.println("synchronising " + element.getLink());
 
         // TODO : remplacer par l'appel qui permet de récupérer ces 2 valeurs
-        final String login = "t.delestang";
+
+        final String login = "h.fior";
         //final String dateMaj = "201910010000";
         final String dateMaj = null;
 
@@ -137,6 +138,8 @@ public class APICall extends Fragment {
                         sendRequest(new SyncElement("/evenements", Evenement[].class, new EvenementDAO(new DatabaseHelper(context))));
                         sendRequest(new SyncElement("/inscriptions", Inscription[].class, new InscriptionDAO(new DatabaseHelper(context))));
                         sendRequest(new SyncElement("/personnels", Personnel[].class, new PersonnelDAO(new DatabaseHelper(context))));
+                        // TODO : dans api renvoyer un tableau pour un seul user
+                        sendRequest(new SyncElement("/info_user", Personnel[].class, new PersonnelDAO(new DatabaseHelper(context))));
                         sendRequest(new SyncElement("/presences", Presence[].class, new PresenceDAO(new DatabaseHelper(context))));
                         sendRequest(new SyncElement("/presence_roulants", PresenceRoulant[].class, new PresenceRoulantDAO(new DatabaseHelper(context))));
                         sendRequest(new SyncElement("/responsables", Responsable[].class, new ResponsableDAO(new DatabaseHelper(context))));
@@ -148,6 +151,7 @@ public class APICall extends Fragment {
                     // we wait 2h to do another sync
                     synchronized (this) {
                         try {
+                            //TODO : à enlever, dans service à terme avec notification quand maj à faire
                             wait(WAIT_TIME_SEC);
                         } catch (InterruptedException ignored) {
                         }

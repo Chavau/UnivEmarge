@@ -66,7 +66,7 @@ public class AdapterEvenements extends RecyclerView.Adapter<AdapterEvenements.Vi
         //tv.setText(cours.get_date());
 
         tv = (TextView) cardview.findViewById(R.id.tx_details);
-        tv.setText("De "+cours.getDateDebut()+" à "+cours.getDateFin());
+        tv.setText("De "+cours.getDateDebutToString()+" à "+cours.getDateFinToString());
 
         cardview.setOnClickListener(new View.OnClickListener() {
             @Override

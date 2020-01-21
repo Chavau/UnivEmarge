@@ -108,27 +108,34 @@ public class EvenementDAO extends DAO<Evenement> implements IMergeable {
      * @param id
      * @return ArrayList
      */
-    public ArrayList<Evenement> listeEvenementsPourPersonnel(Identifiant id) {
+    public ArrayList<Evenement> listeEvenementsPourPersonnel(int id) {
         SQLiteDatabase db = super.helper.getWritableDatabase();
-        Cursor cursor = db.rawQuery(
-                "SELECT " +
-                        DBTables.Evenement.COLONNE_ID_EVENEMENT + ", " +
-                        DBTables.Evenement.COLONNE_DATE_DEBUT + ", " +
-                        DBTables.Evenement.COLONNE_DATE_FIN + ", " +
-                        DBTables.Evenement.COLONNE_LIEU + ", " +
-                        DBTables.Evenement.COLONNE_TYPE_EMARGEMENT + ", " +
-                        DBTables.Evenement.COLONNE_LIBELLE_EVENEMENT + ", " +
-                        DBTables.Evenement.COLONNE_ID_COURS + ", " +
-                        DBTables.Evenement.COLONNE_DELETED + " " +
-                        " FROM " + DBTables.Evenement.TABLE_NAME + " e " +
-                        " INNER JOIN " + DBTables.Responsable.TABLE_NAME + " r " +
-                        " ON e." + DBTables.Evenement.COLONNE_ID_EVENEMENT + " = r." + DBTables.Responsable.COLONNE_ID_EVENEMENT +
-                        " WHERE " + DBTables.Responsable.COLONNE_ID_PERSONNEL_RESPONSABLE + " = ? ",
-                new String[]{String.valueOf(id.getId(DBTables.Responsable.COLONNE_ID_PERSONNEL_RESPONSABLE))});
+
+        String requete = "SELECT " +
+                " e." + DBTables.Evenement.COLONNE_ID_EVENEMENT + ", " +
+                " e." + DBTables.Evenement.COLONNE_DATE_DEBUT + ", " +
+                " e." + DBTables.Evenement.COLONNE_DATE_FIN + ", " +
+                " e." + DBTables.Evenement.COLONNE_LIEU + ", " +
+                " e." + DBTables.Evenement.COLONNE_TYPE_EMARGEMENT + ", " +
+                " e." + DBTables.Evenement.COLONNE_LIBELLE_EVENEMENT + ", " +
+                " e." + DBTables.Evenement.COLONNE_ID_COURS + ", " +
+                " e." + DBTables.Evenement.COLONNE_DELETED + " " +
+                " FROM " + DBTables.Evenement.TABLE_NAME + " e " +
+                " INNER JOIN " + DBTables.Responsable.TABLE_NAME + " r " +
+                " ON e." + DBTables.Evenement.COLONNE_ID_EVENEMENT + " = r." + DBTables.Responsable.COLONNE_ID_EVENEMENT +
+                " WHERE " + DBTables.Responsable.COLONNE_ID_PERSONNEL_RESPONSABLE + " = ? ";
+
+        requete = "SELECT * FROM EVENEMENT ";
+
+        //Cursor cursor = db.rawQuery(requete, new String[]{String.valueOf(id)});
+        Cursor cursor = db.rawQuery(requete, new String[]{});
+        System.out.println("###########################requete : " +requete +String.valueOf(id));
+
 
         ArrayList<Evenement> list = new ArrayList<>();
         while (cursor.moveToNext()) {
             list.add(this.cursorToType(cursor));
+            System.out.println("###########################cours : " +this.cursorToType(cursor).getLibelleEvenement());
         }
         return list;
     }
