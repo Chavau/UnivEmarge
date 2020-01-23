@@ -42,7 +42,8 @@ public class APICall extends Fragment {
 
     boolean mReady = false;
     boolean mQuiting = false;
-    private static final String API_URL = "https://api-emaua.univ-angers.fr/api-emaua/";
+    //private static final String API_URL = "https://api-emaua.univ-angers.fr/api-emaua/";
+    private static final String API_URL = "http://172.19.3.100:8090/";
     private static final String LOGIN_INPUT_NAME = "login=";
     private static final String DATE_INPUT_NAME = "datemaj=";
     private static final int WAIT_TIME_SEC = 7200000;

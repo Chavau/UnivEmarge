@@ -48,9 +48,23 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, ListeEvenementsCours.class);
             startActivity(intent);
             // Mise à jour des données et de la date maj
-            //miseAJourAPI(savedInstanceState, preferences); // TODO : regler conflit sans comm
+            miseAJourAPI(savedInstanceState, preferences); // TODO : regler conflit sans comm
 
         }
+    }
+
+    public void miseAJourAPI(Bundle savedInstanceState, SharedPreferences preferences) {
+        Date dateMaj = null;
+        try {
+            dateMaj = new SimpleDateFormat(DATE_MAJ_FORMAT).parse(preferences.getString(getResources().getString(R.string.PREF_DATE_MAJ), ""));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        APICall apiCall = new APICall();
+        apiCall.setContext(this);
+        apiCall.setDateMaj(dateMaj);
+        apiCall.onCreate(savedInstanceState);
+        Toast.makeText(MainActivity.this, "Application à jour", Toast.LENGTH_SHORT).show();
     }
 
 
