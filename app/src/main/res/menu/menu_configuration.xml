@@ -6,8 +6,13 @@
         android:id="@+id/setting"
         android:icon="@drawable/ic_iconsetting"
         android:title="@string/menu_option"
-        app:showAsAction="always">
+        app:showAsAction="always"/>
 
-    </item>
+
+    <item
+        android:id="@+id/menu_hors_creneau"
+        android:title="menu_hors_creneau"
+        android:icon="@drawable/add"
+        app:showAsAction="always"/>
 
 </menu>

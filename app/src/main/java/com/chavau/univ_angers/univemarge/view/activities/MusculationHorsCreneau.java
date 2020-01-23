@@ -11,9 +11,9 @@ import android.nfc.Tag;
 import android.nfc.tech.NfcA;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -21,26 +21,26 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.chavau.univ_angers.univemarge.MainActivity;
-import android.widget.Toast;
+
 import com.chavau.univ_angers.univemarge.R;
-import com.chavau.univ_angers.univemarge.intermediaire.Etudiant;
-import com.chavau.univ_angers.univemarge.view.adapters.AdapterMusculation;
-import com.chavau.univ_angers.univemarge.view.adapters.AdapterViewPager;
 import com.chavau.univ_angers.univemarge.intermediaire.MusculationData;
 import com.chavau.univ_angers.univemarge.intermediaire.Personnel;
+import com.chavau.univ_angers.univemarge.view.adapters.AdapterMusculation;
+import com.chavau.univ_angers.univemarge.view.adapters.AdapterViewPager;
 import com.chavau.univ_angers.univemarge.view.fragment.Configuration_dialog;
+
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Musculation extends AppCompatActivity {
+public class MusculationHorsCreneau extends AppCompatActivity {
 
+    private static final String TAG = "application";
     private ViewPager viewpager;
     private AdapterViewPager adapterviewpager;
     private AdapterMusculation adaptermusculation;
@@ -48,7 +48,6 @@ public class Musculation extends AppCompatActivity {
     private MusculationData mdata;
     private ArrayList<Personnel> presences = new ArrayList<>();
     private TabLayout tabLayout;
-
     /**
      * Capacité d'accueil du cours.
      */
@@ -93,13 +92,12 @@ public class Musculation extends AppCompatActivity {
      */
     public MediaPlayer mp_son_refuser;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_musculation);
+        setContentView(R.layout.activity_musculation_hors_creneau);
 
-        setTitle("SUAPS : Musculation");
+        setTitle("SUAPS : Musculation Hors Créneau");
 
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         viewpager = findViewById(R.id.viewpager);
@@ -116,6 +114,7 @@ public class Musculation extends AppCompatActivity {
         // Affectation du nombre de presents dans la salle
         mdata = creerMuscuData(presences.size());
         adaptermusculation = new AdapterMusculation(this, presences, mdata);
+
 
         ItemTouchHelper.SimpleCallback ihscb = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
@@ -140,8 +139,8 @@ public class Musculation extends AppCompatActivity {
 
 
         // RFID
-        mp_son_approuver = MediaPlayer.create(Musculation.this, R.raw.bonbadgeaccepter);
-        mp_son_refuser = MediaPlayer.create(Musculation.this, R.raw.mauvaisbadgenonaccepter);
+        mp_son_approuver = MediaPlayer.create(MusculationHorsCreneau.this, R.raw.bonbadgeaccepter);
+        mp_son_refuser = MediaPlayer.create(MusculationHorsCreneau.this, R.raw.mauvaisbadgenonaccepter);
 
         /*
          * Initialize NFCAdapter
@@ -184,6 +183,8 @@ public class Musculation extends AppCompatActivity {
 //            null);
 
     }
+
+
 
     public MusculationData creerMuscuData(int presences) {
         MusculationData m_data = new MusculationData(33);
@@ -274,30 +275,34 @@ public class Musculation extends AppCompatActivity {
     }
 
 
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_configuration,menu);
-        return(super.onCreateOptionsMenu(menu));
-
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.setting:
-                configurerCours(null);
-                return true;
-            case R.id.menu_hors_creneau:
-                Intent intent = new Intent(this, MusculationHorsCreneau.class);
-                startActivity(intent);
+    public void filtrerEtudiants(View view){
+        EditText filtre_prenom =  findViewById(R.id.et_prenom);
+        EditText filtre_nom = findViewById(R.id.et_nom) ;
+        ArrayList<Personnel> tableau_temporaire = new ArrayList<>();
+        if(!filtre_nom.getText().toString().isEmpty() && !filtre_prenom.getText().toString().isEmpty()){
+            for (int i = 0; i < presences.size(); i++){
+                if(presences.get(i).getNom().contains(filtre_nom.getText().toString().toUpperCase()) && presences.get(i).getPrenom().contains(filtre_prenom.getText().toString().toUpperCase())){
+                    tableau_temporaire.add(presences.get(i));
+                }
+            }
+            adaptermusculation.updateList(tableau_temporaire);
+        }else if(!filtre_nom.getText().toString().isEmpty()){
+            for (int i = 0; i < presences.size(); i++){
+                if(presences.get(i).getNom().contains(filtre_nom.getText().toString().toUpperCase())){
+                    tableau_temporaire.add(presences.get(i));
+                }
+            }
+            adaptermusculation.updateList(tableau_temporaire);
+        }else if(!filtre_prenom.getText().toString().isEmpty()){
+            for (int i = 0; i < presences.size(); i++){
+                if(presences.get(i).getPrenom().contains(filtre_prenom.getText().toString().toUpperCase())){
+                    tableau_temporaire.add(presences.get(i));
+                }
+            }
+            adaptermusculation.updateList(tableau_temporaire);
+        }else{
+            adaptermusculation.updateList(creerPers());
         }
-        return super.onOptionsItemSelected(item);
-
-    }
-
-    //appel dialog de configuration de la durée et capacité
-    public void configurerCours(View view) {
-        new Configuration_dialog().show(getSupportFragmentManager(),"configClasse");
-
     }
 
     @Override
@@ -311,7 +316,7 @@ public class Musculation extends AppCompatActivity {
                 } else {
                     // permission denied
                     System.out.println("denied");
-                    Toast.makeText(Musculation.this, "[NFC] Permission denied", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MusculationHorsCreneau.this, "[NFC] Permission denied", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
@@ -329,7 +334,7 @@ public class Musculation extends AppCompatActivity {
          * Pour ne pas bloquer l'interface utilisateur, le traitement est lancé en tâche de fond.
          * Une tâche asynchrone est lancé avec un l'intent de la carte en argument
          */
-        new Musculation.TraitementAsynchrone().execute(intent);
+        new MusculationHorsCreneau.TraitementAsynchrone().execute(intent);
     }
 
     /**
@@ -417,7 +422,7 @@ public class Musculation extends AppCompatActivity {
 //            if () mp_son_approuver.start(); else mp_son_refuser.start();
 
             if (demo) {
-                Toast.makeText(Musculation.this, "Vincent LE QUEC", Toast.LENGTH_LONG).show();
+                Toast.makeText(MusculationHorsCreneau.this, "Vincent LE QUEC", Toast.LENGTH_LONG).show();
                 adaptermusculation.setPresenceDemo();
                 adaptermusculation.notifyDataSetChanged();
                 mp_son_approuver.start();
@@ -432,5 +437,4 @@ public class Musculation extends AppCompatActivity {
     }
     //TODO: Demo
     private static boolean demo = true;
-
 }

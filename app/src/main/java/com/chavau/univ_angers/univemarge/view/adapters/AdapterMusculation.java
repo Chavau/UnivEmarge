@@ -30,6 +30,12 @@ public class AdapterMusculation extends RecyclerView.Adapter<AdapterMusculation.
         this.musculationData = musculationData;
     }
 
+    public void updateList(ArrayList<Personnel> newlist){
+        personnels.clear();
+        personnels.addAll(newlist);
+        this.notifyDataSetChanged();
+    }
+
     static class MonViewHolder extends RecyclerView.ViewHolder {
 
         private CardView cardview;
