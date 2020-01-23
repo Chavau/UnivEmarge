@@ -76,6 +76,7 @@ public class AdapterEvenements extends RecyclerView.Adapter<AdapterEvenements.Vi
                     // Préparation des données à envoyer au deuxième activité
                     Intent intent = new Intent(_context, BadgeageEtudiant.class);
                     intent.putExtra(AdapterEvenements.getNomAct(),((TextView) cardview.findViewById(R.id.tv_intituleCours)).getText().toString());
+                    intent.putExtra(nomAct,cours.getIdEvenement());
 
                     // Envoie la liste des étudiant(e)s inscrit(e)s dans l'activité
                     //intent.putParcelableArrayListExtra(AdapterEvenements.getListeEtud(),cours.get_listeEtudiantInscrit()); // TODO : récupérer la liste via la bdd

@@ -112,6 +112,7 @@ public class BadgeageEtudiant extends AppCompatActivity {
         _titreActivite = _intent.getStringExtra(AdapterEvenements.getNomAct());
         setTitle(_titreActivite);
         _recyclerview = findViewById(R.id.recyclerview_creation_seance);
+        
         _etudiants = _intent.getParcelableArrayListExtra(AdapterEvenements.getListeEtud());
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
