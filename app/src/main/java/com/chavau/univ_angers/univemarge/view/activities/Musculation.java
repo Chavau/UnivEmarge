@@ -13,7 +13,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -25,12 +24,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.chavau.univ_angers.univemarge.MainActivity;
-import android.widget.Toast;
 import com.chavau.univ_angers.univemarge.R;
-import com.chavau.univ_angers.univemarge.intermediaire.Etudiant;
 import com.chavau.univ_angers.univemarge.view.adapters.AdapterMusculation;
 import com.chavau.univ_angers.univemarge.view.adapters.AdapterViewPager;
 import com.chavau.univ_angers.univemarge.intermediaire.MusculationData;
@@ -48,33 +45,6 @@ public class Musculation extends AppCompatActivity {
     private MusculationData mdata;
     private ArrayList<Personnel> presences = new ArrayList<>();
     private TabLayout tabLayout;
-
-    /**
-     * Capacité d'accueil du cours.
-     */
-
-    private int capacity = 0;
-
-
-    /**
-     * Durée minimale du cours.
-     */
-
-    private String duration = "00:00";
-
-    /**
-     * Méthode Retournant la capacité de la séance
-     * @return Capacité de la sénace
-     */
-
-    public int capacity() { return capacity; }
-
-
-    /**
-     * Méthode Retournant la durée de la séance
-     * @return Durée de la sénace
-     */
-    public String duration() { return duration; }
 
 
     private static String PERSONNELS_PRESENTS = "presences";
@@ -273,6 +243,36 @@ public class Musculation extends AppCompatActivity {
         return personnels;
     }
 
+    public void filtrerEtudiants(View view){
+        EditText filtre_prenom =  findViewById(R.id.et_prenom);
+        EditText filtre_nom = findViewById(R.id.et_nom) ;
+        ArrayList<Personnel> tableau_temporaire = new ArrayList<>();
+        if(!filtre_nom.getText().toString().isEmpty() && !filtre_prenom.getText().toString().isEmpty()){
+            for (int i = 0; i < presences.size(); i++){
+                if(presences.get(i).getNom().contains(filtre_nom.getText().toString().toUpperCase()) && presences.get(i).getPrenom().contains(filtre_prenom.getText().toString().toUpperCase())){
+                    tableau_temporaire.add(presences.get(i));
+                }
+            }
+            adaptermusculation.updateList(tableau_temporaire);
+        }else if(!filtre_nom.getText().toString().isEmpty()){
+            for (int i = 0; i < presences.size(); i++){
+                if(presences.get(i).getNom().contains(filtre_nom.getText().toString().toUpperCase())){
+                    tableau_temporaire.add(presences.get(i));
+                }
+            }
+            adaptermusculation.updateList(tableau_temporaire);
+        }else if(!filtre_prenom.getText().toString().isEmpty()){
+            for (int i = 0; i < presences.size(); i++){
+                if(presences.get(i).getPrenom().contains(filtre_prenom.getText().toString().toUpperCase())){
+                    tableau_temporaire.add(presences.get(i));
+                }
+            }
+            adaptermusculation.updateList(tableau_temporaire);
+        }else{
+            adaptermusculation.updateList(creerPers());
+        }
+    }
+
 
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_configuration,menu);
@@ -286,9 +286,6 @@ public class Musculation extends AppCompatActivity {
             case R.id.setting:
                 configurerCours(null);
                 return true;
-            case R.id.menu_hors_creneau:
-                Intent intent = new Intent(this, MusculationHorsCreneau.class);
-                startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
 
@@ -298,6 +295,14 @@ public class Musculation extends AppCompatActivity {
     public void configurerCours(View view) {
         new Configuration_dialog().show(getSupportFragmentManager(),"configClasse");
 
+    }
+
+    public void ModificatiMusculationonCapaciteHeure(int capacity, int hour, int minutes){
+        mdata.setCapacite(capacity);
+        mdata.setTempsMinimum(hour,minutes);
+        mdata.setOccupation(adaptermusculation.getItemCount(), capacity);
+        adapterviewpager.updateSeanceParameters(mdata);
+        viewpager.setAdapter(adapterviewpager);
     }
 
     @Override
@@ -432,5 +437,10 @@ public class Musculation extends AppCompatActivity {
     }
     //TODO: Demo
     private static boolean demo = true;
+
+
+    public MusculationData getMData(){
+        return mdata;
+    }
 
 }

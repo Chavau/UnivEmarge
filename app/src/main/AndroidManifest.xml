@@ -24,7 +24,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.activities.Musculation"></activity>
-        <activity android:name=".view.activities.MusculationHorsCreneau"></activity>
         <activity android:name=".view.activities.BadgeageEtudiant">
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />

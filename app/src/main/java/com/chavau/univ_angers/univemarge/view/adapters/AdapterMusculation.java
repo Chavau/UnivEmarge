@@ -6,13 +6,10 @@ import android.graphics.PorterDuff;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.chavau.univ_angers.univemarge.R;
-import com.chavau.univ_angers.univemarge.intermediaire.Etudiant;
 import com.chavau.univ_angers.univemarge.intermediaire.MusculationData;
 import com.chavau.univ_angers.univemarge.intermediaire.Personnel;
 

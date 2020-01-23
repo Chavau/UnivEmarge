@@ -1,19 +1,17 @@
 package com.chavau.univ_angers.univemarge.view.adapters;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.chavau.univ_angers.univemarge.R;
 import com.chavau.univ_angers.univemarge.intermediaire.MusculationData;
 
-import java.util.ArrayList;
+import org.jetbrains.annotations.NotNull;
+
 
 public class AdapterViewPager extends PagerAdapter {
 
@@ -25,6 +23,12 @@ public class AdapterViewPager extends PagerAdapter {
         this.context = context;
     }
 
+    public void updateSeanceParameters(MusculationData newMdata){
+        this.muscuData = newMdata;
+        this.notifyDataSetChanged();
+    }
+
+    @NotNull
     @Override
     // Creer une page pour une position donnée
     public Object instantiateItem(ViewGroup container, int position) {
@@ -40,14 +44,9 @@ public class AdapterViewPager extends PagerAdapter {
             // Plus tard pour mettre à jour les presents
             tv_details_value.setTag("OcuppationValue");
         }
-        else if (position == 1) {
-            iv_muscu.setImageResource(R.drawable.capacite);
-            tv_details.setText("Capacité");
-            tv_details_value.setText(String.valueOf(muscuData.getCapacite()));
-        }
         else {
             iv_muscu.setImageResource(R.drawable.temps_mini);
-            tv_details.setText("Temps Minimum");
+            tv_details.setText("Temps Maximum");
             tv_details_value.setText(muscuData.getTempsMinimum());
         }
 
@@ -57,19 +56,19 @@ public class AdapterViewPager extends PagerAdapter {
     }
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object view) {
+    public void destroyItem(ViewGroup container, int position, @NotNull Object view) {
         container.removeView((View)view);
     }
 
     @Override
     // Retourner le nombre de vues disponibles
     public int getCount() {
-        return 3;
+        return 2;
     }
 
     @Override
     // Determiner si la page View is associée à un objet clé spécifique retourné par "instantiacedItem(ViewGroup, int)"
-    public boolean isViewFromObject(View view, Object o) {
+    public boolean isViewFromObject(View view, @NotNull Object o) {
         return view.equals(o);
     }
 }

@@ -1,7 +1,5 @@
 package com.chavau.univ_angers.univemarge.intermediaire;
 
-import java.util.ArrayList;
-
 public class MusculationData {
     private int capacite;
     private String tempsMinimum;
@@ -10,9 +8,9 @@ public class MusculationData {
     private int minute;
 
     public MusculationData(int capacite) {
-        this.capacite = capacite;
         this.tempsMinimum = "";
         this.occupation = "";
+        this.capacite = capacite;
         this.heure = 0;
         this.minute = 0;
     }
