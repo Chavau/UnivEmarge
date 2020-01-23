@@ -7,11 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.chavau.univ_angers.univemarge.R;
+import com.chavau.univ_angers.univemarge.view.fragments.SettingsFragment;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity implements SettingsFragment.ComponentsActivityListener {
 
     EditText et_new_pin;
     Button btn_change_pin;
@@ -40,22 +40,23 @@ public class SettingsActivity extends AppCompatActivity {
      * Methode permet suivant un boolean d'afficher ou non les composants liés au traitement de changement de mot de passe
      *
      * @param isVisible
-     * @param tvComponents
      */
-    private void setVisibilityComponents(boolean isVisible, TextView... tvComponents) {
+    @Override
+    public void setVisibilityComponents(boolean isVisible) {
         if (isVisible) {
-            tvComponents[0].setVisibility(View.VISIBLE);
-            tvComponents[1].setVisibility(View.VISIBLE);
+            et_new_pin.setVisibility(View.VISIBLE);
+            btn_change_pin.setVisibility(View.VISIBLE);
         } else {
-            tvComponents[0].setVisibility(View.GONE);
-            tvComponents[1].setVisibility(View.GONE);
+            btn_change_pin.setVisibility(View.GONE);
+            btn_change_pin.setVisibility(View.GONE);
         }
     }
 
     /**
      * Methode permet d'initialiser les composantes de traitements du code pin
      */
-    private void initChangePasswordsComponents() {
+    @Override
+    public void initChangePasswordsComponents() {
         et_new_pin = findViewById(R.id.edtnewpin);
         btn_change_pin = findViewById(R.id.btnchange);
     }
