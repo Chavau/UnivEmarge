@@ -37,7 +37,7 @@ public class SettingsActivity extends AppCompatActivity implements SettingsFragm
 
 
     /**
-     * Methode permet suivant un boolean d'afficher ou non les composants liés au traitement de changement de mot de passe
+     * Methode permet suivant un boolean d'afficher ou non les composants liés au traitement de changement de mot de passe.
      *
      * @param isVisible
      */
