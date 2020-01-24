@@ -15,26 +15,55 @@ public class SettingsActivity extends AppCompatActivity implements SettingsFragm
 
     EditText et_new_pin;
     Button btn_change_pin;
+    SettingsFragment fragmentPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        initChangePasswordsComponents();
+        fragmentPref = (SettingsFragment) getSupportFragmentManager().findFragmentById(R.id.frag_setting);
 
-        //Code generant la fleche qui permet de revenir à l'activité principale
+        /**
+         *Code generant la fleche qui permet de revenir à l'activité principale
+         */
         ActionBar actionBar = this.getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
 
+
+    /**
+     * Methode permet suite a un click de boutton 'changer' de changer le code pin
+     *
+     * @param v
+     */
+    public void onClickChanger(View v) {
+        String newPassSaisi = et_new_pin.getText().toString();
+        if (newPassSaisi.isEmpty()) {
+            dialog_msg("Veuillez remplir le nouveau code pin !");
+        } else {
+            if (newPassSaisi.length() != 4) {
+                dialog_msg("Votre nouveau code pin doit avoir 4 numéros !");
+            } else {
+                fragmentPref.changePassword(et_new_pin.getText().toString());
+                dialog_msg("Code pin modifié avec succès !");
+            }
+        }
+    }
+
+    /**
+     * Methode qui permet d'afficher un dialogue avec le messgae passé en parametre
+     *
+     * @param msg
+     */
     public void dialog_msg(String msg) {
         new AlertDialog.Builder(this)
                 .setTitle(msg)
                 .setPositiveButton("DONE", null)
                 .create().show();
     }
-
 
     /**
      * Methode permet suivant un boolean d'afficher ou non les composants liés au traitement de changement de mot de passe.
@@ -47,7 +76,7 @@ public class SettingsActivity extends AppCompatActivity implements SettingsFragm
             et_new_pin.setVisibility(View.VISIBLE);
             btn_change_pin.setVisibility(View.VISIBLE);
         } else {
-            btn_change_pin.setVisibility(View.GONE);
+            et_new_pin.setVisibility(View.GONE);
             btn_change_pin.setVisibility(View.GONE);
         }
     }
@@ -55,11 +84,11 @@ public class SettingsActivity extends AppCompatActivity implements SettingsFragm
     /**
      * Methode permet d'initialiser les composantes de traitements du code pin
      */
-    @Override
     public void initChangePasswordsComponents() {
         et_new_pin = findViewById(R.id.edtnewpin);
         btn_change_pin = findViewById(R.id.btnchange);
     }
+
 
 }
 
