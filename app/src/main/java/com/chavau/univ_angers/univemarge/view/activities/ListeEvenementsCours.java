@@ -27,8 +27,11 @@ import com.chavau.univ_angers.univemarge.view.adapters.AdapterEvenements;
 import com.chavau.univ_angers.univemarge.intermediaire.Cours;
 
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ListeEvenementsCours extends AppCompatActivity {
 
@@ -50,13 +53,13 @@ public class ListeEvenementsCours extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences(getResources().getString(R.string.PREFERENCE),0);
 
         _recyclerview = findViewById(R.id.recyclerview_cours);
-
         _recyclerview.setLayoutManager(new LinearLayoutManager(this));
 
         EvenementDAO dao = new EvenementDAO(new DatabaseHelper(this));
 
         //int identifiant = preferences.getInt(getResources().getString(R.string.PREF_IDENTIFIANT),0);
         int identifiant =137635;
+
         // TODO : à enlever
 
         Log.i("identifiant_perso", "identifiant du prof pour les evenements : " + identifiant);
@@ -64,7 +67,8 @@ public class ListeEvenementsCours extends AppCompatActivity {
 
         Log.i("cours_prof", "cours obtenu " + _cours.toString());
 
-        _adapterEvenements = new AdapterEvenements(this, _cours);
+        //_adapterEvenements = new AdapterEvenements(this, _cours);
+        setCoursDuJour();
 
         _recyclerview.setAdapter(_adapterEvenements);
 
@@ -77,8 +81,7 @@ public class ListeEvenementsCours extends AppCompatActivity {
 
     private void getListeEvenements() {
         // TODO: get login from shared preference
-//        String login = "h.fior";
-        String login = "f.mercier";
+        String login = "t.delestang";
 
         // Get ID
         int id = _personnelDAO.getIdFromLogin(login);
@@ -88,6 +91,25 @@ public class ListeEvenementsCours extends AppCompatActivity {
 //        Identifiant identifiant = new Identifiant();
 //        identifiant.ajoutId(DBTables.Responsable.COLONNE_ID_PERSONNEL_RESPONSABLE, id);
 //        _evenements = _evenementDAO.listeEvenementsPourPersonnel(identifiant);
+    }
+
+    private void setCoursDuJour() {
+
+        ArrayList<Evenement> cours = new ArrayList<>();
+        String pattern = "dd/MM/yyyy";
+
+        DateFormat df = new SimpleDateFormat(pattern);
+        String date = df.format(new Date());
+
+        for (Evenement c : _cours) {
+            if (c.getDateDebutToString() != null && c.getDateDebutToString().equals(date)) {
+                cours.add(c);
+            }
+        }
+
+        _adapterEvenements = new AdapterEvenements(this, cours);
+
+
     }
 
     @Override

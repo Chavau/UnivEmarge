@@ -12,10 +12,12 @@ import android.widget.TextView;
 import com.chavau.univ_angers.univemarge.R;
 import com.chavau.univ_angers.univemarge.database.entities.Evenement;
 import com.chavau.univ_angers.univemarge.intermediaire.Cours;
+import com.chavau.univ_angers.univemarge.utils.Utils;
 import com.chavau.univ_angers.univemarge.view.activities.BadgeageEtudiant;
 import com.chavau.univ_angers.univemarge.view.activities.Musculation;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class AdapterEvenements extends RecyclerView.Adapter<AdapterEvenements.ViewHolderCours> {
@@ -60,13 +62,19 @@ public class AdapterEvenements extends RecyclerView.Adapter<AdapterEvenements.Vi
 
         // Affectation des différentes textview avec les bonnes données
         tv = (TextView) cardview.findViewById(R.id.tv_jourSemaine);
-        //tv.setText(cours.get_jourDeLaSemaine());
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(cours.getDateDebut());
+        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+
+        tv.setText(Utils.IntToDayOfWeek(dayOfWeek));
 
         tv = (TextView) cardview.findViewById(R.id.tv_date);
-        //tv.setText(cours.get_date());
+        tv.setText(cours.getDateDebutToString().substring(0,5));
 
         tv = (TextView) cardview.findViewById(R.id.tx_details);
-        tv.setText("De "+cours.getDateDebutToString()+" à "+cours.getDateFinToString());
+        //tv.setText("De "+Utils.convertDateToStringHour(cours.getDateDebut())+" à "+Utils.convertDateToStringHour(cours.getDateFin()));
+        tv.setText("De "+cours.getDateDebut()+" à "+cours.getDateFin()); // TODO : recup l'heure avec le fuseau horaire
 
         cardview.setOnClickListener(new View.OnClickListener() {
             @Override

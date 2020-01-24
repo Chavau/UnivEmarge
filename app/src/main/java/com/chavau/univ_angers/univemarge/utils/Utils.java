@@ -51,4 +51,24 @@ public class Utils {
 //        }
         return null;
     }
+
+    public static String IntToDayOfWeek(int number) {
+        // chez les anglais la semaine commence à dimanche
+        switch (number) {
+            case 2 : return "Lundi";
+            case 3 : return "Mardi";
+            case 4 : return "Mercredi";
+            case 5 : return "Jeudi";
+            case 6 : return "Vendredi";
+            case 7 : return "Samedi";
+            case 1 : return "Dimanche";
+
+            default : return "error";
+        }
+    }
+
+    public static String convertDateToStringHour(Date date) {
+        DateFormat df = new SimpleDateFormat("HH:mm");
+        return df.format(date);
+    }
 }
