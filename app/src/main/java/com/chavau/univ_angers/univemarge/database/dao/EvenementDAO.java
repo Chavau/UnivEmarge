@@ -125,7 +125,7 @@ public class EvenementDAO extends DAO<Evenement> implements IMergeable {
                 " ON e." + DBTables.Evenement.COLONNE_ID_EVENEMENT + " = r." + DBTables.Responsable.COLONNE_ID_EVENEMENT +
                 " WHERE r." + DBTables.Responsable.COLONNE_ID_PERSONNEL_RESPONSABLE + " = ? ";
 
-
+        //requete = "SELECT * From evenement"; // TODO :refaire requete
 
         Cursor cursor = db.rawQuery(requete, new String[]{String.valueOf(id)});
         System.out.println("###########################requete : " +requete +String.valueOf(id));
@@ -134,7 +134,7 @@ public class EvenementDAO extends DAO<Evenement> implements IMergeable {
         ArrayList<Evenement> list = new ArrayList<>();
         while (cursor.moveToNext()) {
             list.add(this.cursorToType(cursor));
-            System.out.println("###########################cours : " +this.cursorToType(cursor).getLibelleEvenement() + " " + this.cursorToType(cursor).getIdEvenement());
+            System.out.println("###########################cours : " +this.cursorToType(cursor).getLibelleEvenement() + " " + this.cursorToType(cursor).getDateDebut()+ " " + this.cursorToType(cursor).getTypeEmargement());
         }
         return list;
     }

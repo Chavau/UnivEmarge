@@ -35,7 +35,7 @@ public class BadgeageEnseignant extends AppCompatActivity {
 
         _etudiants = _intent.getParcelableArrayListExtra(AdapterEvenements.getListeEtud());
 
-        _api = new AdapterPersonneInscrite(this, _etudiants, AdapterPersonneInscrite.VueChoix.MS);
+        //_api = new AdapterPersonneInscrite(this, _etudiants, AdapterPersonneInscrite.VueChoix.MS);
 
         _recyclerview.setLayoutManager(new LinearLayoutManager(this));
         _recyclerview.setAdapter(_api);
@@ -44,7 +44,7 @@ public class BadgeageEnseignant extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent returnIntent = new Intent();
-        returnIntent.putParcelableArrayListExtra(AdapterEvenements.getListeEtud(),_api.get_etudIns());
+        //returnIntent.putParcelableArrayListExtra(AdapterEvenements.getListeEtud(),_api.get_etudIns());
         setResult(RESULT_OK,returnIntent);
         finish();
     }

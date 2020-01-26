@@ -25,7 +25,7 @@ public class AdapterEvenements extends RecyclerView.Adapter<AdapterEvenements.Vi
     private List<Evenement> _cours;
     private Context _context; //pouvoir utiliser des layouts plus tard
 
-    private final static String nomAct = "NOM_ACTIVITE";
+    private static String nomAct = "NOM_ACTIVITE";
     private final static String listeEtud = "LISTE_ETUDIANT";
 
     public AdapterEvenements(Context context, ArrayList<Evenement> cours) {
@@ -55,6 +55,8 @@ public class AdapterEvenements extends RecyclerView.Adapter<AdapterEvenements.Vi
         final Evenement cours = _cours.get(i);
         final CardView cardview = viewHolderCours._cardview;
 
+        nomAct = cours.getLibelleEvenement();
+
         //Recuperation du TEXTVIEW pour l'intitulé de cours
         TextView tv = (TextView) cardview.findViewById(R.id.tv_intituleCours);
         //Recuperation de donnée correspondante
@@ -80,10 +82,11 @@ public class AdapterEvenements extends RecyclerView.Adapter<AdapterEvenements.Vi
             @Override
             public void onClick(View view) {
 
-                if (cours.getLibelleEvenement() != "Musculation") { // TODO : ne pas mettre musuculation mais plutot utiliser indice roulant
+                if (!cours.getLibelleEvenement().equals("Musculation")) { // TODO : ne pas mettre musuculation mais plutot utiliser indice roulant -> marche pas encore tous a 0
                     // Préparation des données à envoyer au deuxième activité
                     Intent intent = new Intent(_context, BadgeageEtudiant.class);
                     intent.putExtra(AdapterEvenements.getNomAct(),((TextView) cardview.findViewById(R.id.tv_intituleCours)).getText().toString());
+                    intent.putExtra(nomAct,cours.getIdEvenement());
 
                     // Envoie la liste des étudiant(e)s inscrit(e)s dans l'activité
                     //intent.putParcelableArrayListExtra(AdapterEvenements.getListeEtud(),cours.get_listeEtudiantInscrit()); // TODO : récupérer la liste via la bdd

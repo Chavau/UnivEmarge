@@ -107,22 +107,23 @@ public class EtudiantDAO extends DAO<Etudiant> implements IMergeable {
      */
     public ArrayList<Etudiant> listeEtudiantInscritCours(Identifiant id) {
         SQLiteDatabase db = super.helper.getWritableDatabase();
-        Cursor cursor = db.rawQuery(
-                "SELECT " +
-                        " e." + DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT + " , " +
-                        " e." + DBTables.Etudiant.COLONNE_NOM + " , " +
-                        " e." + DBTables.Etudiant.COLONNE_PRENOM + " , " +
-                        " e." + DBTables.Etudiant.COLONNE_NO_MIFARE + " , " +
-                        " e." + DBTables.Etudiant.COLONNE_EMAIL + " , " +
-                        " e." + DBTables.Etudiant.COLONNE_PHOTO + " , " +
-                        " e." + DBTables.Etudiant.COLONNE_DELETED + " " +
-                        "FROM " + DBTables.Autre.TABLE_NAME + " a " +
-                        " INNER JOIN " + DBTables.Inscription.TABLE_NAME + " i " +
-                        " ON a." + DBTables.Autre.COLONNE_ID_AUTRE + " = i." + DBTables.Inscription.COLONNE_ID_AUTRE +
-                        " INNER JOIN " + DBTables.Evenement.TABLE_NAME + " e " +
-                        " ON e." + DBTables.Evenement.COLONNE_ID_EVENEMENT + " = i." + DBTables.Inscription.COLONNE_ID_EVENEMENT +
-                        " WHERE " + DBTables.Evenement.COLONNE_ID_COURS + " = ? ",
-                new String[]{String.valueOf(id.getId(DBTables.Evenement.COLONNE_ID_COURS))});
+
+        String requete ="SELECT " +
+                " e." + DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT + " , " +
+                " e." + DBTables.Etudiant.COLONNE_NOM + " , " +
+                " e." + DBTables.Etudiant.COLONNE_PRENOM + " , " +
+                " e." + DBTables.Etudiant.COLONNE_NO_MIFARE + " , " +
+                " e." + DBTables.Etudiant.COLONNE_EMAIL + " , " +
+                " e." + DBTables.Etudiant.COLONNE_PHOTO + " , " +
+                " e." + DBTables.Etudiant.COLONNE_DELETED + " " +
+                "FROM " + DBTables.Autre.TABLE_NAME + " a " +
+                " INNER JOIN " + DBTables.Inscription.TABLE_NAME + " i " +
+                " ON a." + DBTables.Autre.COLONNE_ID_AUTRE + " = i." + DBTables.Inscription.COLONNE_ID_AUTRE +
+                " INNER JOIN " + DBTables.Evenement.TABLE_NAME + " e " +
+                " ON e." + DBTables.Evenement.COLONNE_ID_EVENEMENT + " = i." + DBTables.Inscription.COLONNE_ID_EVENEMENT +
+                " WHERE " + DBTables.Evenement.COLONNE_ID_COURS + " = ? " ;
+
+        Cursor cursor = db.rawQuery(requete, new String[]{String.valueOf(id.getId(DBTables.Evenement.COLONNE_ID_COURS))});
 
         ArrayList<Etudiant> list = new ArrayList<>();
         while (cursor.moveToNext()) {
@@ -137,26 +138,30 @@ public class EtudiantDAO extends DAO<Etudiant> implements IMergeable {
      * @param id
      * @return ArrayList
      */
-    public ArrayList<Etudiant> listeEtudiantInscrit(Identifiant id) {
+    public ArrayList<Etudiant> listeEtudiantInscrit(int id) {
         SQLiteDatabase db = super.helper.getWritableDatabase();
-        Cursor cursor = db.rawQuery(
-                "SELECT " +
-                        " e." + DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT + " , " +
-                        " e." + DBTables.Etudiant.COLONNE_NOM + " , " +
-                        " e." + DBTables.Etudiant.COLONNE_PRENOM + " , " +
-                        " e." + DBTables.Etudiant.COLONNE_NO_MIFARE + " , " +
-                        " e." + DBTables.Etudiant.COLONNE_EMAIL + " , " +
-                        " e." + DBTables.Etudiant.COLONNE_PHOTO + " , " +
-                        " e." + DBTables.Etudiant.COLONNE_DELETED + " " +
-                        " FROM " + DBTables.Etudiant.TABLE_NAME + " e " +
-                        " INNER JOIN " + DBTables.Inscription.TABLE_NAME + " i " +
-                        " ON e." + DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT + " = i." + DBTables.Inscription.COLONNE_NUMERO_ETUDIANT +
-                        " WHERE " + DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT + " = ? ",
-                new String[]{String.valueOf(id.getId(DBTables.Inscription.COLONNE_NUMERO_ETUDIANT))});
+
+        String requete = "SELECT " +
+                " e." + DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT + " , " +
+                " e." + DBTables.Etudiant.COLONNE_NOM + " , " +
+                " e." + DBTables.Etudiant.COLONNE_PRENOM + " , " +
+                " e." + DBTables.Etudiant.COLONNE_NO_MIFARE + " , " +
+                " e." + DBTables.Etudiant.COLONNE_EMAIL + " , " +
+                " e." + DBTables.Etudiant.COLONNE_PHOTO + " , " +
+                " e." + DBTables.Etudiant.COLONNE_DELETED + " " +
+                " FROM " + DBTables.Etudiant.TABLE_NAME + " e " +
+                " INNER JOIN " + DBTables.Inscription.TABLE_NAME + " i " +
+                " ON e." + DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT + " = i." + DBTables.Inscription.COLONNE_NUMERO_ETUDIANT +
+                " WHERE " + DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT + " = ? " ;
+
+        requete = "SELECT * FROM Etudiant";
+        //Cursor cursor = db.rawQuery(requete, new String[]{String.valueOf(id)});
+        Cursor cursor = db.rawQuery(requete, new String[]{});
 
         ArrayList<Etudiant> list = new ArrayList<>();
         while (cursor.moveToNext()) {
             list.add(this.cursorToType(cursor));
+            System.out.println(" etudiant : " + cursorToType(cursor).getNom());
         }
         return list;
     }
