@@ -19,11 +19,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import com.chavau.univ_angers.univemarge.R;
-import com.chavau.univ_angers.univemarge.intermediaire.Etudiant;
+import com.chavau.univ_angers.univemarge.database.entities.Etudiant;
 
 import java.util.ArrayList;
 
-
+// TODO :il faut les présences ici aussi ou du moins le presence dao
 
 public class AdapterPersonneInscrite extends RecyclerView.Adapter<AdapterPersonneInscrite.ViewHolderPI> {
 
@@ -100,28 +100,28 @@ public class AdapterPersonneInscrite extends RecyclerView.Adapter<AdapterPersonn
 
 
         // Affectation de l'Id image de l'étudiant(e) inscrit(e) à l'activité
-        iv_pict.setImageResource(_etudIns.get(i).get_imageId());
+        iv_pict.setImageResource(0);
 
         // Affectation du nom de l'étudiant(e) inscrit(e) à l'activité
-        tv_nom.setText(_etudIns.get(i).get_nom());
+        tv_nom.setText(_etudIns.get(i).getNom());
 
         // Affectation du prenom de l'étudiant(e) inscrit(e) à l'activité
-        tv_prenom.setText(_etudIns.get(i).get_prenom());
+        tv_prenom.setText(_etudIns.get(i).getPrenom());
 
         // Affectation du numéro de l'étudiant(e) inscrit(e) à l'activité
-        tv_numetu.setText(_etudIns.get(i).get_numEtud());
+        //tv_numetu.setText(_etudIns.get(i).getNumeroEtudiant());
 
         // Affectation du type d'activité de l'étudiant(e) inscrit(e) à l'activité
-        tv_typeact.setText(_etudIns.get(i).get_typeActivite());
+        //tv_typeact.setText(_etudIns.get(i).get_typeActivite());
 
         //Coloration de l'ampoule en fonction de la présence d'un(e) étudiant(e)
 
-        if (_etudIns.get(i).get_etat() == Etudiant.STATUE_ETUDIANT.ABSENT) {
+        //if (_etudIns.get(i).get_etat() == Etudiant.STATUE_ETUDIANT.ABSENT) {
 
             iv_light.setColorFilter(Color.RED,PorterDuff.Mode.SRC_ATOP);
-        }
+        //}
 
-        else if (_etudIns.get(i).get_etat() == Etudiant.STATUE_ETUDIANT.PRESENT) {
+       /* else if (_etudIns.get(i).get_etat() == Etudiant.STATUE_ETUDIANT.PRESENT) {
 
             iv_light.setColorFilter(Color.GREEN,PorterDuff.Mode.SRC_ATOP);
         }
@@ -134,7 +134,7 @@ public class AdapterPersonneInscrite extends RecyclerView.Adapter<AdapterPersonn
         else {
             iv_light.setColorFilter(Color.rgb(252, 186, 3), PorterDuff.Mode.SRC_ATOP);
         }
-
+*/
         switch (_vueChoix) {
 
             case NS:
@@ -142,11 +142,11 @@ public class AdapterPersonneInscrite extends RecyclerView.Adapter<AdapterPersonn
                 viewHolder._cardview.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(_etudIns.get(i).get_etat() == Etudiant.STATUE_ETUDIANT.ABSENT) {
+                       /* if(_etudIns.get(i).get_etat() == Etudiant.STATUE_ETUDIANT.ABSENT) {
                             if (_listener != null) {
                                 _listener.onClick(i);
                             }
-                        }
+                        }*/
                     }
                 });
 
@@ -185,19 +185,19 @@ public class AdapterPersonneInscrite extends RecyclerView.Adapter<AdapterPersonn
                             public boolean onMenuItemClick(MenuItem menuItem) {
                                 switch (menuItem.getItemId()) {
                                     case R.id.id_present:
-                                        setPresence(i, Etudiant.STATUE_ETUDIANT.PRESENT);
+                                        //setPresence(i, Etudiant.STATUE_ETUDIANT.PRESENT);
                                         notifyDataSetChanged();
                                         break;
                                     case R.id.id_absent:
-                                        setPresence(i, Etudiant.STATUE_ETUDIANT.ABSENT);
+                                        //setPresence(i, Etudiant.STATUE_ETUDIANT.ABSENT);
                                         notifyDataSetChanged();
                                         break;
                                     case R.id.id_retard:
-                                        setPresence(i, Etudiant.STATUE_ETUDIANT.RETARD);
+                                        //setPresence(i, Etudiant.STATUE_ETUDIANT.RETARD);
                                         notifyDataSetChanged();
                                         break;
                                     case R.id.id_excuse:
-                                        setPresence(i, Etudiant.STATUE_ETUDIANT.EXCUSE);
+                                        //setPresence(i, Etudiant.STATUE_ETUDIANT.EXCUSE);
                                         notifyDataSetChanged();
                                         break;
                                     default:
@@ -222,8 +222,8 @@ public class AdapterPersonneInscrite extends RecyclerView.Adapter<AdapterPersonn
         return _etudIns.size();
     }
 
-    public void setPresence(int i, Etudiant.STATUE_ETUDIANT se) {
+   /* public void setPresence(int i, Etudiant.STATUE_ETUDIANT se) {
         _etudIns.get(i).set_etat(se);
     }
-
+*/
 }

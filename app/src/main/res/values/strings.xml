@@ -20,6 +20,7 @@
     <!-- PREFERENCES-->
     <string name="PREFERENCE">app_preferences_univ_emarge</string>
     <string name="PREF_LOGIN">login_univ_emarge</string>
+    <string name="PREF_IDENTIFIANT">identifiant_personel</string>
     <string name="PREF_DATE_MAJ">date_maj</string>
 
 
@@ -30,6 +31,8 @@
     <string name="b_valider">Valider</string>
     <string name="connexion_erreur_mdp">Login ou mot de passe incorrect</string>
     <string name="connexion_erreur_champ">Il faut remplir les deux champs</string>
+    <string name="connexion_missing">Il faut être connecté à Internet pour s\'authentifier</string>
+
 
     <!-- Paramètres -->
     <string name="preference">...</string>

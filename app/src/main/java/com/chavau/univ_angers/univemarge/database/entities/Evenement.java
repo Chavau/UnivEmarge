@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @JsonIgnoreProperties(value = { "dateMaj" })
@@ -34,7 +36,7 @@ public class Evenement extends Entity {
     @JsonProperty("idCours")
     private int idCours;
 
-    @JsonProperty("typeEmargement")
+    @JsonProperty("idTypeEmargement")
     private int typeEmargement;
 
     @JsonDeserialize(using = NumericBooleanDeserializer.class)
@@ -62,9 +64,24 @@ public class Evenement extends Entity {
     public Date getDateDebut() {
         return dateDebut;
     }
+    public String getDateDebutToString() {
+        String pattern = "dd/MM/yyyy";
+
+        DateFormat df = new SimpleDateFormat(pattern);
+        return df.format(dateDebut);
+
+    }
 
     public Date getDateFin() {
         return dateFin;
+    }
+
+    public String getDateFinToString() {
+        String pattern = "dd/MM/yyyy";
+
+        DateFormat df = new SimpleDateFormat(pattern);
+        return df.format(dateFin);
+
     }
 
     public String getLieu() {

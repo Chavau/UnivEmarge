@@ -10,6 +10,8 @@ import com.chavau.univ_angers.univemarge.database.Identifiant;
 import com.chavau.univ_angers.univemarge.database.entities.Entity;
 import com.chavau.univ_angers.univemarge.database.entities.Responsable;
 
+import java.util.ArrayList;
+
 public class ResponsableDAO extends DAO<Responsable> implements IMergeable {
     private static final String[] PROJECTION = {
             DBTables.Responsable.COLONNE_ID_EVENEMENT,
@@ -86,7 +88,7 @@ public class ResponsableDAO extends DAO<Responsable> implements IMergeable {
     public void merge(Entity[] entities) {
         for(Entity e : entities) {
             Responsable responsable = (Responsable) e;
-            deleteItem(responsable.getIdPersonnelResponsable());
+            deleteItem(responsable.getIdPersonnelResponsable(), responsable.getIdEvenement());
             long res = insertItem(responsable);
             if (res == -1) {
                 throw new SQLException("Unable to merge Responsable Table");
@@ -94,8 +96,26 @@ public class ResponsableDAO extends DAO<Responsable> implements IMergeable {
         }
     }
 
-    private int deleteItem(int idPersonnelResponsable) {
+    private int deleteItem(int idPersonnelResponsable, int idEvenement) {
         SQLiteDatabase db = super.helper.getWritableDatabase();
-        return db.delete(DBTables.Responsable.TABLE_NAME, DBTables.Responsable.COLONNE_ID_PERSONNEL_RESPONSABLE + " = ?", new String[]{String.valueOf(idPersonnelResponsable)});
+        return db.delete(DBTables.Responsable.TABLE_NAME, DBTables.Responsable.COLONNE_ID_PERSONNEL_RESPONSABLE + " = ? AND " +DBTables.Responsable.COLONNE_ID_EVENEMENT + " = ? " , new String[]{String.valueOf(idPersonnelResponsable), String.valueOf(idEvenement)});
     }
+/*
+    public void getAll(int id) {
+
+        SQLiteDatabase db = super.helper.getWritableDatabase();
+
+
+        String requete = "SELECT * From responsable"; // TODO :refaire requete
+
+        Cursor cursor = db.rawQuery(requete, new String[]{});
+        //System.out.println("###########################requete : " +requete +String.valueOf(id));
+
+
+        while (cursor.moveToNext()) {
+            //System.out.println("###########################event : " +this.cursorToType(cursor).getIdEvenement() + " resp :  " + this.cursorToType(cursor).getIdPersonnelResponsable());
+        }
+
+    }
+    */
 }

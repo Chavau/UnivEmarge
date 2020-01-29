@@ -44,6 +44,7 @@ public final class DBTables {
     public static class Etudiant implements BaseColumns {
         public static final String TABLE_NAME = "etudiant";
         public static final String COLONNE_NUMERO_ETUDIANT = "numeroEtudiant";
+        public static final String COLONNE_ID_ETUDIANT = "idEtudiant";
         public static final String COLONNE_NOM = "nom";
         public static final String COLONNE_PRENOM = "prenom";
         public static final String COLONNE_NO_MIFARE = "no_mifare";
@@ -54,6 +55,7 @@ public final class DBTables {
         public static final String SQL_CREATE_ENTRIES =
                 "CREATE TABLE " + Etudiant.TABLE_NAME + " (" +
                         Etudiant.COLONNE_NUMERO_ETUDIANT + " INTEGER PRIMARY KEY, " +
+                        Etudiant.COLONNE_ID_ETUDIANT + " integer, " +
                         Etudiant.COLONNE_NOM + " varchar(200), " +
                         Etudiant.COLONNE_PRENOM + " varchar(200), " +
                         Etudiant.COLONNE_NO_MIFARE + " varchar(20), " +
@@ -200,7 +202,7 @@ public final class DBTables {
 
         public static final String SQL_CREATE_ENTRIES =
                 "CREATE TABLE " + Presence.TABLE_NAME + " (" +
-                        Presence.COLONNE_ID_PRESENCE + " INTEGER PRIMARY KEY, " +
+                        Presence.COLONNE_ID_PRESENCE + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         Presence.COLONNE_ID_EVENEMENT + " integer, " +
                         Presence.COLONNE_NUMERO_ETUDIANT + " integer, " +
                         Presence.COLONNE_STATUT_PRESENCE + " integer, " +
@@ -232,7 +234,7 @@ public final class DBTables {
 
         public static final String SQL_CREATE_ENTRIES =
                 "CREATE TABLE " + PresenceRoulant.TABLE_NAME + " (" +
-                        PresenceRoulant.COLONNE_ID_ROULANT + " INTEGER PRIMARY KEY, " +
+                        PresenceRoulant.COLONNE_ID_ROULANT + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         PresenceRoulant.COLONNE_ID_EVENEMENT + " INTEGER, " +
                         PresenceRoulant.COLONNE_NUMERO_ETUDIANT + " INTEGER, " +
                         PresenceRoulant.COLONNE_TEMPS + " varchar(255), " +
