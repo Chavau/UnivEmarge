@@ -26,6 +26,7 @@ public class Inscription extends Entity {
     @JsonProperty("deleted")
     private boolean deleted;
 
+    @JsonProperty("id_autre")
     private int idAutre;
 
     // needed for jackson parser

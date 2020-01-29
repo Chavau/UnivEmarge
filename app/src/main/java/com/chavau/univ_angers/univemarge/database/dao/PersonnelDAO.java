@@ -200,7 +200,6 @@ public class PersonnelDAO extends DAO<Personnel> implements IMergeable {
     public void merge(Entity[] entities) {
         for (Entity e : entities) {
             Personnel personnel = (Personnel) e;
-            System.out.println(personnel.toString());
             deleteItem(personnel.getIdPersonnel());
             long res = insertItem(personnel);
             if (res == -1) {

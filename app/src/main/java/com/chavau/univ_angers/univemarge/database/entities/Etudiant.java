@@ -13,6 +13,9 @@ public class Etudiant extends Entity implements Personne {
     @JsonProperty("numero")
     private int numeroEtudiant;
 
+    @JsonProperty("id_etudiant")
+    private int idEtudiant;
+
     @JsonProperty("nom")
     private String nom;
 
@@ -35,8 +38,9 @@ public class Etudiant extends Entity implements Personne {
     // needed for jackson parser
     public Etudiant() {}
 
-    public Etudiant(String nom, String prenom, String email, int numeroEtudiant, String no_mifare, Blob photo, boolean deleted) {
+    public Etudiant(String nom, String prenom, String email, int numeroEtudiant,int idEtudiant, String no_mifare, Blob photo, boolean deleted) {
         this.numeroEtudiant = numeroEtudiant;
+        this.idEtudiant = idEtudiant;
         this.nom = nom;
         this.prenom = prenom;
         this.no_mifare = no_mifare;
@@ -47,6 +51,10 @@ public class Etudiant extends Entity implements Personne {
 
     public int getNumeroEtudiant() {
         return numeroEtudiant;
+    }
+
+    public int getIdEtudiant() {
+        return idEtudiant;
     }
 
     public String getNom() {

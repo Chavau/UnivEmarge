@@ -18,6 +18,7 @@ public class EtudiantDAO extends DAO<Etudiant> implements IMergeable {
 
     private static final String[] PROJECTION = {
             DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT,
+            DBTables.Etudiant.COLONNE_ID_ETUDIANT,
             DBTables.Etudiant.COLONNE_NOM,
             DBTables.Etudiant.COLONNE_PRENOM,
             DBTables.Etudiant.COLONNE_NO_MIFARE,
@@ -34,6 +35,7 @@ public class EtudiantDAO extends DAO<Etudiant> implements IMergeable {
     public ContentValues getContentValues(Etudiant item) {
         ContentValues values = new ContentValues();
         values.put(DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT, item.getNumeroEtudiant());
+        values.put(DBTables.Etudiant.COLONNE_ID_ETUDIANT, item.getIdEtudiant());
         values.put(DBTables.Etudiant.COLONNE_NOM, item.getNom());
         values.put(DBTables.Etudiant.COLONNE_PRENOM, item.getPrenom());
         values.put(DBTables.Etudiant.COLONNE_NO_MIFARE, item.getNo_mifare());
@@ -81,6 +83,7 @@ public class EtudiantDAO extends DAO<Etudiant> implements IMergeable {
     @Override
     public Etudiant cursorToType(Cursor cursor) {
         int numeroEtudiant = cursor.getColumnIndex(DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT);
+        int idEtudiant = cursor.getColumnIndex(DBTables.Etudiant.COLONNE_ID_ETUDIANT);
         int nom = cursor.getColumnIndex(DBTables.Etudiant.COLONNE_NOM);
         int prenom = cursor.getColumnIndex(DBTables.Etudiant.COLONNE_PRENOM);
         int no_mifare = cursor.getColumnIndex(DBTables.Etudiant.COLONNE_NO_MIFARE);
@@ -93,6 +96,7 @@ public class EtudiantDAO extends DAO<Etudiant> implements IMergeable {
                 cursor.getString(prenom),
                 cursor.getString(email),
                 cursor.getInt(numeroEtudiant),
+                cursor.getInt(idEtudiant),
                 cursor.getString(no_mifare),
                 Utils.convertByteToBlob(cursor.getBlob(photo)),
                 (cursor.getInt(deleted) == 1)
@@ -143,6 +147,7 @@ public class EtudiantDAO extends DAO<Etudiant> implements IMergeable {
 
         String requete = "SELECT " +
                 " e." + DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT + " , " +
+                " e." + DBTables.Etudiant.COLONNE_ID_ETUDIANT + " , " +
                 " e." + DBTables.Etudiant.COLONNE_NOM + " , " +
                 " e." + DBTables.Etudiant.COLONNE_PRENOM + " , " +
                 " e." + DBTables.Etudiant.COLONNE_NO_MIFARE + " , " +
@@ -151,12 +156,13 @@ public class EtudiantDAO extends DAO<Etudiant> implements IMergeable {
                 " e." + DBTables.Etudiant.COLONNE_DELETED + " " +
                 " FROM " + DBTables.Etudiant.TABLE_NAME + " e " +
                 " INNER JOIN " + DBTables.Inscription.TABLE_NAME + " i " +
-                " ON e." + DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT + " = i." + DBTables.Inscription.COLONNE_NUMERO_ETUDIANT +
+                " ON e." + DBTables.Etudiant.COLONNE_ID_ETUDIANT + " = i." + DBTables.Inscription.COLONNE_NUMERO_ETUDIANT +
                 " WHERE " + DBTables.Etudiant.COLONNE_NUMERO_ETUDIANT + " = ? " ;
 
-        requete = "SELECT * FROM Etudiant";
+        requete = "select * from etudiant";
         //Cursor cursor = db.rawQuery(requete, new String[]{String.valueOf(id)});
         Cursor cursor = db.rawQuery(requete, new String[]{});
+
 
         ArrayList<Etudiant> list = new ArrayList<>();
         while (cursor.moveToNext()) {

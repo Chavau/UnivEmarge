@@ -100,7 +100,7 @@ public class ResponsableDAO extends DAO<Responsable> implements IMergeable {
         SQLiteDatabase db = super.helper.getWritableDatabase();
         return db.delete(DBTables.Responsable.TABLE_NAME, DBTables.Responsable.COLONNE_ID_PERSONNEL_RESPONSABLE + " = ? AND " +DBTables.Responsable.COLONNE_ID_EVENEMENT + " = ? " , new String[]{String.valueOf(idPersonnelResponsable), String.valueOf(idEvenement)});
     }
-
+/*
     public void getAll(int id) {
 
         SQLiteDatabase db = super.helper.getWritableDatabase();
@@ -108,13 +108,14 @@ public class ResponsableDAO extends DAO<Responsable> implements IMergeable {
 
         String requete = "SELECT * From responsable"; // TODO :refaire requete
 
-        Cursor cursor = db.rawQuery(requete, new String[]{/*String.valueOf(id)*/});
-        System.out.println("###########################requete : " +requete +String.valueOf(id));
+        Cursor cursor = db.rawQuery(requete, new String[]{});
+        //System.out.println("###########################requete : " +requete +String.valueOf(id));
 
 
         while (cursor.moveToNext()) {
-            System.out.println("###########################event : " +this.cursorToType(cursor).getIdEvenement() + " resp :  " + this.cursorToType(cursor).getIdPersonnelResponsable());
+            //System.out.println("###########################event : " +this.cursorToType(cursor).getIdEvenement() + " resp :  " + this.cursorToType(cursor).getIdPersonnelResponsable());
         }
 
     }
+    */
 }

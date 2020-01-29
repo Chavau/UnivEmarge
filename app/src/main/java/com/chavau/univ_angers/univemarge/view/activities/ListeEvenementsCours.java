@@ -67,12 +67,6 @@ public class ListeEvenementsCours extends AppCompatActivity {
 
         SharedPreferences preferences = getSharedPreferences(getResources().getString(R.string.PREFERENCE),0);
 
-        /**
-         * A enlerver TODO
-         */
-        ResponsableDAO rdao = new ResponsableDAO(new DatabaseHelper(this));
-        rdao.getAll(0);
-
         _recyclerview = findViewById(R.id.recyclerview_cours);
         _recyclerview.setLayoutManager(new LinearLayoutManager(this));
         // fragment pour la synchronisation

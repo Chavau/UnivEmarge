@@ -68,7 +68,6 @@ public class APICall extends Fragment {
             @Override
             public void run() {
                 // This thread runs almost forever.
-                while (true) {
                     // update only if connected to internet
                     if(testInternetConnection()) {
                         sendRequest(new SyncElement("/autres", Autre[].class, new AutreDAO(new DatabaseHelper(context))));
@@ -86,19 +85,15 @@ public class APICall extends Fragment {
                         // TODO : re-assign the new DateMaj
                         setDateMaj(new Date());
                     }
-                    // we wait 2h to do another sync
-                    synchronized (this) {
-                        try {
-                            wait(WAIT_TIME_MILISEC);
-                        } catch (InterruptedException ignored) {
-                        }
-                    }
+
                 }
-            }
+
         };
 
         // pour garder le fragment actif lorsque l'activité est détruite (ex: rotation)
         setRetainInstance(true);
+
+       onDestroy();
     }
 
     /**
