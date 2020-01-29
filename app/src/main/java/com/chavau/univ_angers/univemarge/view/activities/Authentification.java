@@ -68,8 +68,7 @@ public class Authentification extends AppCompatActivity implements Authentificat
             Toast.makeText(this, R.string.connexion_missing, Toast.LENGTH_LONG).show();
         }
     }
-
-
+    
     /**
      * Recupère le login de l'enseignant, met aussi son identifiant en paramètre TODO
      * @param result vrai ou faux, en fonction du succès de la requete
