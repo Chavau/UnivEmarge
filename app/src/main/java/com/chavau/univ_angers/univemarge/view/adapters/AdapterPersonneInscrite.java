@@ -100,7 +100,7 @@ public class AdapterPersonneInscrite extends RecyclerView.Adapter<AdapterPersonn
 
 
         // Affectation de l'Id image de l'étudiant(e) inscrit(e) à l'activité
-        //iv_pict.setImageResource(_etudIns.get(i).get_imageId());
+        iv_pict.setImageResource(0);
 
         // Affectation du nom de l'étudiant(e) inscrit(e) à l'activité
         tv_nom.setText(_etudIns.get(i).getNom());

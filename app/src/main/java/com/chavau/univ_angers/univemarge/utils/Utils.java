@@ -1,5 +1,10 @@
 package com.chavau.univ_angers.univemarge.utils;
 
+import android.app.Activity;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import java.nio.charset.StandardCharsets;
 import java.sql.Blob;
 import java.sql.SQLException;
@@ -71,4 +76,25 @@ public class Utils {
         DateFormat df = new SimpleDateFormat("HH:mm");
         return df.format(date);
     }
+
+    /**
+     * @param activity
+     * @return true si connexion internet trouvée
+     */
+    public static boolean isConnectedInternet(Activity activity)
+    {
+        ConnectivityManager connectivityManager = (ConnectivityManager)activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo != null)
+        {
+            NetworkInfo.State networkState = networkInfo.getState();
+            if (networkState.compareTo(NetworkInfo.State.CONNECTED) == 0)
+            {
+                return true;
+            }
+            else return false;
+        }
+        else return false;
+    }
+
 }
