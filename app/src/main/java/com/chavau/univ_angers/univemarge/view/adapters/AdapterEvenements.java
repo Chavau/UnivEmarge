@@ -96,6 +96,7 @@ public class AdapterEvenements extends RecyclerView.Adapter<AdapterEvenements.Vi
                 }
                 else {
                     Intent intent = new Intent(_context, Musculation.class);
+                    intent.putExtra(nomAct,cours.getIdEvenement());
                     _context.startActivity(intent);
                 }
 

@@ -12,7 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chavau.univ_angers.univemarge.R;
-import com.chavau.univ_angers.univemarge.intermediaire.Etudiant;
+import com.chavau.univ_angers.univemarge.database.DBTables;
+import com.chavau.univ_angers.univemarge.database.entities.Etudiant;
 import com.chavau.univ_angers.univemarge.intermediaire.MusculationData;
 import com.chavau.univ_angers.univemarge.intermediaire.Personnel;
 
@@ -20,11 +21,11 @@ import java.util.ArrayList;
 
 public class AdapterMusculation extends RecyclerView.Adapter<AdapterMusculation.MonViewHolder> {
 
-    private ArrayList<Personnel> personnels = new ArrayList<>();
+    private ArrayList<Etudiant> personnels = new ArrayList<>();
     private Context context;
     private MusculationData musculationData;
 
-    public AdapterMusculation(Context context, ArrayList<Personnel> personnels, MusculationData musculationData) {
+    public AdapterMusculation(Context context, ArrayList<Etudiant> personnels, MusculationData musculationData) {
         this.personnels = personnels;
         this.context = context;
         this.musculationData = musculationData;
@@ -70,17 +71,17 @@ public class AdapterMusculation extends RecyclerView.Adapter<AdapterMusculation.
 
         tv_nomPers.setText(personnels.get(i).getNom());
         tv_prenomPers.setText(personnels.get(i).getPrenom());
-        tv_heurePasee.setText(personnels.get(i).getHeurePassee());
+        //tv_heurePasee.setText(personnels.get(i).getHeurePassee());
 
         // Vérification si le personnel n'pas dépassé le temps minimum
-        if ( (personnels.get(i).getHeure() > musculationData.getHeure()) ||
+       /* if ( (personnels.get(i).getHeure() > musculationData.getHeure()) ||
                 ((personnels.get(i).getHeure() == musculationData.getHeure()) && (personnels.get(i).getMinute() >= musculationData.getMinute()))
         ) {
             iv_light.setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
         }
         else {
             iv_light.setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_ATOP);
-        }
+        }*/
 
         //Récupération de la position pour une suppression par la suite
         monViewHolder.itemView.setTag(i);
@@ -99,9 +100,6 @@ public class AdapterMusculation extends RecyclerView.Adapter<AdapterMusculation.
         notifyItemRangeChanged(position,getItemCount()-position);
     }
 
-    // TODO: demo
-    public void setPresenceDemo() {
-        personnels.add(new Personnel("Le Quec", "Vincent"));
-    }
+
 
 }

@@ -30,12 +30,16 @@ import android.widget.Toast;
 import com.chavau.univ_angers.univemarge.MainActivity;
 import android.widget.Toast;
 import com.chavau.univ_angers.univemarge.R;
-import com.chavau.univ_angers.univemarge.intermediaire.Etudiant;
+import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
+import com.chavau.univ_angers.univemarge.database.dao.EtudiantDAO;
+import com.chavau.univ_angers.univemarge.database.entities.Etudiant;
+import com.chavau.univ_angers.univemarge.view.adapters.AdapterEvenements;
 import com.chavau.univ_angers.univemarge.view.adapters.AdapterMusculation;
 import com.chavau.univ_angers.univemarge.view.adapters.AdapterViewPager;
 import com.chavau.univ_angers.univemarge.intermediaire.MusculationData;
-import com.chavau.univ_angers.univemarge.intermediaire.Personnel;
 import com.chavau.univ_angers.univemarge.view.fragment.Configuration_dialog;
+import com.fasterxml.jackson.core.io.DataOutputAsStream;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -46,8 +50,10 @@ public class Musculation extends AppCompatActivity {
     private AdapterMusculation adaptermusculation;
     private RecyclerView recyclerview;
     private MusculationData mdata;
-    private ArrayList<Personnel> presences = new ArrayList<>();
+    private ArrayList<Etudiant> presences = new ArrayList<>();
     private TabLayout tabLayout;
+
+    private EtudiantDAO etuDAO;
 
     /**
      * Capacité d'accueil du cours.
@@ -105,19 +111,14 @@ public class Musculation extends AppCompatActivity {
         viewpager = findViewById(R.id.viewpager);
         recyclerview = findViewById(R.id.recyclerview_musculation);
 
-        // Recuperation de pesences si y'a une sauvegarde
+        // Recuperation de presences si y'a une sauvegarde
 
-        presences = creerPers();
+        etuDAO = new EtudiantDAO(new DatabaseHelper(this));
 
-        if (savedInstanceState != null) {
-            presences = savedInstanceState.getParcelableArrayList(PERSONNELS_PRESENTS);
-        }
+        presences = etuDAO.listeEtudiantInscritCours(getIntent().getIntExtra(AdapterEvenements.getNomAct(),0));
 
         // Affectation du nombre de presents dans la salle
         mdata = creerMuscuData(presences.size());
-        adaptermusculation = new AdapterMusculation(this, presences, mdata);
-
-
         adaptermusculation = new AdapterMusculation(this, presences, mdata);
 
         ItemTouchHelper.SimpleCallback ihscb = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -247,33 +248,7 @@ public class Musculation extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(PERSONNELS_PRESENTS, presences);
-    }
-
-    public ArrayList<Personnel> creerPers() {
-        ArrayList<Personnel> personnels = new ArrayList<>();
-        Random rand = new Random();
-        personnels.add(new Personnel("ALLON", "LEVY"));
-        personnels.add(new Personnel("BACARD", "HUGO"));
-        personnels.add(new Personnel("BAKER", "MATTHEW"));
-        personnels.add(new Personnel("BALWE", "CHETAN"));
-        personnels.add(new Personnel("BELAIR", "LUC"));
-        personnels.add(new Personnel("CEBALLOS", "CESAR"));
-        personnels.add(new Personnel("FAVRE", "CHARLES"));
-        personnels.add(new Personnel("BYSZEWSKI", "DYLAN"));
-        personnels.add(new Personnel("CHEN", "CHRISTIAN"));
-        personnels.add(new Personnel("FEHM", "ARNO"));
-        personnels.add(new Personnel("GARCIA", "LUIS"));
-        personnels.add(new Personnel("FARGUES", "LAURENT"));
-        personnels.add(new Personnel("HERBLOT", "MATHILDE"));
-        personnels.add(new Personnel("LI", "WEN-WEI"));
-
-        for (Personnel p : personnels) {
-            int heure = rand.nextInt(3);
-            int minute = rand.nextInt(60);
-            p.setHeurePassee(heure, minute);
-        }
-        return personnels;
+        //outState.putParcelableArrayList(PERSONNELS_PRESENTS, presences);
     }
 
 
@@ -418,7 +393,7 @@ public class Musculation extends AppCompatActivity {
 
             if (demo) {
                 Toast.makeText(Musculation.this, "Vincent LE QUEC", Toast.LENGTH_LONG).show();
-                adaptermusculation.setPresenceDemo();
+                //adaptermusculation.setPresenceDemo();
                 adaptermusculation.notifyDataSetChanged();
                 mp_son_approuver.start();
                 demo = !demo;
