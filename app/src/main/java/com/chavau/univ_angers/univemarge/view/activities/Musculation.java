@@ -50,8 +50,10 @@ public class Musculation extends AppCompatActivity {
     private AdapterMusculation adaptermusculation;
     private RecyclerView recyclerview;
     private MusculationData mdata;
-    private ArrayList<Etudiant> presences = new ArrayList<>();
+    private ArrayList<AdapterMusculation.Personne> presences = new ArrayList<>();
     private TabLayout tabLayout;
+
+    ArrayList<Etudiant> liste_etudiant_inscrit = new ArrayList<>();
 
     private EtudiantDAO etuDAO;
 
@@ -115,11 +117,11 @@ public class Musculation extends AppCompatActivity {
 
         etuDAO = new EtudiantDAO(new DatabaseHelper(this));
 
-        presences = etuDAO.listeEtudiantInscritCours(getIntent().getIntExtra(AdapterEvenements.getNomAct(),0));
+        liste_etudiant_inscrit = etuDAO.listeEtudiantInscritCours(getIntent().getIntExtra(AdapterEvenements.getNomAct(),0));
 
         // Affectation du nombre de presents dans la salle
         mdata = creerMuscuData(presences.size());
-        adaptermusculation = new AdapterMusculation(this, presences, mdata);
+        adaptermusculation = new AdapterMusculation(this, presences, mdata,getIntent().getIntExtra(AdapterEvenements.getNomAct(),0));
 
         ItemTouchHelper.SimpleCallback ihscb = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
@@ -333,7 +335,7 @@ public class Musculation extends AppCompatActivity {
      * Méthode calculant l'identifiant d'une carte étudiante
      *
      * @param bytes id de lecture de la carte converti en octet
-     * @return l'identifiant de la carte qui correspond au code hexadéciaml inversé.
+     * @return l'identifiant de la carte qui correspond au code hexadéciaml inversé. // TODO : voir si vraiment utile
      */
     private String toReversedHex(byte[] bytes) {
         StringBuilder sb = new StringBuilder();
@@ -387,25 +389,35 @@ public class Musculation extends AppCompatActivity {
          */
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            System.out.println("MIFARE=" + s);
-//            Toast.makeText(Musculation.this, "MIFARE:\n" + s, Toast.LENGTH_LONG).show();
-//            if () mp_son_approuver.start(); else mp_son_refuser.start();
 
-            if (demo) {
-                Toast.makeText(Musculation.this, "Vincent LE QUEC", Toast.LENGTH_LONG).show();
-                //adaptermusculation.setPresenceDemo();
-                adaptermusculation.notifyDataSetChanged();
-                mp_son_approuver.start();
-                demo = !demo;
-            } else {
-                adaptermusculation.enlever(14);
-                demo = !demo;
+            boolean deja_present = false;
+
+            System.out.println("MIFARE=" + s);
+            Toast.makeText(Musculation.this, "MIFARE:\n" + s, Toast.LENGTH_LONG).show();
+
+            for (int i = 0 ; i < adaptermusculation.getItemCount(); i++){
+                AdapterMusculation.Personne p = adaptermusculation.getPersonne(i);
+                if(p.getMiFare().equals(s)) {
+                    adaptermusculation.enlever(i);
+                    deja_present = true;
+                }
             }
+
+            if (!deja_present) // s'il est pas deja présent
+                for (Etudiant e : liste_etudiant_inscrit){
+                    if(e.getNo_mifare().equals(s)) { //TODO a tester
+                        mp_son_approuver.start();
+                        adaptermusculation.addPersonne(e);
+                    }
+                    else
+                        mp_son_refuser.start();
+                }
+
+
 
         }
 
     }
-    //TODO: Demo
-    private static boolean demo = true;
+
 
 }
