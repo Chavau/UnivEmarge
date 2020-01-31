@@ -15,6 +15,7 @@ import com.chavau.univ_angers.univemarge.MainActivity;
 import com.chavau.univ_angers.univemarge.R;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.dao.PersonnelDAO;
+import com.chavau.univ_angers.univemarge.utils.Utils;
 import com.chavau.univ_angers.univemarge.view.fragments.Authentification_Fragment;
 
 /**
@@ -53,18 +54,21 @@ public class Authentification extends AppCompatActivity implements Authentificat
 
     public void onClickValider(View v){
         //TODO : vérifier connexion internet
-        String login = ed_login.getText().toString();
-        String mdp = ed_mdp.getText().toString();
-        if(login.equals("") || mdp.equals("")) {
-            Toast.makeText(this, R.string.connexion_erreur_champ, Toast.LENGTH_LONG).show();
-            //TODO : mettre en rouge l'erreur sur l'écran ?
+        if (Utils.isConnectedInternet(this)) {
+            String login = ed_login.getText().toString();
+            String mdp = ed_mdp.getText().toString();
+            if (login.equals("") || mdp.equals("")) {
+                Toast.makeText(this, R.string.connexion_erreur_champ, Toast.LENGTH_LONG).show();
+                //TODO : mettre en rouge l'erreur sur l'écran ?
+            } else {
+                authentification_fragment.requete_connexion(login, mdp);
+            }
         }
-        else{
-            authentification_fragment.requete_connexion(login, mdp);
+        else {
+            Toast.makeText(this, R.string.connexion_missing, Toast.LENGTH_LONG).show();
         }
     }
-
-
+    
     /**
      * Recupère le login de l'enseignant, met aussi son identifiant en paramètre TODO
      * @param result vrai ou faux, en fonction du succès de la requete

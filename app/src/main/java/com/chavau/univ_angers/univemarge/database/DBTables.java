@@ -44,6 +44,7 @@ public final class DBTables {
     public static class Etudiant implements BaseColumns {
         public static final String TABLE_NAME = "etudiant";
         public static final String COLONNE_NUMERO_ETUDIANT = "numeroEtudiant";
+        public static final String COLONNE_ID_ETUDIANT = "idEtudiant";
         public static final String COLONNE_NOM = "nom";
         public static final String COLONNE_PRENOM = "prenom";
         public static final String COLONNE_NO_MIFARE = "no_mifare";
@@ -54,6 +55,7 @@ public final class DBTables {
         public static final String SQL_CREATE_ENTRIES =
                 "CREATE TABLE " + Etudiant.TABLE_NAME + " (" +
                         Etudiant.COLONNE_NUMERO_ETUDIANT + " INTEGER PRIMARY KEY, " +
+                        Etudiant.COLONNE_ID_ETUDIANT + " integer, " +
                         Etudiant.COLONNE_NOM + " varchar(200), " +
                         Etudiant.COLONNE_PRENOM + " varchar(200), " +
                         Etudiant.COLONNE_NO_MIFARE + " varchar(20), " +
