@@ -30,12 +30,16 @@ import android.widget.Toast;
 import com.chavau.univ_angers.univemarge.MainActivity;
 import android.widget.Toast;
 import com.chavau.univ_angers.univemarge.R;
-import com.chavau.univ_angers.univemarge.intermediaire.Etudiant;
+import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
+import com.chavau.univ_angers.univemarge.database.dao.EtudiantDAO;
+import com.chavau.univ_angers.univemarge.database.entities.Etudiant;
+import com.chavau.univ_angers.univemarge.view.adapters.AdapterEvenements;
 import com.chavau.univ_angers.univemarge.view.adapters.AdapterMusculation;
 import com.chavau.univ_angers.univemarge.view.adapters.AdapterViewPager;
 import com.chavau.univ_angers.univemarge.intermediaire.MusculationData;
-import com.chavau.univ_angers.univemarge.intermediaire.Personnel;
 import com.chavau.univ_angers.univemarge.view.fragment.Configuration_dialog;
+import com.fasterxml.jackson.core.io.DataOutputAsStream;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -46,8 +50,12 @@ public class Musculation extends AppCompatActivity {
     private AdapterMusculation adaptermusculation;
     private RecyclerView recyclerview;
     private MusculationData mdata;
-    private ArrayList<Personnel> presences = new ArrayList<>();
+    private ArrayList<AdapterMusculation.Personne> presences = new ArrayList<>();
     private TabLayout tabLayout;
+
+    ArrayList<Etudiant> liste_etudiant_inscrit = new ArrayList<>();
+
+    private EtudiantDAO etuDAO;
 
     /**
      * Capacité d'accueil du cours.
@@ -105,20 +113,15 @@ public class Musculation extends AppCompatActivity {
         viewpager = findViewById(R.id.viewpager);
         recyclerview = findViewById(R.id.recyclerview_musculation);
 
-        // Recuperation de pesences si y'a une sauvegarde
+        // Recuperation de presences si y'a une sauvegarde
 
-        presences = creerPers();
+        etuDAO = new EtudiantDAO(new DatabaseHelper(this));
 
-        if (savedInstanceState != null) {
-            presences = savedInstanceState.getParcelableArrayList(PERSONNELS_PRESENTS);
-        }
+        liste_etudiant_inscrit = etuDAO.listeEtudiantInscritCours(getIntent().getIntExtra(AdapterEvenements.getNomAct(),0));
 
         // Affectation du nombre de presents dans la salle
         mdata = creerMuscuData(presences.size());
-        adaptermusculation = new AdapterMusculation(this, presences, mdata);
-
-
-        adaptermusculation = new AdapterMusculation(this, presences, mdata);
+        adaptermusculation = new AdapterMusculation(this, presences, mdata,getIntent().getIntExtra(AdapterEvenements.getNomAct(),0));
 
         ItemTouchHelper.SimpleCallback ihscb = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
@@ -247,33 +250,7 @@ public class Musculation extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(PERSONNELS_PRESENTS, presences);
-    }
-
-    public ArrayList<Personnel> creerPers() {
-        ArrayList<Personnel> personnels = new ArrayList<>();
-        Random rand = new Random();
-        personnels.add(new Personnel("ALLON", "LEVY"));
-        personnels.add(new Personnel("BACARD", "HUGO"));
-        personnels.add(new Personnel("BAKER", "MATTHEW"));
-        personnels.add(new Personnel("BALWE", "CHETAN"));
-        personnels.add(new Personnel("BELAIR", "LUC"));
-        personnels.add(new Personnel("CEBALLOS", "CESAR"));
-        personnels.add(new Personnel("FAVRE", "CHARLES"));
-        personnels.add(new Personnel("BYSZEWSKI", "DYLAN"));
-        personnels.add(new Personnel("CHEN", "CHRISTIAN"));
-        personnels.add(new Personnel("FEHM", "ARNO"));
-        personnels.add(new Personnel("GARCIA", "LUIS"));
-        personnels.add(new Personnel("FARGUES", "LAURENT"));
-        personnels.add(new Personnel("HERBLOT", "MATHILDE"));
-        personnels.add(new Personnel("LI", "WEN-WEI"));
-
-        for (Personnel p : personnels) {
-            int heure = rand.nextInt(3);
-            int minute = rand.nextInt(60);
-            p.setHeurePassee(heure, minute);
-        }
-        return personnels;
+        //outState.putParcelableArrayList(PERSONNELS_PRESENTS, presences);
     }
 
 
@@ -358,7 +335,7 @@ public class Musculation extends AppCompatActivity {
      * Méthode calculant l'identifiant d'une carte étudiante
      *
      * @param bytes id de lecture de la carte converti en octet
-     * @return l'identifiant de la carte qui correspond au code hexadéciaml inversé.
+     * @return l'identifiant de la carte qui correspond au code hexadéciaml inversé. // TODO : voir si vraiment utile
      */
     private String toReversedHex(byte[] bytes) {
         StringBuilder sb = new StringBuilder();
@@ -412,25 +389,35 @@ public class Musculation extends AppCompatActivity {
          */
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            System.out.println("MIFARE=" + s);
-//            Toast.makeText(Musculation.this, "MIFARE:\n" + s, Toast.LENGTH_LONG).show();
-//            if () mp_son_approuver.start(); else mp_son_refuser.start();
 
-            if (demo) {
-                Toast.makeText(Musculation.this, "Vincent LE QUEC", Toast.LENGTH_LONG).show();
-                adaptermusculation.setPresenceDemo();
-                adaptermusculation.notifyDataSetChanged();
-                mp_son_approuver.start();
-                demo = !demo;
-            } else {
-                adaptermusculation.enlever(14);
-                demo = !demo;
+            boolean deja_present = false;
+
+            System.out.println("MIFARE=" + s);
+            Toast.makeText(Musculation.this, "MIFARE:\n" + s, Toast.LENGTH_LONG).show();
+
+            for (int i = 0 ; i < adaptermusculation.getItemCount(); i++){
+                AdapterMusculation.Personne p = adaptermusculation.getPersonne(i);
+                if(p.getMiFare().equals(s)) {
+                    adaptermusculation.enlever(i);
+                    deja_present = true;
+                }
             }
+
+            if (!deja_present) // s'il est pas deja présent
+                for (Etudiant e : liste_etudiant_inscrit){
+                    if(e.getNo_mifare().equals(s)) { //TODO a tester
+                        mp_son_approuver.start();
+                        adaptermusculation.addPersonne(e);
+                    }
+                    else
+                        mp_son_refuser.start();
+                }
+
+
 
         }
 
     }
-    //TODO: Demo
-    private static boolean demo = true;
+
 
 }

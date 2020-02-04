@@ -12,22 +12,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chavau.univ_angers.univemarge.R;
-import com.chavau.univ_angers.univemarge.intermediaire.Etudiant;
+import com.chavau.univ_angers.univemarge.database.entities.Etudiant;
 import com.chavau.univ_angers.univemarge.intermediaire.MusculationData;
-import com.chavau.univ_angers.univemarge.intermediaire.Personnel;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class AdapterMusculation extends RecyclerView.Adapter<AdapterMusculation.MonViewHolder> {
 
-    private ArrayList<Personnel> personnels = new ArrayList<>();
+    private ArrayList<Personne> personnels = new ArrayList<>();
     private Context context;
     private MusculationData musculationData;
+    private int id_evement;
 
-    public AdapterMusculation(Context context, ArrayList<Personnel> personnels, MusculationData musculationData) {
+    public AdapterMusculation(Context context, ArrayList<Personne> personnels, MusculationData musculationData, int event) {
         this.personnels = personnels;
         this.context = context;
         this.musculationData = musculationData;
+        this.id_evement = event;
     }
 
     static class MonViewHolder extends RecyclerView.ViewHolder {
@@ -99,9 +103,64 @@ public class AdapterMusculation extends RecyclerView.Adapter<AdapterMusculation.
         notifyItemRangeChanged(position,getItemCount()-position);
     }
 
-    // TODO: demo
-    public void setPresenceDemo() {
-        personnels.add(new Personnel("Le Quec", "Vincent"));
+    public Personne getPersonne(int pos){
+        return personnels.get(pos);
+    }
+
+    /**
+     * Ajout d'une personne
+     */
+    public void addPersonne(Etudiant e){
+        Personne pers = new Personne(e);
+        personnels.add(pers);
+        notifyDataSetChanged();
+    }
+
+    public ArrayList<Personne> getList(){return personnels;}
+
+    public class Personne { // TODO : prendre en compte aussi personnel et autre
+        Etudiant etudiant;
+        Date heure_entree;
+
+        public Personne (Etudiant etud){
+            etudiant = etud;
+            heure_entree = new Date(); // à l'enregistrement de la personne on initialise sa date d'arrivée
+        }
+
+        //getter
+        public String getNom(){return etudiant.getNom();}
+        public String getPrenom(){return etudiant.getPrenom();}
+        public String getMiFare(){return etudiant.getNo_mifare();}
+
+        public String getHeurePassee() {//TODO à tester
+            String getHeure = "HH";
+            String getMinute = "mm";
+
+            DateFormat df = new SimpleDateFormat(getHeure);
+            String heure = df.format(heure_entree);
+
+            df = new SimpleDateFormat(getMinute);
+            String minute = df.format(heure_entree);
+
+            return heure + " h " + minute;
+        }
+
+        public int getHeure(){//TODO à tester
+            String getHeure = "HH";
+            DateFormat df = new SimpleDateFormat(getHeure);
+            String heure = df.format(heure_entree);
+
+            return Integer.valueOf(heure);
+        }
+
+        public int getMinute(){//TODO à tester
+            String getMinute = "mm";
+            DateFormat df = new SimpleDateFormat(getMinute);
+            String minute = df.format(heure_entree);
+
+            return Integer.valueOf(minute);
+        }
+
     }
 
 }

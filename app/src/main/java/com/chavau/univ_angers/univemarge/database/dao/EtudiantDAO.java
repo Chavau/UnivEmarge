@@ -109,7 +109,7 @@ public class EtudiantDAO extends DAO<Etudiant> implements IMergeable {
      * @param id
      * @return ArrayList
      */
-    public ArrayList<Etudiant> listeEtudiantInscritCours(Identifiant id) {
+    public ArrayList<Etudiant> listeEtudiantInscritCours(int id) {
         SQLiteDatabase db = super.helper.getWritableDatabase();
 
         String requete ="SELECT " +
@@ -127,7 +127,7 @@ public class EtudiantDAO extends DAO<Etudiant> implements IMergeable {
                 " ON e." + DBTables.Evenement.COLONNE_ID_EVENEMENT + " = i." + DBTables.Inscription.COLONNE_ID_EVENEMENT +
                 " WHERE " + DBTables.Evenement.COLONNE_ID_COURS + " = ? " ;
 
-        Cursor cursor = db.rawQuery(requete, new String[]{String.valueOf(id.getId(DBTables.Evenement.COLONNE_ID_COURS))});
+        Cursor cursor = db.rawQuery(requete, new String[]{String.valueOf(id)});
 
         ArrayList<Etudiant> list = new ArrayList<>();
         while (cursor.moveToNext()) {
