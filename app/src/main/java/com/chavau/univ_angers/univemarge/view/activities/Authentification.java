@@ -82,14 +82,13 @@ public class Authentification extends AppCompatActivity implements Authentificat
             SharedPreferences preferences = getSharedPreferences(getResources().getString(R.string.PREFERENCE),0);
             SharedPreferences.Editor editor = preferences.edit();
 
-            login = "h.fior";
+            login = "h.fior"; // TODO : enlever pour les tests
 
-            // TODO récupérer l'identifiant du personnel pour les futurs appels
             PersonnelDAO dao = new PersonnelDAO(new DatabaseHelper(this));
-            //int identifiant_responsable = dao.getIdFromLogin(login.toLowerCase());
+            int identifiant_responsable = dao.getIdFromLogin(login.toLowerCase());
 
             editor.putString(getResources().getString(R.string.PREF_LOGIN),login.toLowerCase());
-            //editor.putInt(getResources().getString(R.string.Pref),identifiant_responsable);
+            editor.putInt(getResources().getString(R.string.PREF_IDENTIFIANT),identifiant_responsable);
 
             editor.commit();
 

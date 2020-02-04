@@ -115,7 +115,7 @@ public class BadgeageEtudiant extends AppCompatActivity {
         setTitle(_titreActivite);
         _recyclerview = findViewById(R.id.recyclerview_creation_seance);
 
-        int id_evenement = _intent.getIntExtra(AdapterEvenements.getNomAct(),0);
+        int id_evenement = _intent.getIntExtra(AdapterEvenements.getIdEvent(),0);
         EtudiantDAO dao = new EtudiantDAO(new DatabaseHelper(this));
         _etudiants =  dao.listeEtudiantInscrit(id_evenement);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
