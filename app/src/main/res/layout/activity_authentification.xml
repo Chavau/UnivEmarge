@@ -32,6 +32,6 @@
         android:id="@+id/b_connexion_valider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/b_valider"
-        android:onClick="onClickValider"/>
+        android:onClick="onClickValider"
+        android:text="@string/b_valider" />
 </LinearLayout>

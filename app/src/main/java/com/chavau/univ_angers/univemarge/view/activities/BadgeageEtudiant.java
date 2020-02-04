@@ -31,7 +31,9 @@ import android.widget.TextView;
 
 import android.widget.Toast;
 import com.chavau.univ_angers.univemarge.R;
-import com.chavau.univ_angers.univemarge.intermediaire.Etudiant;
+import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
+import com.chavau.univ_angers.univemarge.database.dao.EtudiantDAO;
+import com.chavau.univ_angers.univemarge.database.entities.Etudiant;
 import com.chavau.univ_angers.univemarge.view.adapters.AdapterEvenements;
 import com.chavau.univ_angers.univemarge.view.adapters.AdapterPersonneInscrite;
 
@@ -88,7 +90,7 @@ public class BadgeageEtudiant extends AppCompatActivity {
                 if (code_pin_saisi.matches(codePin)) {
                     Intent intent = new Intent(getApplicationContext(), BadgeageEnseignant.class);
                     intent.putExtra(AdapterEvenements.getNomAct(), _titreActivite);
-                    intent.putParcelableArrayListExtra(AdapterEvenements.getListeEtud(), _etudiants);
+                    //intent.putParcelableArrayListExtra(AdapterEvenements.getListeEtud(), _etudiants); // TODO : a voir
                     startActivityForResult(intent, 1);
                     dialog.dismiss();
                 } else {
@@ -112,7 +114,10 @@ public class BadgeageEtudiant extends AppCompatActivity {
         _titreActivite = _intent.getStringExtra(AdapterEvenements.getNomAct());
         setTitle(_titreActivite);
         _recyclerview = findViewById(R.id.recyclerview_creation_seance);
-        _etudiants = _intent.getParcelableArrayListExtra(AdapterEvenements.getListeEtud());
+
+        int id_evenement = _intent.getIntExtra(AdapterEvenements.getNomAct(),0);
+        EtudiantDAO dao = new EtudiantDAO(new DatabaseHelper(this));
+        _etudiants =  dao.listeEtudiantInscrit(id_evenement);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // RFID
@@ -179,7 +184,7 @@ public class BadgeageEtudiant extends AppCompatActivity {
                 else {
                     Intent intent = new Intent(getApplicationContext(), BadgeageEnseignant.class);
                     intent.putExtra(AdapterEvenements.getNomAct(), _titreActivite);
-                    intent.putParcelableArrayListExtra(AdapterEvenements.getListeEtud(), _etudiants);
+                    //intent.putParcelableArrayListExtra(AdapterEvenements.getListeEtud(), _etudiants); // TODO
                     startActivityForResult(intent, 1);
                 }
                 break;
@@ -193,7 +198,7 @@ public class BadgeageEtudiant extends AppCompatActivity {
 
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
-                _etudiants = data.getParcelableArrayListExtra(AdapterEvenements.getListeEtud());
+                //_etudiants = data.getParcelableArrayListExtra(AdapterEvenements.getListeEtud()); // TODO
             }
             if (resultCode == RESULT_CANCELED) {
 
@@ -361,7 +366,7 @@ public class BadgeageEtudiant extends AppCompatActivity {
 
             //TODO: Demo
             Toast.makeText(BadgeageEtudiant.this, "Vincent Le Quec", Toast.LENGTH_LONG).show();
-            _api.setPresence(1, Etudiant.STATUE_ETUDIANT.PRESENT);
+            //_api.setPresence(1, Etudiant.STATUE_ETUDIANT.PRESENT);
             _api.notifyDataSetChanged();
             mp_son_approuver.start();
         }

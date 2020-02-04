@@ -21,8 +21,14 @@ public class SyncElement {
     public void merge(String jsonResponse) throws IOException {
         // parse response with Jackson
         ObjectMapper mapper = new ObjectMapper();
-        Entity[] objects = mapper.readValue(jsonResponse, entityClass);
-        iMergeable.merge(objects);
+        try{
+            Entity[] objects = mapper.readValue(jsonResponse, entityClass);
+            iMergeable.merge(objects);
+        }catch(Exception e){
+            Entity[] objects = mapper.readValue("["+jsonResponse+"]", entityClass);
+            iMergeable.merge(objects);
+        }
+
     }
 
     public String getLink() {
