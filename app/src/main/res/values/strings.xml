@@ -23,6 +23,11 @@
     <string name="PREF_IDENTIFIANT">identifiant_personel</string>
     <string name="PREF_DATE_MAJ">date_maj</string>
 
+    <!-- PREFERENCES Clès-->
+    <string name="Synchronisation_cle">sync_pref</string>
+    <string name="Notification_cle">notif_pref</string>
+    <string name="Code_pin_activation_cle">pin_activation_pref</string>
+    <string name="Code_Pin_EditText_cle">pin_editetxt_pref</string>
 
     <!-- Connexion -->
     <string name="message_connexion">Bienvenue sur UnivEmarge, pour vous authentifier il faut utiliser les identifiants de l\'Université d\'Angers</string>

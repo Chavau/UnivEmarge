@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.chavau.univ_angers.univemarge.R;
 import com.chavau.univ_angers.univemarge.database.entities.Etudiant;
 import com.chavau.univ_angers.univemarge.intermediaire.MusculationData;
+import com.chavau.univ_angers.univemarge.intermediaire.Personnel;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -22,12 +23,12 @@ import java.util.Date;
 
 public class AdapterMusculation extends RecyclerView.Adapter<AdapterMusculation.MonViewHolder> {
 
-    private ArrayList<Personne> personnels = new ArrayList<>();
+    private ArrayList<Personnel> personnels = new ArrayList<>();
     private Context context;
     private MusculationData musculationData;
     private int id_evement;
 
-    public AdapterMusculation(Context context, ArrayList<Personne> personnels, MusculationData musculationData, int event) {
+    public AdapterMusculation(Context context, ArrayList<Personnel> personnels, MusculationData musculationData, int event) { // TODO : remettre Personne de l'adapter
         this.personnels = personnels;
         this.context = context;
         this.musculationData = musculationData;
@@ -103,20 +104,20 @@ public class AdapterMusculation extends RecyclerView.Adapter<AdapterMusculation.
         notifyItemRangeChanged(position,getItemCount()-position);
     }
 
-    public Personne getPersonne(int pos){
+    public Personnel getPersonne(int pos){
         return personnels.get(pos);
     }
 
     /**
      * Ajout d'une personne
-     */
+     *//*
     public void addPersonne(Etudiant e){
         Personne pers = new Personne(e);
         personnels.add(pers);
         notifyDataSetChanged();
     }
-
-    public ArrayList<Personne> getList(){return personnels;}
+*/
+    public ArrayList<Personnel> getList(){return personnels;}
 
     public class Personne { // TODO : prendre en compte aussi personnel et autre
         Etudiant etudiant;
@@ -162,5 +163,10 @@ public class AdapterMusculation extends RecyclerView.Adapter<AdapterMusculation.
         }
 
     }
+    // TODO: demo
+    public void setPresenceDemo() {
+        personnels.add(new Personnel("Le Quec", "Vincent"));
+    }
+
 
 }
