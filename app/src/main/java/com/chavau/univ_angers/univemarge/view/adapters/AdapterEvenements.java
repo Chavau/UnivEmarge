@@ -26,6 +26,7 @@ public class AdapterEvenements extends RecyclerView.Adapter<AdapterEvenements.Vi
     private Context _context; //pouvoir utiliser des layouts plus tard
 
     private static String nomAct = "NOM_ACTIVITE";
+    private static String idEvent = "idEvent";
     private final static String listeEtud = "LISTE_ETUDIANT";
 
     public AdapterEvenements(Context context, ArrayList<Evenement> cours) {
@@ -86,7 +87,7 @@ public class AdapterEvenements extends RecyclerView.Adapter<AdapterEvenements.Vi
                     // Préparation des données à envoyer au deuxième activité
                     Intent intent = new Intent(_context, BadgeageEtudiant.class);
                     intent.putExtra(AdapterEvenements.getNomAct(),((TextView) cardview.findViewById(R.id.tv_intituleCours)).getText().toString());
-                    intent.putExtra(nomAct,cours.getIdEvenement());
+                    intent.putExtra(getIdEvent(),cours.getIdEvenement());
 
                     // Envoie la liste des étudiant(e)s inscrit(e)s dans l'activité
                     //intent.putParcelableArrayListExtra(AdapterEvenements.getListeEtud(),cours.get_listeEtudiantInscrit()); // TODO : récupérer la liste via la bdd
@@ -96,6 +97,7 @@ public class AdapterEvenements extends RecyclerView.Adapter<AdapterEvenements.Vi
                 }
                 else {
                     Intent intent = new Intent(_context, Musculation.class);
+                    intent.putExtra(nomAct,cours.getIdEvenement());
                     _context.startActivity(intent);
                 }
 
@@ -116,6 +118,9 @@ public class AdapterEvenements extends RecyclerView.Adapter<AdapterEvenements.Vi
 
     public static String getNomAct() {
         return nomAct;
+    }
+    public static String getIdEvent() {
+        return idEvent;
     }
 
     public static String getListeEtud() {

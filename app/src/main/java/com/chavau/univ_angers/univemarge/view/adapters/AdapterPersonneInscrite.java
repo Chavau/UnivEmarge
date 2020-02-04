@@ -100,7 +100,7 @@ public class AdapterPersonneInscrite extends RecyclerView.Adapter<AdapterPersonn
 
 
         // Affectation de l'Id image de l'étudiant(e) inscrit(e) à l'activité
-        iv_pict.setImageResource(0);
+        iv_pict.setImageResource(R.drawable.man);
 
         // Affectation du nom de l'étudiant(e) inscrit(e) à l'activité
         tv_nom.setText(_etudIns.get(i).getNom());
@@ -109,7 +109,7 @@ public class AdapterPersonneInscrite extends RecyclerView.Adapter<AdapterPersonn
         tv_prenom.setText(_etudIns.get(i).getPrenom());
 
         // Affectation du numéro de l'étudiant(e) inscrit(e) à l'activité
-        //tv_numetu.setText(_etudIns.get(i).getNumeroEtudiant());
+        tv_numetu.setText(Integer.toString(_etudIns.get(i).getNumeroEtudiant()));
 
         // Affectation du type d'activité de l'étudiant(e) inscrit(e) à l'activité
         //tv_typeact.setText(_etudIns.get(i).get_typeActivite());

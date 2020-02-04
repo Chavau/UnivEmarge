@@ -7,9 +7,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.chavau.univ_angers.univemarge.R;
+import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
+import com.chavau.univ_angers.univemarge.database.dao.EtudiantDAO;
+import com.chavau.univ_angers.univemarge.database.entities.Etudiant;
 import com.chavau.univ_angers.univemarge.view.adapters.AdapterEvenements;
 import com.chavau.univ_angers.univemarge.view.adapters.AdapterPersonneInscrite;
-import com.chavau.univ_angers.univemarge.intermediaire.Etudiant;
 
 import java.util.ArrayList;
 
@@ -28,14 +30,20 @@ public class BadgeageEnseignant extends AppCompatActivity {
         _intent = getIntent();
 
         _titreActivite = _intent.getStringExtra(AdapterEvenements.getNomAct());
+        int id_evenement = _intent.getIntExtra(AdapterEvenements.getIdEvent(),0);
 
         setTitle(_titreActivite);
 
         _recyclerview = findViewById(R.id.recyclerview_modification_seance);
 
-        _etudiants = _intent.getParcelableArrayListExtra(AdapterEvenements.getListeEtud());
+        //_etudiants = _intent.getParcelableArrayListExtra(AdapterEvenements.getListeEtud());
 
-        //_api = new AdapterPersonneInscrite(this, _etudiants, AdapterPersonneInscrite.VueChoix.MS);
+
+        EtudiantDAO dao = new EtudiantDAO(new DatabaseHelper(this));
+        _etudiants =  dao.listeEtudiantInscrit(id_evenement);
+
+        // TODO : ca marche pas
+        _api = new AdapterPersonneInscrite(this, _etudiants, AdapterPersonneInscrite.VueChoix.MS);
 
         _recyclerview.setLayoutManager(new LinearLayoutManager(this));
         _recyclerview.setAdapter(_api);

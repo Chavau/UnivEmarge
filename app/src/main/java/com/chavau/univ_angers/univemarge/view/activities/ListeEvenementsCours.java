@@ -157,7 +157,7 @@ public class ListeEvenementsCours extends AppCompatActivity {
                 _datepickerdialog = new DatePickerDialog(this, (datePicker, annee, mois, jour) -> {
                     mois++; // le mois selectionné correspond à mois+1
 
-                    String date = (jour) + "/" + ((mois < 10) ? "0" + (mois) : String.valueOf(mois)) + "/" + (annee);
+                    String date = ((jour < 10) ? "0" + (jour) : jour) + "/" + ((mois < 10) ? "0" + (mois) : String.valueOf(mois)) + "/" + (annee);
                     ArrayList<Evenement> cours = new ArrayList<>();
 
                     for (Evenement c : _cours) {

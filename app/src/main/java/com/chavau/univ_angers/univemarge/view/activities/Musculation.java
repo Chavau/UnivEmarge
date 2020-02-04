@@ -30,12 +30,17 @@ import android.widget.Toast;
 import com.chavau.univ_angers.univemarge.MainActivity;
 import android.widget.Toast;
 import com.chavau.univ_angers.univemarge.R;
+import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
+import com.chavau.univ_angers.univemarge.database.dao.EtudiantDAO;
 import com.chavau.univ_angers.univemarge.intermediaire.Etudiant;
+import com.chavau.univ_angers.univemarge.intermediaire.Personnel;
+import com.chavau.univ_angers.univemarge.view.adapters.AdapterEvenements;
 import com.chavau.univ_angers.univemarge.view.adapters.AdapterMusculation;
 import com.chavau.univ_angers.univemarge.view.adapters.AdapterViewPager;
 import com.chavau.univ_angers.univemarge.intermediaire.MusculationData;
-import com.chavau.univ_angers.univemarge.intermediaire.Personnel;
 import com.chavau.univ_angers.univemarge.view.fragment.Configuration_dialog;
+import com.fasterxml.jackson.core.io.DataOutputAsStream;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -48,6 +53,10 @@ public class Musculation extends AppCompatActivity {
     private MusculationData mdata;
     private ArrayList<Personnel> presences = new ArrayList<>();
     private TabLayout tabLayout;
+
+    ArrayList<Etudiant> liste_etudiant_inscrit = new ArrayList<>();
+
+    private EtudiantDAO etuDAO;
 
     /**
      * Capacité d'accueil du cours.
@@ -105,20 +114,16 @@ public class Musculation extends AppCompatActivity {
         viewpager = findViewById(R.id.viewpager);
         recyclerview = findViewById(R.id.recyclerview_musculation);
 
-        // Recuperation de pesences si y'a une sauvegarde
+        // Recuperation de presences si y'a une sauvegarde
 
+        /*etuDAO = new EtudiantDAO(new DatabaseHelper(this));
+
+        liste_etudiant_inscrit = etuDAO.listeEtudiantInscritCours(getIntent().getIntExtra(AdapterEvenements.getNomAct(),0));*/
         presences = creerPers();
-
-        if (savedInstanceState != null) {
-            presences = savedInstanceState.getParcelableArrayList(PERSONNELS_PRESENTS);
-        }
 
         // Affectation du nombre de presents dans la salle
         mdata = creerMuscuData(presences.size());
-        adaptermusculation = new AdapterMusculation(this, presences, mdata);
-
-
-        adaptermusculation = new AdapterMusculation(this, presences, mdata);
+        adaptermusculation = new AdapterMusculation(this, presences, mdata,getIntent().getIntExtra(AdapterEvenements.getNomAct(),0));
 
         ItemTouchHelper.SimpleCallback ihscb = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
@@ -244,12 +249,6 @@ public class Musculation extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(PERSONNELS_PRESENTS, presences);
-    }
-
     public ArrayList<Personnel> creerPers() {
         ArrayList<Personnel> personnels = new ArrayList<>();
         Random rand = new Random();
@@ -274,6 +273,12 @@ public class Musculation extends AppCompatActivity {
             p.setHeurePassee(heure, minute);
         }
         return personnels;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //outState.putParcelableArrayList(PERSONNELS_PRESENTS, presences);
     }
 
 
@@ -358,7 +363,7 @@ public class Musculation extends AppCompatActivity {
      * Méthode calculant l'identifiant d'une carte étudiante
      *
      * @param bytes id de lecture de la carte converti en octet
-     * @return l'identifiant de la carte qui correspond au code hexadéciaml inversé.
+     * @return l'identifiant de la carte qui correspond au code hexadéciaml inversé. // TODO : voir si vraiment utile
      */
     private String toReversedHex(byte[] bytes) {
         StringBuilder sb = new StringBuilder();
@@ -410,6 +415,38 @@ public class Musculation extends AppCompatActivity {
          *
          * @param s : contient le numéro de la carte de l'étudiant ayant badgé.
          */
+        /*
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            boolean deja_present = false;
+
+            System.out.println("MIFARE=" + s);
+            Toast.makeText(Musculation.this, "MIFARE:\n" + s, Toast.LENGTH_LONG).show();
+
+            for (int i = 0 ; i < adaptermusculation.getItemCount(); i++){
+                AdapterMusculation.Personne p = adaptermusculation.getPersonne(i);
+                if(p.getMiFare().equals(s)) {
+                    adaptermusculation.enlever(i);
+                    deja_present = true;
+                }
+            }
+
+            if (!deja_present) // s'il est pas deja présent
+                for (Etudiant e : liste_etudiant_inscrit){
+                    if(e.getNo_mifare().equals(s)) { //TODO a tester
+                        mp_son_approuver.start();
+                        adaptermusculation.addPersonne(e);
+                    }
+                    else
+                        mp_son_refuser.start();
+                }
+
+
+
+        }
+        */
+
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             System.out.println("MIFARE=" + s);
@@ -433,4 +470,7 @@ public class Musculation extends AppCompatActivity {
     //TODO: Demo
     private static boolean demo = true;
 
+
 }
+
+
