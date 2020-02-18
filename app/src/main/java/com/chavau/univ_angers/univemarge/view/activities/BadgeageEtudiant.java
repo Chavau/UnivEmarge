@@ -20,6 +20,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -30,6 +31,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import android.widget.Toast;
+
 import com.chavau.univ_angers.univemarge.R;
 import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
 import com.chavau.univ_angers.univemarge.database.dao.EtudiantDAO;
@@ -46,7 +48,7 @@ import java.util.ArrayList;
  */
 public class BadgeageEtudiant extends AppCompatActivity {
 
-    AdapterPersonneInscrite _api;
+    AdapterPersonneInscrite madapterPersonneInscrite;
     private RecyclerView _recyclerview;
     private Intent _intent;
     private String _titreActivite;
@@ -69,7 +71,7 @@ public class BadgeageEtudiant extends AppCompatActivity {
 
 
     public void alertDialogCodePin(final View view) {
-        String codePin = preferences.getString("key_old_pin", "");
+        String codePin = preferences.getString(getResources().getString(R.string.Code_Pin), "");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Code Pin");
         builder.setView(view);
@@ -88,10 +90,7 @@ public class BadgeageEtudiant extends AppCompatActivity {
                 String code_pin_saisi = _text_code_pin.getText().toString();
                 String msg = "Erreur";
                 if (code_pin_saisi.matches(codePin)) {
-                    Intent intent = new Intent(getApplicationContext(), BadgeageEnseignant.class);
-                    intent.putExtra(AdapterEvenements.getNomAct(), _titreActivite);
-                    //intent.putParcelableArrayListExtra(AdapterEvenements.getListeEtud(), _etudiants); // TODO : a voir
-                    startActivityForResult(intent, 1);
+                    switchmodeEnseignant(true);
                     dialog.dismiss();
                 } else {
                     TextView tv = view.findViewById(R.id.errorCodePin);
@@ -104,6 +103,7 @@ public class BadgeageEtudiant extends AppCompatActivity {
         });
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,9 +115,9 @@ public class BadgeageEtudiant extends AppCompatActivity {
         setTitle(_titreActivite);
         _recyclerview = findViewById(R.id.recyclerview_creation_seance);
 
-        int id_evenement = _intent.getIntExtra(AdapterEvenements.getIdEvent(),0);
+        int id_evenement = _intent.getIntExtra(AdapterEvenements.getIdEvent(), 0);
         EtudiantDAO dao = new EtudiantDAO(new DatabaseHelper(this));
-        _etudiants =  dao.listeEtudiantInscrit(id_evenement);
+        _etudiants = dao.listeEtudiantInscrit(id_evenement);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // RFID
@@ -175,25 +175,58 @@ public class BadgeageEtudiant extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.menu_code_pin:
-                Boolean etatSwitch = preferences.getBoolean("key_pin", false);
-                if(etatSwitch) {
+            case R.id.menu_mode_enseignant:
+                Boolean etatSwitch = preferences.getBoolean(getResources().getString(R.string.Is_pin_activated), false);
+                if (etatSwitch) {
                     View v = LayoutInflater.from(this).inflate(R.layout.dialog_pin, null);
                     alertDialogCodePin(v);
+                } else {
+                    switchmodeEnseignant(true);
                 }
-                else {
-                    Intent intent = new Intent(getApplicationContext(), BadgeageEnseignant.class);
-                    intent.putExtra(AdapterEvenements.getNomAct(), _titreActivite);
-                    //intent.putParcelableArrayListExtra(AdapterEvenements.getListeEtud(), _etudiants); // TODO
-                    startActivityForResult(intent, 1);
-                }
+                break;
+
+            case R.id.menu_mode_etudiant:
+                switchmodeEnseignant(false);
                 break;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    private void switchmodeEnseignant(boolean isModeEnseignant) {
+
+        ActionMenuItemView menu_lock = (ActionMenuItemView) findViewById(R.id.menu_mode_enseignant);
+        ActionMenuItemView menu_unlock = (ActionMenuItemView) findViewById(R.id.menu_mode_etudiant);
+
+        if (isModeEnseignant) {
+            madapterPersonneInscrite.set_isModeEnseignant(true);
+            menu_lock.setVisibility(View.GONE);
+            if (menu_unlock != null) // TODO : voir pourquoi il est null au début (affichage actuel non correct)
+                menu_unlock.setVisibility(View.VISIBLE);
+
+        } else {
+            madapterPersonneInscrite.set_isModeEnseignant(false);
+            menu_lock.setVisibility(View.VISIBLE);
+            menu_unlock.setVisibility(View.GONE);
+        }
+
+    }
+
     @Override
+    public void onBackPressed() {
+        // si mode enseignant acitvé alors juste sortir
+        // si mode etudiant activé alors demander le pin si pin activé
+        if (!madapterPersonneInscrite.get_isModeEnseignant()) { // si il n'y a pas le mode enseignant
+            Boolean isPinActif = preferences.getBoolean(getResources().getString(R.string.Is_pin_activated), false);
+            if (isPinActif) { // si le code pin est activé
+                View v = LayoutInflater.from(this).inflate(R.layout.dialog_pin, null);
+                alertDialogCodePin(v);
+            }
+        }
+        super.onBackPressed();
+    }
+
+    /*@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == 1) {
@@ -204,7 +237,7 @@ public class BadgeageEtudiant extends AppCompatActivity {
 
             }
         }
-    }
+    }*/
 
     /**
      * Méthode permettant de mettre en place la reception d'une lecture NFC
@@ -214,17 +247,19 @@ public class BadgeageEtudiant extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        _api = new AdapterPersonneInscrite(this, _etudiants, AdapterPersonneInscrite.VueChoix.NS);
+        // TODO : dev : pourquoi onResume ?
+        madapterPersonneInscrite = new AdapterPersonneInscrite(this, _etudiants);
 
         _recyclerview.setLayoutManager(new LinearLayoutManager(this));
-        _recyclerview.setAdapter(_api);
+        _recyclerview.setAdapter(madapterPersonneInscrite);
 
-        _api.set_listener(position -> {
-            //TODO : utilité de ces lignes ? met en vert lors d'un click lors du badgeage
-            //_api.setPresence(position, Etudiant.STATUE_ETUDIANT.PRESENT);
-            //_api.notifyDataSetChanged();
+        //TODO : utilité de ces lignes ? met en vert lors d'un click lors du badgeage
+       /* madapterPersonneInscrite.set_listener(position -> {
+
+            //madapterPersonneInscrite.setPresence(position, Etudiant.STATUE_ETUDIANT.PRESENT);
+            //madapterPersonneInscrite.notifyDataSetChanged();
         });
-
+*/
         // RFID
         Intent intent = new Intent(this, BadgeageEtudiant.class);
         intent.addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
@@ -304,6 +339,7 @@ public class BadgeageEtudiant extends AppCompatActivity {
 
     /**
      * Méthode calculant l'identifiant d'une carte étudiante
+     * TODO : dev : voir si plus simple comme sur l'ancienne appli pour récuperer le code mi_fare
      *
      * @param bytes id de lecture de la carte converti en octet
      * @return l'identifiant de la carte qui correspond au code hexadéciaml inversé.
@@ -361,13 +397,11 @@ public class BadgeageEtudiant extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             System.out.println("MIFARE=" + s);
-//            Toast.makeText(BadgeageEtudiant.this, "MIFARE:\n" + s, Toast.LENGTH_LONG).show();
 //            if () mp_son_approuver.start(); else mp_son_refuser.start();
 
-            //TODO: Demo
-            Toast.makeText(BadgeageEtudiant.this, "Vincent Le Quec", Toast.LENGTH_LONG).show();
-            //_api.setPresence(1, Etudiant.STATUE_ETUDIANT.PRESENT);
-            _api.notifyDataSetChanged();
+            // TODO : affichage photo (ou au moins nom prénom de la personne)
+            //madapterPersonneInscrite.setPresence(1, Etudiant.STATUE_ETUDIANT.PRESENT);
+            madapterPersonneInscrite.notifyDataSetChanged();
             mp_son_approuver.start();
         }
     }

@@ -72,6 +72,7 @@ public class Utils {
         }
     }
 
+    // TODO : utile ?
     public static String convertDateToStringHour(Date date) {
         DateFormat df = new SimpleDateFormat("HH:mm");
         return df.format(date);
@@ -83,6 +84,7 @@ public class Utils {
      */
     public static boolean isConnectedInternet(Activity activity)
     {
+        // TODO : dev : ne fonctionne pas a priori
         ConnectivityManager connectivityManager = (ConnectivityManager)activity.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         if (networkInfo != null)
@@ -97,4 +99,22 @@ public class Utils {
         else return false;
     }
 
+    /**
+     * test des carte en réassignant les numero mifare TODO : à supprimer
+     * @param no_mifare
+     * @return
+     */
+    public String testCarte (String no_mifare) {
+        switch (no_mifare) {
+            case "04702752734380" : // carte 1
+                 break;
+            case "04842752734380" : // carte 2
+                break;
+            case "04672752734380" : // carte 3
+                break;
+
+            default: return no_mifare;
+        }
+        return"";
+    }
 }

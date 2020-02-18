@@ -15,7 +15,8 @@ import com.chavau.univ_angers.univemarge.view.adapters.AdapterPersonneInscrite;
 
 import java.util.ArrayList;
 
-public class BadgeageEnseignant extends AppCompatActivity {
+// TODO : à supprimer normalement
+/*public class BadgeageEnseignant extends AppCompatActivity {
     private RecyclerView _recyclerview;
     private Intent _intent;
     private String _titreActivite;
@@ -52,8 +53,8 @@ public class BadgeageEnseignant extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent returnIntent = new Intent();
-        //returnIntent.putParcelableArrayListExtra(AdapterEvenements.getListeEtud(),_api.get_etudIns());
+        //returnIntent.putParcelableArrayListExtra(AdapterEvenements.getListeEtud(),madapterPersonneInscrite.get_etudIns());
         setResult(RESULT_OK,returnIntent);
         finish();
     }
-}
+}*/

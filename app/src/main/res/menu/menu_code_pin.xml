@@ -7,12 +7,18 @@
         android:title="@string/cr_er_une_s_ance"
         android:icon="@drawable/add"
         android:elevation="10dp"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/menu_code_pin"
+        android:id="@+id/menu_mode_enseignant"
         android:title="@string/code_pin"
         android:icon="@drawable/lock"
         android:elevation="10dp"
         app:showAsAction="always"/>
+    <item
+        android:id="@+id/menu_mode_etudiant"
+        android:elevation="10dp"
+        android:icon="@android:drawable/ic_partial_secure"
+        android:title="@string/menu_mode_etudiant"
+        app:showAsAction="always" />
 </menu>

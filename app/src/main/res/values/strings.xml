@@ -15,6 +15,8 @@
     <string name="menu_synchronisation">Synchronisation</string>
     <string name="menu_option">Option</string>
     <string name="menu_deconnexion">Déconnexion</string>
+    <string name="menu_personne">⋮</string>
+    <string name="menu_mode_etudiant">menu_mode_etudiant</string>
 
 
     <!-- PREFERENCES-->
@@ -23,11 +25,11 @@
     <string name="PREF_IDENTIFIANT">identifiant_personel</string>
     <string name="PREF_DATE_MAJ">date_maj</string>
 
-    <!-- PREFERENCES Clès-->
+    <!-- PREFERENCES Clés-->
     <string name="Synchronisation_cle">sync_pref</string>
     <string name="Notification_cle">notif_pref</string>
-    <string name="Code_pin_activation_cle">pin_activation_pref</string>
-    <string name="Code_Pin_EditText_cle">pin_editetxt_pref</string>
+    <string name="Is_pin_activated">is_pin_activated</string>
+    <string name="Code_Pin">code_pin</string>
 
     <!-- Connexion -->
     <string name="message_connexion">Bienvenue sur UnivEmarge, pour vous authentifier il faut utiliser les identifiants de l\'Université d\'Angers</string>
@@ -56,4 +58,5 @@
     <!-- Lecture RFID -->
     <string name="TextView_RFIDActivity">Veuillez badger</string>
     <string name="image_carte_etudiant">Image d\'une carte d\'étudiant de l\'université d\'Angers.</string>
+
 </resources>

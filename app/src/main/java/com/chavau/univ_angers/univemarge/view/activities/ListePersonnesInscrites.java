@@ -18,7 +18,7 @@ public class ListePersonnesInscrites extends AppCompatActivity {
     private Intent _intent;
     private String _titreActivite;
     private ArrayList<Etudiant> _etudiants;
-    private AdapterPersonneInscrite _api;
+    private AdapterPersonneInscrite madapterPersonneInscrite;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,10 +35,10 @@ public class ListePersonnesInscrites extends AppCompatActivity {
         _etudiants = _intent.getParcelableArrayListExtra(AdapterEvenements.getListeEtud());
 
         // Affecter la liste des étudiant(e)s inscrit(e)s
-       //_api = new AdapterPersonneInscrite(this, _etudiants, AdapterPersonneInscrite.VueChoix.PI);
+       //madapterPersonneInscrite = new AdapterPersonneInscrite(this, _etudiants, AdapterPersonneInscrite.VueChoix.PI);
 
         _recyclerview.setLayoutManager(new LinearLayoutManager(this));
-        _recyclerview.setAdapter(_api);
+        _recyclerview.setAdapter(madapterPersonneInscrite);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

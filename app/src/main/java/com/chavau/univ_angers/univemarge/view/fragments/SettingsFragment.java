@@ -27,8 +27,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
     public void init_preferences() {
         Preference pref_sync = findPreference(getString(R.string.Synchronisation_cle));
         Preference pref_notif = findPreference(getString(R.string.Notification_cle));
-        Preference pref_pin_active = findPreference(getString(R.string.Code_pin_activation_cle));
-        Preference pref_pin_text = findPreference(getString(R.string.Code_Pin_EditText_cle));
+        Preference pref_pin_active = findPreference(getString(R.string.Is_pin_activated));
+        Preference pref_pin_text = findPreference(getString(R.string.Code_Pin));
         //Enregistrement des preferences dans le listener du change
         pref_sync.setOnPreferenceChangeListener(this);
         pref_notif.setOnPreferenceChangeListener(this);
@@ -51,13 +51,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
             }
         } else if (preference.getKey().equals(getString(R.string.Notification_cle))) {
             return true;
-        } else if (preference.getKey().equals(getString(R.string.Code_pin_activation_cle))) {
+        } else if (preference.getKey().equals(getString(R.string.Is_pin_activated))) {
             if (((Boolean) object)) {
                 callback.setVisibilityComponents(true);
             } else {
                 callback.setVisibilityComponents(false);
             }
-        } else if (preference.getKey().equals(getString(R.string.Code_Pin_EditText_cle))) {
+        } else if (preference.getKey().equals(getString(R.string.Code_Pin))) {
             //FIXME return false or true
         } else {
             return false;
@@ -79,13 +79,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
      * @param newPassword
      */
     public void changePassword(String newPassword) {
-        EditTextPreference et_pin = (EditTextPreference) findPreference(getString(R.string.Code_Pin_EditText_cle));
+        EditTextPreference et_pin = (EditTextPreference) findPreference(getString(R.string.Code_Pin));
         System.out.println(("L'ancien code pin: " + et_pin.getText() + " Le nouveau code pin: " + newPassword));
         et_pin.setText(newPassword);
     }
 
     /**
-     * L'interface qui va servir de faire la communication du fragment a son activité associé
+     * L'interface qui va servir à faire la communication du fragment avec son activité associée
      */
     public interface ComponentsActivityListener {
         void setVisibilityComponents(boolean isVisible);
