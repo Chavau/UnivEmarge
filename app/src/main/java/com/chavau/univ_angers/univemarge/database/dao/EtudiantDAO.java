@@ -159,7 +159,7 @@ public class EtudiantDAO extends DAO<Etudiant> implements IMergeable {
                 " ON e." + DBTables.Etudiant.COLONNE_ID_ETUDIANT + " = i." + DBTables.Inscription.COLONNE_NUMERO_ETUDIANT +
                 " WHERE " + DBTables.Inscription.COLONNE_ID_EVENEMENT + " = ? " ;
 
-        //requete = "select * from etudiant";
+        //requete = "select * from etudiant"; // TODO : à enlever
         Cursor cursor = db.rawQuery(requete, new String[]{String.valueOf(id)});
         //Cursor cursor = db.rawQuery(requete, new String[]{});
 

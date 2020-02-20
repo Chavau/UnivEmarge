@@ -147,24 +147,27 @@ public class PersonnelDAO extends DAO<Personnel> implements IMergeable {
      * @param id
      * @return
      */
-    public ArrayList<Personnel> listePersonnelInscrit(Identifiant id) {
+    public ArrayList<Personnel> listePersonnelInscrit(int id) {
         SQLiteDatabase db = super.helper.getWritableDatabase();
-        Cursor cursor = db.rawQuery(
-                "SELECT " +
-                        " p." + DBTables.Personnel.COLONNE_ID_PERSONNEL + ", " +
-                        " p." + DBTables.Personnel.COLONNE_NOM + ", " +
-                        " p." + DBTables.Personnel.COLONNE_PRENOM + ", " +
-                        " p." + DBTables.Personnel.COLONNE_LOGIN + ", " +
-                        " p." + DBTables.Personnel.COLONNE_EMAIL + ", " +
-                        " p." + DBTables.Personnel.COLONNE_PHOTO + ", " +
-                        " p." + DBTables.Personnel.COLONNE_NO_MIFARE + ", " +
-                        " p." + DBTables.Personnel.COLONNE_PIN + ", " +
-                        " p." + DBTables.Personnel.COLONNE_DELETED +
-                        " FROM " + DBTables.Personnel.TABLE_NAME + " p " +
-                        " INNER JOIN " + DBTables.Inscription.TABLE_NAME + " i " +
-                        " ON p." + DBTables.Personnel.COLONNE_ID_PERSONNEL + " = i." + DBTables.Inscription.COLONNE_ID_PERSONNEL +
-                        " WHERE " + DBTables.Personnel.COLONNE_ID_PERSONNEL + " = ? ",
-                new String[]{String.valueOf(id.getId(DBTables.Inscription.COLONNE_ID_PERSONNEL))});
+
+        String requete = "SELECT " +
+                " p." + DBTables.Personnel.COLONNE_ID_PERSONNEL + ", " +
+                " p." + DBTables.Personnel.COLONNE_NOM + ", " +
+                " p." + DBTables.Personnel.COLONNE_PRENOM + ", " +
+                " p." + DBTables.Personnel.COLONNE_LOGIN + ", " +
+                " p." + DBTables.Personnel.COLONNE_EMAIL + ", " +
+                " p." + DBTables.Personnel.COLONNE_PHOTO + ", " +
+                " p." + DBTables.Personnel.COLONNE_NO_MIFARE + ", " +
+                " p." + DBTables.Personnel.COLONNE_PIN + ", " +
+                " p." + DBTables.Personnel.COLONNE_DELETED +
+                " FROM " + DBTables.Personnel.TABLE_NAME + " p " +
+                " INNER JOIN " + DBTables.Inscription.TABLE_NAME + " i " +
+                " ON p." + DBTables.Personnel.COLONNE_ID_PERSONNEL + " = i." + DBTables.Inscription.COLONNE_ID_PERSONNEL +
+                " WHERE " + DBTables.Inscription.COLONNE_ID_EVENEMENT  + " = ? ";
+
+        //requete = "SELECT * FROM PERSONNEL";
+        //Cursor cursor = db.rawQuery(requete, new String[]{}); // TODO : à enlever
+        Cursor cursor = db.rawQuery(requete, new String[]{String.valueOf(id)});
 
         ArrayList<Personnel> list = new ArrayList<>();
         while (cursor.moveToNext()) {

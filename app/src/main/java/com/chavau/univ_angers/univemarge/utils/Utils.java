@@ -104,10 +104,10 @@ public class Utils {
      * @param no_mifare
      * @return
      */
-    public String testCarte (String no_mifare) {
+    public static String testCarte (String no_mifare) {
         switch (no_mifare) {
             case "04702752734380" : // carte 1
-                 break;
+                return "045E8CE2CF5C80"; //  cours escalade mercredi à 17h : ARAUJO Dulce
             case "04842752734380" : // carte 2
                 break;
             case "04672752734380" : // carte 3
@@ -115,6 +115,6 @@ public class Utils {
 
             default: return no_mifare;
         }
-        return"";
+        return no_mifare;
     }
 }

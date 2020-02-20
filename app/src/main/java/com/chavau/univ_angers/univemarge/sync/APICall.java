@@ -75,14 +75,13 @@ public class APICall extends Fragment {
                         sendRequest(new SyncElement("/evenements", Evenement[].class, new EvenementDAO(new DatabaseHelper(context))));
                         sendRequest(new SyncElement("/inscriptions", Inscription[].class, new InscriptionDAO(new DatabaseHelper(context))));
                         sendRequest(new SyncElement("/personnels", Personnel[].class, new PersonnelDAO(new DatabaseHelper(context))));
-                        // TODO : dans api renvoyer un tableau pour un seul user
                         sendRequest(new SyncElement("/info_user", Personnel[].class, new PersonnelDAO(new DatabaseHelper(context))));
                         sendRequest(new SyncElement("/presences", Presence[].class, new PresenceDAO(new DatabaseHelper(context))));
                         sendRequest(new SyncElement("/presence_roulants", PresenceRoulant[].class, new PresenceRoulantDAO(new DatabaseHelper(context))));
                         sendRequest(new SyncElement("/responsables", Responsable[].class, new ResponsableDAO(new DatabaseHelper(context))));
                         sendRequest(new SyncElement("/roulant_parametre", RoulantParametre[].class, new RoulantParametreDAO(new DatabaseHelper(context))));
 
-                        // TODO : re-assign the new DateMaj
+                        // TODO : re-assign the new DateMaj dans préférences
                         setDateMaj(new Date());
                     }
 

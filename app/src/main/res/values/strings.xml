@@ -8,6 +8,7 @@
     <string name="modifier_une_s_ance">Modifier une séance</string>
     <string name="cr_er_une_s_ance">Créer une séance</string>
     <string name="code_pin">Code Pin</string>
+    <string name="seance_presents">Présents :</string>
 
     <!-- MENU -->
     <string name="menu">Menu</string>
@@ -58,5 +59,7 @@
     <!-- Lecture RFID -->
     <string name="TextView_RFIDActivity">Veuillez badger</string>
     <string name="image_carte_etudiant">Image d\'une carte d\'étudiant de l\'université d\'Angers.</string>
+    <string name="seance_hors_creneau">Dont hors créneau :</string>
+
 
 </resources>

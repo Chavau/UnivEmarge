@@ -49,7 +49,6 @@ public class Authentification extends AppCompatActivity implements Authentificat
             authentification_fragment = new Authentification_Fragment();
             frag_manage.beginTransaction().add(authentification_fragment, TAG_AUTHENTIFICATION_FRAGMENT).commit();
         }
-
     }
 
     public void onClickValider(View v){

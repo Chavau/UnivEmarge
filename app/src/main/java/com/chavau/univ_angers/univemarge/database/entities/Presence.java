@@ -7,20 +7,24 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.Date;
 
 public class Presence extends Entity {
+    @JsonProperty("id")
     private int idPresence;
+
+    @JsonProperty("id_evenement")
     private int idEvenement;
 
-    @JsonProperty("idSeance")
-    private int idSeance;
-
-    @JsonProperty("idInscription")
-    private int idInscription;
-
-    @JsonProperty("numeroEtudiant")
+    @JsonProperty("id_etudiant")
     private int numeroEtudiant;
 
-    @JsonProperty("statutPresence")
-    private StatutPresence statutPresence;
+    @JsonProperty("etat")
+    private int statutPresence;
+    /*
+    0 = absent
+    1 = present
+    2 = excuse
+    3 = retard
+    4 = hors creneau
+     */
 
     @JsonProperty("dateMaj")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss.S", timezone="Europe/Paris")
@@ -30,13 +34,16 @@ public class Presence extends Entity {
     @JsonProperty("deleted")
     private boolean deleted;
 
+    @JsonProperty("id_personnel")
     private int idPersonnel;
+
+    @JsonProperty("id_autre")
     private int idAutre;
 
     // needed for jackson parser
     public Presence() {}
 
-    public Presence(int idEvenement, int numeroEtudiant, StatutPresence statutPresence, boolean deleted, int idPersonnel, int idAutre) {
+    public Presence(int idEvenement, int numeroEtudiant, int statutPresence, boolean deleted, int idPersonnel, int idAutre) {
         this.idEvenement = idEvenement;
         this.numeroEtudiant = numeroEtudiant;
         this.statutPresence = statutPresence;
@@ -45,7 +52,7 @@ public class Presence extends Entity {
         this.idAutre = idAutre;
     }
 
-    public Presence(int idPresence, int idEvenement, int numeroEtudiant, StatutPresence statutPresence, boolean deleted, int idPersonnel, int idAutre, Date dateMaj) {
+    public Presence(int idPresence, int idEvenement, int numeroEtudiant, int statutPresence, boolean deleted, int idPersonnel, int idAutre, Date dateMaj) {
         this.idPresence = idPresence;
         this.idEvenement = idEvenement;
         this.numeroEtudiant = numeroEtudiant;
@@ -68,7 +75,7 @@ public class Presence extends Entity {
         return numeroEtudiant;
     }
 
-    public StatutPresence getStatutPresence() {
+    public int getStatutPresence() {
         return statutPresence;
     }
 
@@ -94,5 +101,25 @@ public class Presence extends Entity {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public void setIdEvenement(int idEvenement) {
+        this.idEvenement = idEvenement;
+    }
+
+    public void setIdEtudiant(int numeroEtudiant) {
+        this.numeroEtudiant = numeroEtudiant;
+    }
+
+    public void setStatutPresence(int statutPresence) {
+        this.statutPresence = statutPresence;
+    }
+
+    public void setIdPersonnel(int idPersonnel) {
+        this.idPersonnel = idPersonnel;
+    }
+
+    public void setIdAutre(int idAutre) {
+        this.idAutre = idAutre;
     }
 }

@@ -1,4 +1,5 @@
 package com.chavau.univ_angers.univemarge.view.activities;
+// TODO : à supprimer
 /*
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;

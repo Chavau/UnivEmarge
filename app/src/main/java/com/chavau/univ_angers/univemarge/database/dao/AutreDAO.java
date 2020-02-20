@@ -121,19 +121,22 @@ public class AutreDAO extends DAO<Autre> implements IMergeable {
      * @param id
      * @return ArrayList
      */
-    public ArrayList<Autre> listeAutresInscrit(Identifiant id) {
+    public ArrayList<Autre> listeAutresInscrit(int id) {
         SQLiteDatabase db = super.helper.getWritableDatabase();
-        Cursor cursor = db.rawQuery(
-                "SELECT " +
-                        " a." + DBTables.Autre.COLONNE_ID_AUTRE + ", " +
-                        " a." + DBTables.Autre.COLONNE_NOM + ", " +
-                        " a." + DBTables.Autre.COLONNE_PRENOM + ", " +
-                        " a." + DBTables.Autre.COLONNE_EMAIL + " " +
-                        " FROM " + DBTables.Autre.TABLE_NAME + " a" +
-                        " INNER JOIN " + DBTables.Inscription.TABLE_NAME + " i " +
-                        " ON a." + DBTables.Autre.COLONNE_ID_AUTRE + " = i." + DBTables.Inscription.COLONNE_ID_AUTRE +
-                        " WHERE " + DBTables.Autre.COLONNE_ID_AUTRE + " = ? ",
-                new String[]{String.valueOf(id.getId(DBTables.Inscription.COLONNE_ID_AUTRE))});
+
+        String requete ="SELECT " +
+                " a." + DBTables.Autre.COLONNE_ID_AUTRE + ", " +
+                " a." + DBTables.Autre.COLONNE_NOM + ", " +
+                " a." + DBTables.Autre.COLONNE_PRENOM + ", " +
+                " a." + DBTables.Autre.COLONNE_EMAIL + " " +
+                " FROM " + DBTables.Autre.TABLE_NAME + " a" +
+                " INNER JOIN " + DBTables.Inscription.TABLE_NAME + " i " +
+                " ON a." + DBTables.Autre.COLONNE_ID_AUTRE + " = i." + DBTables.Inscription.COLONNE_ID_AUTRE +
+                " WHERE " + DBTables.Inscription.COLONNE_ID_EVENEMENT + " = ? ";
+
+        //requete = "SELECT * FROM AUTRE";
+        //Cursor cursor = db.rawQuery(requete, new String[]{}); // TODO : à enlever
+        Cursor cursor = db.rawQuery( requete, new String[]{String.valueOf(id)});
 
         ArrayList<Autre> list = new ArrayList<>();
         while (cursor.moveToNext()) {

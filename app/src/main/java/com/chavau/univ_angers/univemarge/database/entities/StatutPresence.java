@@ -3,6 +3,7 @@ package com.chavau.univ_angers.univemarge.database.entities;
 import java.util.HashMap;
 import java.util.Map;
 
+// TODO : à enlever ?
 public enum StatutPresence {
     INCONNU(-1),
     ABSENT(0),

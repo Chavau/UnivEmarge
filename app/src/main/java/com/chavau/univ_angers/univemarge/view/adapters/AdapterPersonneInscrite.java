@@ -6,6 +6,7 @@ import android.graphics.PorterDuff;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -19,22 +20,32 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import com.chavau.univ_angers.univemarge.R;
+import com.chavau.univ_angers.univemarge.database.DatabaseHelper;
+import com.chavau.univ_angers.univemarge.database.dao.PresenceDAO;
 import com.chavau.univ_angers.univemarge.database.entities.Autre;
 import com.chavau.univ_angers.univemarge.database.entities.Etudiant;
 import com.chavau.univ_angers.univemarge.database.entities.Personnel;
+import com.chavau.univ_angers.univemarge.database.entities.Presence;
+import com.chavau.univ_angers.univemarge.view.activities.BadgeageEtudiant;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 
 public class AdapterPersonneInscrite extends RecyclerView.Adapter<AdapterPersonneInscrite.ViewHolderPI> {
 
     private Context _context;
     private boolean _isModeEnseignant; // Si true alors il faut le menu pour modifier à la main (false par défaut)
-    private ArrayList<Etudiant> _etudIns ; //= new ArrayList<>();
+    private ArrayList<PersonneInscrite> _listePersonnes; //= new ArrayList<>();
 
-    static int ABSENT   = 0;
-    static int PRESENT  = 1;
-    static int EXCUSE   = 2;
-    static int RETARD   = 3;
+    public static int ABSENT   = 0;
+    public static int PRESENT  = 1;
+    public static int EXCUSE   = 2;
+    public static int RETARD   = 3;
+    public static int PRESENT_HORS_CRENEAU = 4 ;
+
+    private int idEvenement;
 
     //private final static String nomListePresence = "Liste Presence";
 
@@ -47,15 +58,15 @@ public class AdapterPersonneInscrite extends RecyclerView.Adapter<AdapterPersonn
 
     // Lors d'un clic sur un cardview dans l'activité "Nouvelle Séance"
 
-    //private Listener _listener;
+    private BadgeageEtudiant.Listener _listener;
 
     /*public interface Listener {
         void onClick(int position);
     }*/
 
-   /* public void set_listener(Listener listener) {
+    public void set_listener(BadgeageEtudiant.Listener listener) {
         this._listener = listener;
-    }*/
+    }
 
     /**
      * Chargement de le vue de chaque ligne
@@ -69,10 +80,10 @@ public class AdapterPersonneInscrite extends RecyclerView.Adapter<AdapterPersonn
         }
     }
 
-    public AdapterPersonneInscrite(Context context, ArrayList<Etudiant> listeEtudIns) {
+    public AdapterPersonneInscrite(Context context) {
         _context = context;
         _isModeEnseignant = false;
-        _etudIns = listeEtudIns;
+        _listePersonnes = new ArrayList<>(); // TODO : dev : voir si possible de trier par nom
     }
 
     @Override
@@ -88,9 +99,9 @@ public class AdapterPersonneInscrite extends RecyclerView.Adapter<AdapterPersonn
         return nomListePresence;
     }*/
 
-    /*public ArrayList<Etudiant> get_etudIns() {
-        return _etudIns;
-    }*/
+    public ArrayList<PersonneInscrite> getlistePersonneInscrites() {
+        return _listePersonnes;
+    }
 
     @Override
     public void onBindViewHolder(final ViewHolderPI viewHolder, final int i) {
@@ -106,38 +117,46 @@ public class AdapterPersonneInscrite extends RecyclerView.Adapter<AdapterPersonn
         iv_pict.setImageResource(R.drawable.man);
 
         // Affectation du nom de l'étudiant(e) inscrit(e) à l'activité
-        tv_nom.setText(_etudIns.get(i).getNom());
+        tv_nom.setText(_listePersonnes.get(i).getNom());
 
         // Affectation du prenom de l'étudiant(e) inscrit(e) à l'activité
-        tv_prenom.setText(_etudIns.get(i).getPrenom());
+        tv_prenom.setText(_listePersonnes.get(i).getPrenom());
 
         // Affectation du numéro de l'étudiant(e) inscrit(e) à l'activité
-        tv_numetu.setText(Integer.toString(_etudIns.get(i).getNumeroEtudiant()));
+        int num_etud = _listePersonnes.get(i).getNumeroEtudiant();
+        switch(num_etud) {
+            case 1 : tv_numetu.setText("Personnel"); break;
+            case 2 : tv_numetu.setText("Externe"); break;
+            default:tv_numetu.setText(Integer.toString(_listePersonnes.get(i).getNumeroEtudiant())); break;
+        }
+        // TEST : tv_numetu.setText(_listePersonnes.get(i).getMifare());
+
 
         // Affectation du type d'activité de l'étudiant(e) inscrit(e) à l'activité
-        //tv_typeact.setText(_etudIns.get(i).get_typeActivite());
+        //tv_typeact.setText(_listePersonnes.get(i).get_typeActivite());
 
-        //Coloration de l'ampoule en fonction de la présence d'un(e) étudiant(e)
+        //Coloration de l'ampoule en fonction de la présence d'une personne
 
-        //if (_etudIns.get(i).get_etat() == Etudiant.STATUE_ETUDIANT.ABSENT) {
-
-        iv_light.setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
-        //}
-
-       /* else if (_etudIns.get(i).get_etat() == Etudiant.STATUE_ETUDIANT.PRESENT) {
-
-            iv_light.setColorFilter(Color.GREEN,PorterDuff.Mode.SRC_ATOP);
+        if (_listePersonnes.get(i).getStatutPresence() == ABSENT) {
+            iv_light.setColorFilter(_context.getResources().getColor(R.color.rouge));
         }
-
-        else if (_etudIns.get(i).get_etat() == Etudiant.STATUE_ETUDIANT.RETARD) {
-
-            iv_light.setColorFilter(Color.BLUE,PorterDuff.Mode.SRC_ATOP);
+        else if (_listePersonnes.get(i).getStatutPresence() == PRESENT) {
+            iv_light.setColorFilter(_context.getResources().getColor(R.color.vert));
         }
-
+        else if (_listePersonnes.get(i).getStatutPresence() == RETARD) {
+            iv_light.setColorFilter(_context.getResources().getColor(R.color.bleu));
+        }
+        else if (_listePersonnes.get(i).getStatutPresence() == EXCUSE) {
+            iv_light.setColorFilter(_context.getResources().getColor(R.color.orange));
+        }
+        else if (_listePersonnes.get(i).getStatutPresence() == PRESENT_HORS_CRENEAU) {
+            iv_light.setColorFilter(_context.getResources().getColor(R.color.violet)); // TODO : dev : trouver le violet UA (ou autre couleur)
+        }
         else {
-            iv_light.setColorFilter(Color.rgb(252, 186, 3), PorterDuff.Mode.SRC_ATOP);
+            iv_light.setColorFilter(Color.alpha(_context.getResources().getColor(R.color.noir)), PorterDuff.Mode.SRC_ATOP);
         }
-*/
+
+
         /**
          * Création du menu sur chaque personne
          */
@@ -172,24 +191,25 @@ public class AdapterPersonneInscrite extends RecyclerView.Adapter<AdapterPersonn
                     public boolean onMenuItemClick(MenuItem menuItem) {
                         switch (menuItem.getItemId()) {
                             case R.id.id_present:
-                                //setPresence(i, Etudiant.STATUE_ETUDIANT.PRESENT);
+                                setPresence(i, PRESENT);
                                 notifyDataSetChanged();
                                 break;
                             case R.id.id_absent:
-                                //setPresence(i, Etudiant.STATUE_ETUDIANT.ABSENT);
+                                setPresence(i, ABSENT);
                                 notifyDataSetChanged();
                                 break;
                             case R.id.id_retard:
-                                //setPresence(i, Etudiant.STATUE_ETUDIANT.RETARD);
+                                setPresence(i, RETARD);
                                 notifyDataSetChanged();
                                 break;
                             case R.id.id_excuse:
-                                //setPresence(i, Etudiant.STATUE_ETUDIANT.EXCUSE);
+                                setPresence(i, EXCUSE);
                                 notifyDataSetChanged();
                                 break;
                             default:
                                 break;
                         }
+                        _listener.majPresence();
                         return false;
                     }
                 });
@@ -207,13 +227,58 @@ public class AdapterPersonneInscrite extends RecyclerView.Adapter<AdapterPersonn
         else {
             tv_menu_presence.setVisibility(View.GONE);
         }
-
-
     }
+
+    /**
+     * add fonction pour chaque type de personne
+     * @param personne
+     */
+    public void addPersonne(Etudiant personne){
+        PersonneInscrite pers = new PersonneInscrite(personne);
+        finishAdd(pers);
+    }
+    public void addPersonne(Personnel personne){
+        PersonneInscrite pers = new PersonneInscrite(personne);
+        finishAdd(pers);
+    }
+    public void addPersonne(Autre personne){
+        PersonneInscrite pers = new PersonneInscrite(personne);
+        finishAdd(pers);
+    }
+
+    public void finishAdd(PersonneInscrite personne){
+        _listePersonnes.add(personne);
+        Collections.sort(_listePersonnes, new Comparator<PersonneInscrite>() {
+            @Override
+            public int compare(PersonneInscrite o1, PersonneInscrite o2) {
+                return o1.getNom().compareTo(o2.getNom());
+            }
+        });
+        notifyDataSetChanged();
+    }
+
 
     @Override
     public int getItemCount() {
-        return _etudIns.size();
+        return _listePersonnes.size();
+    }
+
+    public int getNbPresent(){
+        int nb = 0 ;
+        for (PersonneInscrite p : _listePersonnes){
+            if (p.getStatutPresence() == PRESENT || p.getStatutPresence() == PRESENT_HORS_CRENEAU || p.getStatutPresence() == RETARD)
+                nb++;
+        }
+        return nb;
+    }
+
+    public int getNbHorsCreneau(){
+        int nb = 0 ;
+        for (PersonneInscrite p : _listePersonnes){
+            if (p.getStatutPresence() == PRESENT_HORS_CRENEAU)
+                nb++;
+        }
+        return nb;
     }
 
     /**
@@ -230,39 +295,72 @@ public class AdapterPersonneInscrite extends RecyclerView.Adapter<AdapterPersonn
         return  _isModeEnseignant;
     }
 
-   /* public void setPresence(int position, int presence) {
-        _etudIns.get(position).setPresence(presence);
+    public void setPresence(int position, int presence) {
+        _listePersonnes.get(position).setPresence(presence);
+        notifyDataSetChanged();
     }
-*/
+
+    public void setIdEvenement(int idEvenement) {
+        this.idEvenement = idEvenement;
+    }
 
     public class PersonneInscrite {
         Etudiant etudiant;
         Personnel personnel;
         Autre autre;
-        int statut_presence;
+        Presence presence;
+        int statut_presence; // voir constantes de classe adapter pour signification. Le paramètre est utile car il peut ne pas encore y avoir de présence
+        PresenceDAO dao_presence = new PresenceDAO(new DatabaseHelper(_context));
 
         public PersonneInscrite(Etudiant etud) {
             etudiant = etud;
             personnel = null;
             autre = null;
-            // TODO : dev : mettre la présence automatiquement en fonction de bdd
-            statut_presence = 0;// 0 = absent
+
+            presence = dao_presence.getPresenceEtud(idEvenement,etudiant.getIdEtudiant());
+
+            if(presence == null) {
+                statut_presence = 0;// 0 = absent
+                Log.i("debug personne incrites" , " presence null : " + presence);
+            }
+            else {
+                Log.i("debug personne incrites" , " presence non null : " + presence.getStatutPresence());
+                statut_presence = presence.getStatutPresence();
+            }
         }
 
         public PersonneInscrite(Personnel pers) {
             etudiant = null;
             personnel = pers;
             autre = null;
-            // TODO : dev : mettre la présence automatiquement en fonction de bdd
-            statut_presence = 0;// 0 = absent
+
+            presence = dao_presence.getPresencePersonnel(idEvenement,personnel.getIdPersonnel());
+
+            if(presence == null) {
+                statut_presence = 0;// 0 = absent
+                Log.i("debug personne incrites" , " presence null : " + presence);
+            }
+            else {
+                Log.i("debug personne incrites" , " presence non null : " + presence.getStatutPresence());
+                statut_presence = presence.getStatutPresence();
+            }
         }
 
         public PersonneInscrite(Autre aut) {
             etudiant = null;
             personnel = null;
             autre = aut;
-            // TODO : dev : mettre la présence automatiquement en fonction de bdd
-            statut_presence = 0;// 0 = absent
+
+            presence = dao_presence.getPresenceAutre(idEvenement,autre.getIdAutre());
+
+            if(presence == null) {
+                statut_presence = 0;// 0 = absent
+                Log.i("debug personne incrites" , " presence null : " + presence);
+            }
+            else {
+                Log.i("debug personne incrites" , " presence non null : " + presence.getStatutPresence());
+                statut_presence = presence.getStatutPresence();
+            }
         }
 
         public String getNom() {
@@ -281,19 +379,68 @@ public class AdapterPersonneInscrite extends RecyclerView.Adapter<AdapterPersonn
 
         public int getNumeroEtudiant() {
             if (etudiant != null) return etudiant.getNumeroEtudiant();
-            else if (personnel != null) return 0;
-            else if (autre != null) return 0;
+            else if (personnel != null) return 1;
+            else if (autre != null) return 2;
             else return 0;
         }
 
-        public int getPresence() {
+        public String getMifare(){
+                if (etudiant != null) return etudiant.getNo_mifare();
+                else if (personnel != null) return personnel.getNo_mifare();
+                else return "";
+        }
+
+        public int getStatutPresence() {
             return statut_presence;
         }
 
-        public void setPresence(int presence) {
-            // TODO : dev : mettre à jour bdd avec la présence en paramètre
-            statut_presence = presence;
+        public void setPresence(int pres) {
+            statut_presence = pres;
+
+            if(presence == null){
+                presence = new Presence();
+                presence.setIdEvenement(idEvenement);
+                presence.setDeleted(false);
+            }
+
+            presence.setDateMaj(new Date());
+            presence.setStatutPresence(pres);
+
+
+            if(etudiant != null) {
+                // TODO : dev : normalement ce qui suit c'est pour une présence null
+                presence.setIdPersonnel(0);
+                presence.setIdAutre(0);
+                presence.setIdEtudiant(etudiant.getIdEtudiant());
+
+                dao_presence.majPresence(presence);
+                // récupération de l'identifiant de la présence pour éviter de créer un doublon en cas de modification à la création de la présence
+                presence = dao_presence.getPresenceEtud(idEvenement,etudiant.getIdEtudiant());
+
+
+            }
+            else if (personnel != null) {
+                presence.setIdPersonnel(personnel.getIdPersonnel());
+                presence.setIdAutre(0);
+                presence.setIdEtudiant(0);
+
+                dao_presence.majPresence(presence);
+                // récupération de l'identifiant de la présence pour éviter de créer un doublon en cas de modification à la création de la présence
+                presence = dao_presence.getPresencePersonnel(idEvenement,personnel.getIdPersonnel());
+            }
+            else if (autre != null) {
+                presence.setIdPersonnel(0);
+                presence.setIdAutre(autre.getIdAutre());
+                presence.setIdEtudiant(0);
+
+                dao_presence.majPresence(presence);
+                // récupération de l'identifiant de la présence pour éviter de créer un doublon en cas de modification à la création de la présence
+                presence = dao_presence.getPresenceAutre(idEvenement,autre.getIdAutre());
+            }
+            else
+                Toast.makeText(_context,"on devrait jamais arriver la, BUG", Toast.LENGTH_LONG).show();
         }
 
     }
+
 }
